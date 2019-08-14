@@ -10,7 +10,7 @@
 <config>
   <modules>
     <Swipezoom_InternationalShipping>
-      <version>1.0.3</version>
+      <version>1.0.4</version>
     </Swipezoom_InternationalShipping>
   </modules>
   <frontend>
@@ -22,6 +22,13 @@
           <frontName>internationalshipping</frontName>
         </args>
       </internationalshipping>
+      <checkout>
+          <args>
+              <modules>
+                  <Swipezoom_InternationalShipping before="Mage_Checkout">Swipezoom_InternationalShipping</Swipezoom_InternationalShipping>
+              </modules>
+          </args>
+      </checkout>
     </routers>
     <layout>
       <updates>
@@ -206,6 +213,16 @@
           <address_abstract>Swipezoom_InternationalShipping_Model_Validation_Abstract</address_abstract>
         </rewrite>
       </customer>
+      <checkout>
+          <rewrite>
+              <type_onepage>Swipezoom_InternationalShipping_Model_Type_Onepage</type_onepage>
+          </rewrite>
+      </checkout>
+      <sales>
+        <rewrite>
+           <service_quote>Swipezoom_InternationalShipping_Model_Service_Quote</service_quote>
+        </rewrite>
+      </sales>
     </models>
     <resources>
       <internationalshipping_setup>
@@ -247,6 +264,22 @@
             <sales_order_creditmemo_totals>Swipezoom_InternationalShipping_Block_Adminhtml_Sales_Order_Creditmemo_Totals</sales_order_creditmemo_totals>
         </rewrite>
       </adminhtml>
+
+      <checkout>
+          <rewrite>
+              <onepage_shipping_method>Swipezoom_InternationalShipping_Block_Onepage_Shipping_Method</onepage_shipping_method>
+          </rewrite>
+      </checkout>
+      <checkout>
+          <rewrite>
+            <onepage_review>Swipezoom_InternationalShipping_Block_Onepage_Review</onepage_review>
+          </rewrite>
+      </checkout>
+      <checkout>
+          <rewrite>
+            <onepage_login>Swipezoom_InternationalShipping_Block_Onepage_Login</onepage_login>
+          </rewrite>
+      </checkout>
     </blocks>
     <helpers>
       <internationalshipping>
@@ -305,6 +338,7 @@
                     </atwix_exgrid>
                 </observers>
             </sales_order_grid_collection_load_before>
+
     </events>
   </global>
   <default>
@@ -330,6 +364,9 @@
         <merchantkey>TESTABCERLHYC100567PKI1001ENCYM00</merchantkey>
         <showmethod>1</showmethod>
         <debug>0</debug>
+        <hideshipping>0</hideshipping>
+        <hidereview>0</hidereview>
+        <force_guest_checkout>0</force_guest_checkout>
       </swipezoom>
     </carriers>
   </default>

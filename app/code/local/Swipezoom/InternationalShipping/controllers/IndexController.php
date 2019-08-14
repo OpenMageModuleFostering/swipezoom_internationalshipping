@@ -129,6 +129,16 @@ class Swipezoom_InternationalShipping_IndexController extends Mage_Core_Controll
     {
         $task = Mage::getModel('internationalshipping/carrier_swipezoom')->AddressVerifacation(); 
     }
+
+    public function getProductListAction() {
+    	$responseArray =  Mage::getModel('internationalshipping/carrier_swipezoom')->getProductList();
+    	$dom = new DOMDocument;
+		$dom->preserveWhiteSpace = FALSE;
+		$dom->loadXML($responseArray);
+		$dom->formatOutput = TRUE;
+		echo $dom->saveXml();
+    	return true;
+    }
     
  	public function getCitiesForAutoCompleteAction() {
     	$responseArray =  Mage::getModel('internationalshipping/carrier_swipezoom')->getCitiesForAutoComplete(); 

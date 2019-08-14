@@ -962,6 +962,152 @@ extends Mage_Shipping_Model_Carrier_Abstract
 		return $responseAutoComplete;
 	
 	} 
+
+	//function defination to convert array to xml
+	function array_to_xml($array, &$xml_user_info) {
+	    foreach($array as $key => $value) {
+	        if(is_array($value)) {
+	            if(!is_numeric($key)){
+	                $subnode = $xml_user_info->addChild("$key");
+	                $this->array_to_xml($value, $subnode);
+	            }else{
+	                $subnode = $xml_user_info->addChild("Product");
+	                $this->array_to_xml($value, $subnode);
+	            }
+	        }else {
+	            $xml_user_info->addChild("$key",htmlspecialchars("$value"));
+	        }
+	    }
+	}	
+
+	/**
+	 * Get Product List
+	 */
+	public function getProductList() {
+
+		$response = array();
+		try {
+			
+			if(empty($_POST['MerchantID']) || empty($_POST['MerchantKey']) 
+				|| $this->getConfigData('merchantid') != $_POST['MerchantID'] 
+				|| $this->getConfigData('merchantkey') != $_POST['MerchantKey']) {
+				$response = array();
+
+				$xml = new SimpleXMLElement('<ProductListResponse/>');
+
+				$xml->addChild('error', "Stakeholder credentials are not valid");
+
+				return $xml->asXML();
+		
+			} else {
+
+				if($_POST['ProductStartingID'])
+					$lastId = $_POST['ProductStartingID'];
+				else
+					$lastId = 0;
+
+				$datefilter = array();
+				if(!empty($_POST['StartDate']))
+					$datefilter['from'] = $_POST['StartDate'];
+
+				if(!empty($_POST['EndDate']))
+					$datefilter['to'] = $_POST['EndDate'];
+
+				if(!empty($datefilter)) {
+				$_productCollection = Mage::getModel('catalog/product')
+                        ->getCollection()
+                        ->addAttributeToFilter('entity_id', array('gt' => $lastId))
+                        ->addAttributeToFilter('created_at', $datefilter)
+                        ->addAttributeToSort('created_at', 'DESC')
+                        ->addAttributeToSelect('*')
+                        ->load();
+                } else {
+                	$_productCollection = Mage::getModel('catalog/product')
+                        ->getCollection()
+                        ->addAttributeToFilter('entity_id', array('gt' => $lastId))
+                        ->addAttributeToSort('created_at', 'DESC')
+                        ->addAttributeToSelect('*')
+                        ->load();
+                }
+                
+            $i = 0;
+			$len = count($_productCollection);
+			foreach ($_productCollection as $_product){
+
+				if ($i == 0) {
+					$lastProductId = $response[$_product->getId()]['ProductID'];
+					// save last product id
+				}
+				$i++;
+
+			   $response[$_product->getId()]['ProductCode'] =  $_product->getSku();
+			   $response[$_product->getId()]['ProductDescription'] = $_product->getName();
+			   
+			   $categoryIds = $_product->getCategoryIds();
+
+		        if(count($categoryIds) ){
+		            $firstCategoryId = $categoryIds[0];
+		            $_category = Mage::getModel('catalog/category')->load($firstCategoryId);
+		            $cat_name = $_category->getName();
+		        } else {
+		        	$cat_name = '';
+		        	$firstCategoryId = '';
+		        }
+
+		        $countryList = Mage::getResourceModel('directory/country_collection')
+				                    ->loadData()
+				                    ->toOptionArray(false);
+				$needle = $_product->getAttributeText('country_of_manufacture');
+				$countrycode = '';
+				foreach ($countryList as $key => $val) 
+				{
+				   if (strtolower($val['label']) === strtolower($needle)) {
+				       $countrycode = $val['value'];
+				       break;
+				   }
+				}
+
+				$country = Mage::getResourceModel('directory/country_collection')->addFieldToFilter("country_id",$countrycode)->getData();
+				$countrycode = $country[0]["iso3_code"];
+
+		       $response[$_product->getId()]['CategoryID'] =  $firstCategoryId;
+			   $response[$_product->getId()]['CategoryName'] =  $cat_name;
+			   $response[$_product->getId()]['Weight'] =  number_format($_product->getWeight(),2);
+			   $response[$_product->getId()]['CountryOfManufacture'] = $countrycode;
+			   $response[$_product->getId()]['ImageURL'] =  $_product->getImageUrl();
+			   $response[$_product->getId()]['ProductURL'] = $_product->getProductUrl();
+			   $response[$_product->getId()]['ProductID'] = $_product->getId();
+			   
+			   if($_product->getStatus() == 1)
+			   		$response[$_product->getId()]['Status'] =  'Enabled';
+			   else
+			   		$response[$_product->getId()]['Status'] =  'Disabled';
+
+			}	
+
+			if($len == 0) {
+				$response = array();
+				$xml = new SimpleXMLElement('<ProductListResponse/>');
+
+				$xml->addChild('error', "0 records found");
+
+				return $xml->asXML();
+			}
+
+	    	//creating object of SimpleXMLElement
+			$xml_user_info = new SimpleXMLElement("<?xml version=\"1.0\"?><ProductListResponse></ProductListResponse>");
+
+			//function call to convert array to xml
+			$this->array_to_xml($response,$xml_user_info);
+
+			//saving generated xml file
+			return $xml_user_info->asXML();
+		  }
+
+		} catch (Exception $e) {
+			 Mage::logException($e);
+		}
+	}
 		
 	
 	

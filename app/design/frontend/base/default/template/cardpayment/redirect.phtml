@@ -10,6 +10,7 @@
     $paymentmode = Mage::getStoreConfig('carriers/swipezoom/paymentenabled',Mage::app()->getStore());
 
     $shippingMethod = $order->getData("shipping_method");
+    
     // If shipping method is Swipezoom and Payment is enabled
     if(strpos($shippingMethod,"swipezoom") !== FALSE && $paymentmode == 1):
 

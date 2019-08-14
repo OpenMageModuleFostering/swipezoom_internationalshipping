@@ -20,13 +20,20 @@
             <action method="addJs"><script>swipezoom/jquery.creditCardValidator.js</script></action>
             <action method="addJs"><script>swipezoom/sz_common.js</script></action>
 		</reference>
-		
+		 <reference name="checkout.onepage">
+            <action method="setTemplate" ifconfig='carriers/swipezoom/force_guest_checkout'><template>internationalshipping/checkout/onepage.phtml</template></action>
+        </reference>
         <reference name="checkout.onepage.billing">
             <action method="setTemplate" ifconfig="carriers/swipezoom/active"><template>internationalshipping/checkout/onepage/billing.phtml</template></action>
         </reference>  
         <reference name="checkout.onepage.shipping"> 
         <action method="setTemplate" ifconfig="carriers/swipezoom/active"><template>internationalshipping/checkout/onepage/shipping.phtml</template></action>           
         </reference>  
+          <reference name="checkout.onepage.payment">         
+            <action method="setTemplate" ifconfig="carriers/swipezoom/active">
+                <template>internationalshipping/onepage/payment.phtml</template>
+           </action>      
+     </reference>
     </checkout_onepage_index>    
     <checkout_onepage_progress>
         <!-- Mage_Checkout -->

@@ -33,6 +33,8 @@
 ?>
 
 <?php
+    $hideshipping = Mage::getStoreConfig('carriers/swipezoom/hideshipping',Mage::app()->getStore());
+    $ExtraRates = Mage::getSingleton('core/session')->getSwipezoomExtraRates();
     $methods = $this->getMethods();
 ?>
 <?php if (empty($methods)): ?>
@@ -86,6 +88,22 @@
     //<![CDATA[
     <?php echo $this->getChildChildHtml('scripts'); ?>
     payment.init();
+    var hideshipping = "<?php echo $hideshipping; ?>";
+    if(hideshipping == "1") {
+        var datastorageurl = "<?php echo $ExtraRates['DataStorageUrl']; ?>";
+       
+        if(datastorageurl) {
+            if($(".wirecard-datastorage"))
+                $(".wirecard-datastorage").remove();
+            var filename = datastorageurl;
+
+            var fileref = document.createElement('script');
+            fileref.setAttribute("type", "text/javascript");
+            fileref.setAttribute("src", filename);
+            fileref.setAttribute("class",'wirecard-datastorage')
+            document.getElementsByTagName("head")[0].appendChild(fileref);
+        }
+    }
     <?php if (is_string($oneMethod)): ?>
     payment.switchMethod('<?php echo $oneMethod ?>');
         <?php endif; ?>
