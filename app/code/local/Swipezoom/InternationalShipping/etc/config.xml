@@ -10,7 +10,7 @@
 <config>
   <modules>
     <Swipezoom_InternationalShipping>
-      <version>1.0.4</version>
+      <version>1.0.5</version>
     </Swipezoom_InternationalShipping>
   </modules>
   <frontend>
@@ -22,13 +22,13 @@
           <frontName>internationalshipping</frontName>
         </args>
       </internationalshipping>
-      <checkout>
+      <!-- <checkout>
           <args>
               <modules>
                   <Swipezoom_InternationalShipping before="Mage_Checkout">Swipezoom_InternationalShipping</Swipezoom_InternationalShipping>
               </modules>
           </args>
-      </checkout>
+      </checkout> -->
     </routers>
     <layout>
       <updates>

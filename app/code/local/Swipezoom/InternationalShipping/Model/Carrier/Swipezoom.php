@@ -743,6 +743,11 @@ extends Mage_Shipping_Model_Carrier_Abstract
 		$ratesRequest = $this->prepareAddressFormatRequest();
 		
 		$requestString = serialize($ratesRequest);
+		
+		$ratesRequest['CountryCode'] = trim($ratesRequest['CountryCode']);
+		if(empty($ratesRequest['CountryCode'])) 
+			return null;
+
 		$debugData = array('request' => $ratesRequest);
 		if ($response === null) {
 			try {
