@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.geca.sz.com/ws/schema/request" xmlns:RequestSchema="http://www.geca.sz.com/ws/schema/request"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEBSERVICES TYPE DECLARATIONS #### -->
+ <!-- ************************************************************** -->
+
+
+ <xsd:element name="Echo" type="RequestSchema:EchoType" />
+
+ <xsd:element name="OrderList" type="RequestSchema:OrderListType" />
+ <xsd:element name="Pick" type="RequestSchema:PickType" />
+ <xsd:element name="Pack" type="RequestSchema:PackType" />
+ <xsd:element name="Ship" type="RequestSchema:ShipType" />
+ <xsd:element name="ShipDoc" type="RequestSchema:ShipDocType" />
+ <xsd:element name="Track" type="RequestSchema:TrackType" />
+ <xsd:element name="EditPacking" type="RequestSchema:EditPackingType" />
+ <xsd:element name="RestorePacking" type="RequestSchema:RestorePackingType" />
+ <xsd:element name="OrderDetails" type="RequestSchema:OrderDetailsType" />
+ <xsd:element name="PartShipReq" type="RequestSchema:PartShipReqType" />
+ <xsd:element name="PartShipConfirm" type="RequestSchema:PartShipConfirmType" />
+
+ <xsd:element name="ServiceInvoice" type="RequestSchema:ServiceInvoiceType" />
+ <xsd:element name="DailyStatement" type="RequestSchema:DailyStatementType" />
+
+ <xsd:element name="CancelOrder" type="RequestSchema:CancelOrderType" />
+ <xsd:element name="RogRefundReq" type="RequestSchema:RogRefundReqType" />
+ <xsd:element name="RogRefundActivate" type="RequestSchema:RogRefundActivateType" />
+ <xsd:element name="RogExchangeReq" type="RequestSchema:RogExchangeReqType" />
+ <xsd:element name="RogExchangeActivate" type="RequestSchema:RogExchangeActivateType" />
+ <xsd:element name="Chargeback" type="RequestSchema:ChargebackType" />
+
+ <xsd:element name="SaleSumm" type="RequestSchema:SaleSummType" />
+ <xsd:element name="CustInfo" type="RequestSchema:CustInfoType" />
+ <xsd:element name="FailedTrans" type="RequestSchema:FailedTransType" />
+ <xsd:element name="RollingReserves" type="RequestSchema:RollingReservesType" />
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEBSERVICES TYPE DEFINITIONS #### -->
+ <!-- ************************************************************** -->
+
+
+ <xsd:complexType name="EchoType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="echoMessage" type="RequestSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="OrderListType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderRequest" type="RequestSchema:OrderRequestType" />
+   <xsd:element name="PagingRequest" type="RequestSchema:PagingRequestType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PickType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PackType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ShipType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ShipDocType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <!-- xsd:element name="DocCode" type="RequestSchema:S500" minOccurs="0" /> <xsd:element name="IsSpecificDocRequest" type="RequestSchema:YN_A1" 
+    minOccurs="0" / -->
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNumber" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="TrackingNumber" type="RequestSchema:INT" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="EditPackingType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="PackingBoxes" type="RequestSchema:PackingBoxesType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RestorePackingType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="OrderDetailsType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PartShipReqType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="ProductLineItems" type="RequestSchema:ProductLineItemsType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PartShipConfirmType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="MerchantRefNo" type="RequestSchema:S60" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="ServiceInvoiceType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="DateFrom" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="DateTo" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="TimeFrom" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="TimeTo" type="RequestSchema:TIME" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="DailyStatementType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="Period" type="RequestSchema:PERIOD_TYPE_E" minOccurs="0" />
+   <xsd:element name="DateFrom" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="DateTo" type="RequestSchema:DATE" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="CancelOrderType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="ReasonCode" type="RequestSchema:AN" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogRefundReqType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="ReturnAuthentication" type="RequestSchema:S500" />
+   <xsd:element name="ROGReasonCode" type="RequestSchema:REASON_CODE_ROG_TYPE_E" />
+   <xsd:element name="ProductLineItems" type="RequestSchema:ProductLineItemsType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogRefundActivateType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="RogOrderNo" type="RequestSchema:INT" />
+   <xsd:element name="RogRefundOption" type="RequestSchema:ROG_REFUND_OPTION_TYPE_E" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogExchangeReqType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="ReturnAuthentication" type="RequestSchema:S500" />
+   <xsd:element name="ROGReasonCode" type="RequestSchema:REASON_CODE_ROG_TYPE_E" />
+   <xsd:element name="ProductLineItems" type="RequestSchema:ProductLineItemsType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogExchangeActivateType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="RogOrderNo" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ChargebackType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="OrderNo" type="RequestSchema:INT" />
+   <xsd:element name="NetworkFlag" type="RequestSchema:CARD_NETWORK_TYPE_E" />
+   <xsd:element name="IsCodeRetrieval" type="RequestSchema:CHARGEBACK_CODE_RETRIEVAL_TYPE_E" />
+   <xsd:element name="ReasonCode" type="RequestSchema:INT" />
+   <xsd:element name="CustomerComments" type="RequestSchema:S500" minOccurs="0" />
+   <xsd:element name="GatewayComments" type="RequestSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="SaleSummType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="DateFrom" type="RequestSchema:DATE" />
+   <xsd:element name="DateTo" type="RequestSchema:DATE" />
+   <xsd:element name="Frequency" type="RequestSchema:FREQUENCY_TYPE_E" default="D" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustInfoType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="CustomerRequest" type="RequestSchema:CustomerRequestType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="FailedTransType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="DateFrom" type="RequestSchema:DATE" />
+   <xsd:element name="DateTo" type="RequestSchema:DATE" />
+   <xsd:element name="TimeFrom" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="TimeTo" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="PagingRequest" type="RequestSchema:PagingRequestType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RollingReservesType">
+  <xsd:sequence>
+   <xsd:element name="Caller" type="RequestSchema:CallerType" />
+   <xsd:element name="DateFrom" type="RequestSchema:DATE" />
+   <xsd:element name="DateTo" type="RequestSchema:DATE" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEBSERVICES GROUP DEFINITIONS #### -->
+ <!-- ************************************************************** -->
+ <xsd:group name="CommonRequestGroup1">
+  <xsd:sequence>
+  </xsd:sequence>
+ </xsd:group>
+
+
+
+ <!-- ************************************************************** -->
+ <!-- #### COMMON COMPLEX TYPES #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:complexType name="CallerType">
+  <xsd:sequence>
+   <xsd:element name="MerchantID" type="RequestSchema:N20" />
+   <xsd:element name="MerchantKey" type="RequestSchema:S60" />
+   <xsd:element name="Version" type="RequestSchema:VERSION_TYPE_E" />
+   <xsd:element name="Datetime" type="RequestSchema:DATETIME" />
+   <xsd:element name="MerchantRefNo" type="RequestSchema:AN20" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PagingRequestType">
+  <xsd:sequence>
+   <xsd:element name="CurrentPage" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="RecordsPerPage" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="ReturnTotalRecordCount" type="RequestSchema:YN_A1" default="N" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <!-- xsd:complexType name="OrderRequestType"> <xsd:sequence> <xsd:element name="TransectionState" type="RequestSchema:TRANSECTION_STATE_TYPE_E" 
+  /> <xsd:element name="TransectionListOrderBy" type="RequestSchema:TRANSECTION_LIST_ORDER_BY_TYPE_E" minOccurs="0" /> <xsd:element 
+  name="OrderDateFrom" type="RequestSchema:DATE" minOccurs="0" /> <xsd:element name="OrderDateTo" type="RequestSchema:DATE" 
+  minOccurs="0" /> <xsd:element name="OrderTimeFrom" type="RequestSchema:TIME" minOccurs="0" /> <xsd:element name="OrderTimeTo" 
+  type="RequestSchema:TIME" minOccurs="0" /> <xsd:element name="DestinationCountry" type="RequestSchema:COUNTRY_CODE_A3" minOccurs="0" 
+  /> <xsd:element name="Courier" type="RequestSchema:COURIER_TYPE_E" minOccurs="0" /> </xsd:sequence> </xsd:complexType -->
+
+ <xsd:complexType name="OrderRequestType">
+  <xsd:sequence>
+   <xsd:element name="TransectionState" type="RequestSchema:TRANSECTION_STATE_TYPE_E" />
+   <xsd:element name="TransectionListOrderBy" type="RequestSchema:TRANSECTION_LIST_ORDER_BY_TYPE_E"
+    minOccurs="0" />
+   <xsd:element name="orderNo" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="orderNoRef" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="orderNoParent" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="TransType" type="RequestSchema:TRANS_TYPE_TYPE_E" minOccurs="0" />
+   <xsd:element name="TransStatus" type="RequestSchema:TRANS_STATUS_TYPE_E" minOccurs="0" />
+   <xsd:element name="OrderDateFrom" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="OrderDateTo" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="OrderTimeFrom" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="OrderTimeTo" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="MerchantFilter" type="RequestSchema:MerchantFilterType" minOccurs="0" />
+   <xsd:element name="CourierFilter" type="RequestSchema:CourierFilterType" minOccurs="0" />
+   <xsd:element name="CustomerFilter" type="RequestSchema:CustomerFilterType" minOccurs="0" />
+   <xsd:element name="PaymentFilter" type="RequestSchema:PaymentFilterType" minOccurs="0" />
+   <xsd:element name="OtherFilter" type="RequestSchema:OtherFilterType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="MerchantFilterType">
+  <xsd:sequence>
+   <xsd:element name="MerchantRefNo" type="RequestSchema:AN35" minOccurs="0" />
+   <xsd:element name="MerchantRMA" type="RequestSchema:AN25" minOccurs="0" />
+   <xsd:element name="MerchantTransDate" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="MerchantTransTime" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="MerchantTransDateTime" type="RequestSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="MerchantIsBackorder" type="RequestSchema:YN_A1" minOccurs="0" />
+   <xsd:element name="MerchantMaxBackOrderDate" type="RequestSchema:DATE" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+ <xsd:complexType name="CourierFilterType">
+  <xsd:sequence>
+   <xsd:element name="courierWaybillNo" type="RequestSchema:AN30" minOccurs="0" />
+   <xsd:element name="courier" type="RequestSchema:COURIER_TYPE_E" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustomerFilterType">
+  <xsd:sequence>
+   <xsd:element name="CustTransDate" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="CustTransTime" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="CustTransDateTime" type="RequestSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="CustEstimatedDeliveryDateTime" type="RequestSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="CustShipFirstName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustShipMidleName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustShipLastName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustShipCountryA3" type="RequestSchema:COUNTRY_CODE_A3" minOccurs="0" />
+   <xsd:element name="CustShipAddressLine1" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustShipAddressLine2" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustShipCityName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustShipStateDivision" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustShipPostCode" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustShipPrimaryPhone" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustShipSecondaryPhone" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustShipEmail" type="RequestSchema:S60" minOccurs="0" />
+   <xsd:element name="CustBillFirstName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustBillMidleName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustBillLastName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustBillCountryA3" type="RequestSchema:COUNTRY_CODE_A3" minOccurs="0" />
+   <xsd:element name="CustBillAddressLine1" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustBillAddressLine2" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustBillCityName" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustBillStateDivision" type="RequestSchema:A40" minOccurs="0" />
+   <xsd:element name="CustBillPostCode" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustBillPrimaryPhone" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustBillSecondaryPhone" type="RequestSchema:S35" minOccurs="0" />
+   <xsd:element name="CustBillEmail" type="RequestSchema:S60" minOccurs="0" />
+   <xsd:element name="CustOtherEmails" type="RequestSchema:S60" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PaymentFilterType">
+  <xsd:sequence>
+   <xsd:element name="PaymentStatus" type="RequestSchema:PAYMENT_STATUS_TYPE_E" minOccurs="0" />
+   <xsd:element name="CardAccountType" type="RequestSchema:CARD_ACCOUNT_TYPE_E" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="OtherFilterType">
+  <xsd:sequence>
+   <xsd:element name="StatementRefNo" type="RequestSchema:INT" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PackingBoxesType">
+  <xsd:sequence>
+   <xsd:element name="PackingBox" type="RequestSchema:PackingBoxType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PackingBoxType">
+  <xsd:sequence>
+   <xsd:element name="BoxNo" type="RequestSchema:INT" />
+   <xsd:element name="BoxCode" type="RequestSchema:S500" />
+   <xsd:element name="ProductLineItems" type="RequestSchema:ProductLineItemsType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ProductLineItemsType">
+  <xsd:sequence>
+   <xsd:element name="ProductLineItem" type="RequestSchema:ProductLineItemType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ProductLineItemType">
+  <xsd:sequence>
+   <xsd:element name="ProductCode" type="RequestSchema:S500" />
+   <xsd:element name="Quantity" type="RequestSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustomerRequestType">
+  <xsd:sequence>
+   <xsd:element name="OrderNo" type="RequestSchema:INT" minOccurs="0" />
+   <xsd:element name="DateFrom" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="DateTo" type="RequestSchema:DATE" minOccurs="0" />
+   <xsd:element name="TimeFrom" type="RequestSchema:TIME" minOccurs="0" />
+   <xsd:element name="TimeTo" type="RequestSchema:TIME" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <!-- ************************************************************** -->
+ <!-- #### COMMON SIMPLE TYPES #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:simpleType name="DATE">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="(19|20)\d\d[\-](0[1-9]|1[012])[\-](0[1-9]|[12][0-9]|3[01])">
+   </xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="TIME">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])">
+   </xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="DATETIME">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern
+    value="(19|20)\d\d[\-](0[1-9]|1[012])[\-](0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="GENDER_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[MF]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="SORTING_ORDER_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[AD]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="YN_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[YN]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="INTERFACE_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[WMI]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="VERSION_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="SW0101" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="COURIER_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="DHL" />
+   <xsd:enumeration value="DHL_UAE" />
+   <xsd:enumeration value="DHL_GBR" />
+   <xsd:enumeration value="DHL_ITA" />
+   <xsd:enumeration value="DHL_PRT" />
+   <xsd:enumeration value="FEDEX" />
+   <xsd:enumeration value="UPS" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="TRANSECTION_STATE_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="FE" />
+   <xsd:enumeration value="FD" />
+   <xsd:enumeration value="AA" />
+   <!-- xsd:enumeration value="PG" / -->
+   <!-- xsd:enumeration value="PP" / -->
+   <xsd:enumeration value="RR" />
+   <xsd:enumeration value="RA" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="TRANSECTION_LIST_ORDER_BY_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="MD" />
+   <xsd:enumeration value="MS" />
+   <xsd:enumeration value="CV" />
+   <xsd:enumeration value="MV" />
+   <xsd:enumeration value="SD" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="TRANS_TYPE_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="TS" />
+   <xsd:enumeration value="TE" />
+   <xsd:enumeration value="GR" />
+   <xsd:enumeration value="GE" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="TRANS_STATUS_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <!--  xsd:enumeration value="I" /-->
+   <xsd:enumeration value="P" />
+   <xsd:enumeration value="K" />
+   <xsd:enumeration value="L" />
+   <xsd:enumeration value="B" />
+   <xsd:enumeration value="Q" />
+   <xsd:enumeration value="S" />
+   <xsd:enumeration value="D" />
+   <xsd:enumeration value="V" />
+   <xsd:enumeration value="R" />
+   <xsd:enumeration value="F" />
+   <xsd:enumeration value="X" />
+   <xsd:enumeration value="C" />
+   <xsd:enumeration value="G" />
+   <xsd:enumeration value="E" />
+   <xsd:enumeration value="8" />
+   <xsd:enumeration value="9" />
+   <xsd:enumeration value="4" />
+   <xsd:enumeration value="U" />
+   <xsd:enumeration value="Z" />
+   <xsd:enumeration value="" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="REASON_CODE_ROG_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="RD" />
+   <xsd:enumeration value="RQ" />
+   <xsd:enumeration value="ES" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="ROG_REFUND_OPTION_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Z]{2}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="FREQUENCY_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="D" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="PERIOD_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="L" />
+   <xsd:enumeration value="W" />
+   <xsd:enumeration value="M" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="CARD_NETWORK_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="V" />
+   <xsd:enumeration value="M" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="PAYMENT_STATUS_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="P" />
+   <xsd:enumeration value="M" />
+   <xsd:enumeration value="F" />
+   <xsd:enumeration value="C" />
+   <xsd:enumeration value="N" />
+   <xsd:enumeration value="R" />
+   <xsd:enumeration value="S" />
+   <xsd:enumeration value="V" />
+   <xsd:enumeration value="A" />
+   <xsd:enumeration value="4" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="CARD_ACCOUNT_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="V" />
+   <xsd:enumeration value="M" />
+   <xsd:enumeration value="A" />
+   <xsd:enumeration value="E" />
+   <xsd:enumeration value="P" />
+   <xsd:enumeration value="D" />
+   <xsd:enumeration value="J" />
+   <xsd:enumeration value="1" />
+   <xsd:enumeration value="2" />
+   <xsd:enumeration value="U" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="CHARGEBACK_CODE_RETRIEVAL_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="C" />
+   <xsd:enumeration value="R" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="EMAIL">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="([\.a-zA-Z0-9_\-])+@([a-zA-Z0-9_\-])+(([a-zA-Z0-9_\-])*\.([a-zA-Z0-9_\-])+)+"></xsd:pattern>
+   <xsd:maxLength value="100" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="COUNTRY_CODE_A3">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{3}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="COUNTRY_CODE_A2">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{2}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="VERSION_NO_A10">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9 .\-_]{1,10}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="INT">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="\d*"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="FLOAT">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="(\d*\.\d+|\d*)"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="N12">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="\d{0,12}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="N20">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="\d{0,20}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]*"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A6">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{0,6}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A19">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{0,19}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A40">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{0,40}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A60">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{0,60}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+
+ <xsd:simpleType name="AN">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]*"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN20">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,20}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN25">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,25}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN30">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,30}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN40">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,30}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN35">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,35}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+
+ <xsd:simpleType name="S35">
+  <xsd:restriction base="xsd:string">
+   <xsd:minLength value="0" />
+   <xsd:maxLength value="35" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="S60">
+  <xsd:restriction base="xsd:string">
+   <xsd:minLength value="0" />
+   <xsd:maxLength value="60" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="S500">
+  <xsd:restriction base="xsd:string">
+   <xsd:minLength value="0" />
+   <xsd:maxLength value="500" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+</xsd:schema>

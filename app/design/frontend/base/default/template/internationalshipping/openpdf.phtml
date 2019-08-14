@@ -1,0 +1,20 @@
+<?php
+
+$fileurl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA). DS . 'Swipzoom'. DS . $this->getRequest()->getParam('szoomorder'). DS.$this->getRequest()->getParam('file');
+$folder =  Mage::getBaseDir('media') . DS . 'Swipzoom'. DS . $this->getRequest()->getParam('szoomorder'). DS ;
+foreach( glob( $folder.$this->getRequest()->getParam('file')  ) as $filename ) {
+			$filename = $filename;
+			chmod($filename, 0777);
+			}
+$f=fopen($filename,'r');
+if($f){
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Content-Type: application/octet-stream');//.mime_content_type($filename));
+    header('Content-Length: '.filesize($filename));
+    header('Content-Disposition: attachment; filename="'.$this->getRequest()->getParam('file').'"');
+    fpassthru($f);
+}else{ die("Ops!"); }
+fclose($f);
+?>
+
+

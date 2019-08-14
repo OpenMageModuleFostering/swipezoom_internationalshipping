@@ -1,0 +1,14 @@
+
+<?php 				 
+	if(Mage::getSingleton('adminhtml/session_quote')->getOrder()->getId()){
+		$order =  Mage::getSingleton('adminhtml/session_quote')->getOrder(); 
+		if($nu = $this->getRequest()->getPost('szorderid')){}else{$nu =  $order->getSwipezoomOrderNumberTemp();}
+	}
+						?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-cart"><?php echo $this->getHeaderText() ?></h4>
+       <?php if(!$nu){ ?> <div class="form-buttons"><?php echo $this->getButtonsHtml() ?></div> <?php } ?>
+    </div>
+    <?php echo $this->getChildHtml() ?>
+</div>

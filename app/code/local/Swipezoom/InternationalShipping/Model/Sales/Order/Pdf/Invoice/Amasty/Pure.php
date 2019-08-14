@@ -1,0 +1,3 @@
+<?php /* added automatically by conflict fixing tool */ if (Mage::getConfig()->getNode('modules/Fooman_PdfCustomiser/active')) {
+                class Swipezoom_InternationalShipping_Model_Sales_Order_Pdf_Invoice_Amasty_Pure extends Fooman_PdfCustomiser_Model_Invoice {}
+            } else { class Swipezoom_InternationalShipping_Model_Sales_Order_Pdf_Invoice_Amasty_Pure extends Mage_Sales_Model_Order_Pdf_Abstract {} } ?>

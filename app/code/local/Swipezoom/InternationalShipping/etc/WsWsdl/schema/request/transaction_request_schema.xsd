@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.api.sz.com/ws/schema/transaction/request" xmlns:RequestSchema="http://www.api.sz.com/ws/schema/transaction/request"
+	xmlns:CommonSchema="http://www.api.sz.com/ws/schema/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xsd:import namespace="http://www.api.sz.com/ws/schema/common" schemaLocation="../common_schema.xsd" />
+
+	<!-- ************************************************************** -->
+	<!-- #### WEBSERVICES TYPE DECLARATIONS #### -->
+	<!-- ************************************************************** -->
+
+
+	<xsd:element name="Echo" type="RequestSchema:EchoType" />
+	
+	<xsd:element name="TransAddressLabeling" type="RequestSchema:TransAddressLabelingType" />
+	<xsd:element name="TransAddressValidation" type="RequestSchema:TransAddressValidationType" />
+	
+	<xsd:element name="TransLogisticsReq" type="RequestSchema:TransLogisticsReqType" />
+	<xsd:element name="TransLogisticsConfirm" type="RequestSchema:TransLogisticsConfirmType" />
+
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEBSERVICES TYPE DEFINITIONS #### -->
+	<!-- ************************************************************** -->
+
+
+	<xsd:complexType name="EchoType">
+		<xsd:sequence>
+			<xsd:element name="Caller" type="CommonSchema:CallerType" />
+			<xsd:element name="echoMessage" type="CommonSchema:AN...500" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransAddressLabelingType">
+		<xsd:sequence>
+			<xsd:element name="Caller" type="CommonSchema:CallerType" />
+			<xsd:element name="LanguageCode" type="CommonSchema:A2" default="EN" minOccurs="0" />
+			<xsd:element name="CountryCode" type="CommonSchema:A3_COUNTRY_CODE" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransAddressValidationType">
+		<xsd:sequence>
+			<xsd:element name="Caller" type="CommonSchema:CallerType" />
+			<xsd:element name="CountryCode" type="CommonSchema:A3_COUNTRY_CODE" />
+			<xsd:element name="FieldValues" type="RequestSchema:FieldValuesType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransLogisticsReqType">
+		<xsd:sequence>
+			<xsd:element name="Caller" type="CommonSchema:CallerType" />
+			<xsd:element name="RequestFingerprint" type="CommonSchema:AN...255" />
+			<xsd:element name="Order" type="RequestSchema:OrderType" />
+			<xsd:element name="LineItems" type="RequestSchema:LineItemsType" />
+			<xsd:element name="Customer" type="RequestSchema:CustomerType" />
+
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransLogisticsConfirmType">
+		<xsd:sequence>
+			<xsd:element name="Caller" type="CommonSchema:CallerType" />
+			<xsd:element name="OrderNo" type="CommonSchema:N...20" />
+			<xsd:element name="PrepaidDuties" type="CommonSchema:BOOL_YN_A1" default="Y" />
+			<xsd:element name="PrepaidInsurance" type="CommonSchema:BOOL_YN_A1" default="Y" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FieldValuesType">
+		<xsd:sequence>
+			<xsd:element name="FieldValue" type="RequestSchema:FieldValueType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FieldValueType">
+		<xsd:sequence>
+			<xsd:element name="FieldType" type="CommonSchema:AN1" />
+			<xsd:element name="FieldValue" type="CommonSchema:ANS...130" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OrderType">
+		<xsd:sequence>
+			<xsd:element name="OrderDescription" type="CommonSchema:AN...100" minOccurs="0" />
+			<xsd:element name="OrderAmount" type="CommonSchema:AM" />
+			<xsd:element name="OrderLineItemCount" type="CommonSchema:N...3" />
+			<xsd:element name="TransactionCurrency" type="CommonSchema:A3_CURRENCY_CODE" /> <!-- As discussed with safder, would be conditional in geca side -->
+			<xsd:element name="CustomerLanguage" type="CommonSchema:A2" default="EN" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItemsType">
+		<xsd:sequence>
+			<xsd:element name="LineItem" type="RequestSchema:LineItemType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LineItemType">
+		<xsd:sequence>
+			<xsd:element name="ItemId" type="CommonSchema:AN...40" />
+			<xsd:element name="ItemDescription" type="CommonSchema:AN...60" minOccurs="0" />
+			<xsd:element name="ItemHsCode" type="CommonSchema:AN...15" minOccurs="0" />
+			<xsd:element name="ItemQuantity" type="CommonSchema:N" />
+			<xsd:element name="ItemPrice" type="CommonSchema:AM" />
+			<xsd:element name="ItemTotalAmount" type="CommonSchema:AM" />
+			<xsd:element name="ItemImageURL" type="CommonSchema:AN...100" minOccurs="0" />
+			<xsd:element name="ItemColor" type="CommonSchema:AN" minOccurs="0" />
+			<xsd:element name="ItemSize" type="CommonSchema:AN" minOccurs="0" />
+			<xsd:element name="ItemDimensionUnit" type="CommonSchema:A2" minOccurs="0" />
+			<xsd:element name="ItemLength" type="CommonSchema:F" minOccurs="0" />
+			<xsd:element name="ItemWidth" type="CommonSchema:F" minOccurs="0" />
+			<xsd:element name="ItemHeight" type="CommonSchema:F" minOccurs="0" />
+			<xsd:element name="ItemWeightUnit" type="CommonSchema:A2" minOccurs="0" />
+			<xsd:element name="ItemWeight" type="CommonSchema:F" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CustomerType">
+		<xsd:sequence>
+			<xsd:element name="SameAddForShipping" type="CommonSchema:BOOL_YN_A1" default="Y" />
+			<xsd:element name="BillingAddress" type="CommonSchema:AddressType" />
+			<xsd:element name="ShippingAddress" type="CommonSchema:AddressType" minOccurs="0" />
+			<xsd:element name="OtherEmail" type="CommonSchema:EMAIL" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

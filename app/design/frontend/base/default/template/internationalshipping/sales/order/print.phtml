@@ -1,0 +1,118 @@
+
+<button style="float:right;" onclick="window.print();" class="button"><span><span>Print Order</span></span></button>
+
+<?php $_order = $this->getOrder() ?>
+<h1><?php echo $this->__('Order #%s', $_order->getRealOrderId()) ?></h1>
+<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+<div class="col2-set">
+    <?php if (!$_order->getIsVirtual()): ?>
+    <div class="col-1">
+        <h2><?php echo $this->__('Shipping Address') ?></h2>
+        <address><?php echo $_order->getShippingAddress()->format('html') ?></address>
+    </div>
+    <div class="col-2">
+    <?php else: ?>
+    <div class="col-1">
+    <?php endif; ?>
+        <h2><?php echo $this->__('Billing Address') ?></h2>
+        <address><?php echo $_order->getBillingAddress()->format('html') ?></address>
+    </div>
+<?php if (!$_order->getIsVirtual()): ?>
+</div>
+<div class="col2-set">
+
+<?php endif; ?>
+
+</div>
+
+
+<style>
+table,td,tr,th{border:2px solid #d9dde3}
+</style>
+
+<?php if($swipwzoomorder = $_order->getSwipezoomOrderNumberTemp()){ ?> <br />
+
+<h2><?php echo $this->__('Items Packing Detail') ?></h2>
+ <table cellspacing="0"  class="data-table" id="my-orders-table">
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+                <th width="70"><?php echo Mage::helper('sales')->__('Item') ?></th>
+                <th width="120"><?php echo Mage::helper('sales')->__('Box Code') ?></th>
+                <th width="70"><?php echo Mage::helper('sales')->__('Box No.') ?></th>
+                <th width="500"><?php echo Mage::helper('sales')->__('Product Description') ?></th>
+                <th width="150"><?php echo Mage::helper('sales')->__('Product Code') ?></th>
+                <th width="70"><?php echo Mage::helper('sales')->__('Quantity') ?></th>
+            </tr>
+        </thead>
+         
+        <?php 
+		$orderid = Mage::app()->getRequest()->getParam('order_id');
+		$order= Mage::getModel('sales/order')->load($orderid);
+		$swipwzoomorder = $order->getSwipezoomOrderNumberTemp();
+		
+		$_items = Mage::getModel('internationalshipping/packingdetail')->getCollection()->addFieldToFilter('swipezoomorderid',$swipwzoomorder); ?>
+        <tbody class="<?php echo $_i%2?'even':'odd' ?>">
+		<?php $_i=0;foreach ($_items as $_item): ?>
+        <?php if(!$_item->getProductcode()){break;}
+		$products = Mage::getModel('catalog/product')->loadByAttribute('sku', $_item->getProductcode());
+		if(!$products){ echo "<tr ><td colspan='6'>Somthing wrong Happen - Product not found.</td></tr>"; break;}
+		?>
+        <?php $_i++; ?>
+        	<tr class="border">
+            <td><?php echo $_i ?></td>
+		    <td><?php echo $_item->getBoxcode() ?></td>
+            <td><?php echo $_item->getBoxno() ?></td>
+            <td><?php 	echo $products = Mage::getModel('catalog/product')->loadByAttribute('sku', $_item->getProductcode())->getName(); ?></td>
+            <td><?php echo $_item->getProductcode() ?></td>
+            <td><?php echo $_item->getProductqty() ?></td>
+			</tr>
+       <?php endforeach; ?>
+        </tbody>
+       
+    </table>
+<?php }else{  ?>
+<h2><?php echo $this->__('Items Ordered') ?></h2>
+<table class="data-table" id="my-orders-table">
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Product Name') ?></th>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
+            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <?php echo $this->getChildHtml('order_totals') ?>
+    </tfoot>
+    <?php $_items = $_order->getItemsCollection(); ?>
+    <?php $_count = $_items->count(); ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getParentItem()) continue; ?>
+    <tbody>
+        <?php echo $this->getItemHtml($_item) ?>
+    </tbody>
+        <?php endforeach; ?>
+</table>
+<?php }?>
+<script type="text/javascript">decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
+
+
+<script>
+window.onload = function(){
+window.parent.hideloading();
+}
+</script>

@@ -1,0 +1,211 @@
+
+<div class="block block-progress opc-block-progress">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Your Checkout Progress') ?></span></strong>
+    </div>
+    <div class="block-content">
+        <dl>
+            <?php if ($this->getCheckout()->getStepData('billing', 'is_show')): ?>
+                <?php if ($this->isStepComplete('billing')): ?>
+                    <dt class="complete">
+                        <?php echo $this->__('Billing Address') ?> <span class="separator">|</span>
+                        <a href="#billing" onclick="checkout.gotoSection('billing'); return false;"><?php echo $this->__('Change') ?></a>
+                    </dt>
+                    <dd class="complete">
+                        <address><?php 
+                                $countrycode = Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getCountry();
+                                $specificCountry =  Mage::getStoreConfig('carriers/swipezoom/sallowspecific',Mage::app()->getStore());
+                                $specificCountryList =  Mage::getStoreConfig('carriers/swipezoom/specificcountry',Mage::app()->getStore());
+                                if(Mage::getStoreConfig('carriers/swipezoom/active',Mage::app()->getStore()) == "0" || ($specificCountry == 1 && strpos($specificCountryList,$countrycode) === FALSE)){
+                                   echo  $this->getBilling()->format('html');
+                                }else{
+                                    $swipezoomStringBilling =  Mage::getSingleton('checkout/session')->getQuote()->getSwipezoomAddressBillingString();
+                                    $swipezoomStringBilling = preg_replace("/(<br\s*\/?>\s*)+/", "<br/>", $swipezoomStringBilling);
+                                   
+                                    $formater   = new Varien_Filter_Template();
+                                    $attributes = Mage::helper('customer/address')->getAttributes();
+                                    $address = $this->getBilling();
+                                    $data = array();
+                                    foreach ($attributes as $attribute) {
+                                        /* @var $attribute Mage_Customer_Model_Attribute */
+                                        if (!$attribute->getIsVisible()) {
+                                            continue;
+                                        }
+                                        if ($attribute->getAttributeCode() == 'country_id') {
+                                            $data['country'] = $address->getCountryModel()->getName();
+                                        } else if ($attribute->getAttributeCode() == 'region') {
+                                                $data['region'] = $address->getRegion();
+                                            } else {
+                                                $dataModel = Mage_Customer_Model_Attribute_Data::factory($attribute,$address);
+                                                $value     = $dataModel->outputValue($dataFormat);
+                                                if ($attribute->getFrontendInput() == 'multiline') {
+                                                    $values    = $dataModel->outputValue(Mage_Customer_Model_Attribute_Data::OUTPUT_FORMAT_ARRAY);
+                                                    // explode lines
+                                                    foreach ($values as $k => $v) {
+                                                        $key = sprintf('%s%d', $attribute->getAttributeCode(), $k + 1);
+                                                        $data[$key] = $v;
+                                                    }
+                                                }
+                                                $data[$attribute->getAttributeCode()] = $value;
+                                        }
+                                    }
+
+                                    $formater->setVariables($data);
+
+                                    $format = "{{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}} {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>\n{{depend company}}{{var company}}<br />{{/depend}}\n".$swipezoomStringBilling."\n <br/>{{depend telephone}}T: {{var telephone}}{{/depend}}\n{{depend fax}}<br/>F: {{var fax}}{{/depend}}\n{{depend vat_id}}<br/>VAT: {{var vat_id}}{{/depend}}";
+
+                                    echo $formater->filter($format);
+                                }
+                        ?></address>
+                    </dd>
+                    <?php else: ?>
+                    <dt>
+                        <?php echo $this->__('Billing Address') ?>
+                    </dt>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+            <?php if ($this->getCheckout()->getStepData('shipping', 'is_show')): ?>
+                <?php if ($this->isStepComplete('shipping')): ?>
+                    <dt class="complete">
+                        <?php echo $this->__('Shipping Address') ?> <span class="separator">|</span>
+                        <a href="#payment" onclick="checkout.gotoSection('shipping');return false;"><?php echo $this->__('Change') ?></a>
+                    </dt>
+                    <dd class="complete">
+                        <address>
+                            <?php 
+                                $countrycode = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getCountry();
+                                $specificCountry =  Mage::getStoreConfig('carriers/swipezoom/sallowspecific',Mage::app()->getStore());
+                                $specificCountryList =  Mage::getStoreConfig('carriers/swipezoom/specificcountry',Mage::app()->getStore());
+                                if(Mage::getStoreConfig('carriers/swipezoom/active',Mage::app()->getStore()) == "0" || ($specificCountry == 1 && strpos($specificCountryList,$countrycode) === FALSE)){
+                                  echo   $this->getShipping()->format('html'); 
+                                }else{
+                                    $swipezoomString =  Mage::getSingleton('checkout/session')->getQuote()->getSwipezoomAddressShippingString();
+                                    $swipezoomString = preg_replace("/(<br\s*\/?>\s*)+/", "<br/>", $swipezoomString);
+                                    $formater   = new Varien_Filter_Template();
+                                    $attributes = Mage::helper('customer/address')->getAttributes();
+                                    $address = $this->getShipping();
+                                    $data = array();
+                                    foreach ($attributes as $attribute) {
+                                        /* @var $attribute Mage_Customer_Model_Attribute */
+                                        if (!$attribute->getIsVisible()) {
+                                            continue;
+                                        }
+                                        if ($attribute->getAttributeCode() == 'country_id') {
+                                            $data['country'] = $address->getCountryModel()->getName();
+                                        } else if ($attribute->getAttributeCode() == 'region') {
+                                                $data['region'] = $address->getRegion();
+                                            } else {
+                                                $dataModel = Mage_Customer_Model_Attribute_Data::factory($attribute,$address);
+                                                $value     = $dataModel->outputValue($dataFormat);
+                                                if ($attribute->getFrontendInput() == 'multiline') {
+                                                    $values    = $dataModel->outputValue(Mage_Customer_Model_Attribute_Data::OUTPUT_FORMAT_ARRAY);
+                                                    // explode lines
+                                                    foreach ($values as $k => $v) {
+                                                        $key = sprintf('%s%d', $attribute->getAttributeCode(), $k + 1);
+                                                        $data[$key] = $v;
+                                                    }
+                                                }
+                                                $data[$attribute->getAttributeCode()] = $value;
+                                        }
+                                    }
+
+                                    $formater->setVariables($data);
+
+                                    $format = "{{depend prefix}}{{var prefix}} {{/depend}}{{var firstname}} {{depend middlename}}{{var middlename}} {{/depend}}{{var lastname}}{{depend suffix}} {{var suffix}}{{/depend}}<br/>\n{{depend company}}{{var company}}<br />{{/depend}}\n".$swipezoomString."\n<br/>{{depend telephone}}T: {{var telephone}}{{/depend}}\n{{depend fax}}<br/>F: {{var fax}}{{/depend}}\n{{depend vat_id}}<br/>VAT: {{var vat_id}}{{/depend}}";
+
+                                    echo $formater->filter($format);
+                                }
+                        ?></address>
+                    </dd>
+                    <?php else: ?>
+                    <dt>
+                        <?php echo $this->__('Shipping Address') ?>
+                    </dt>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+            <?php if ($this->getCheckout()->getStepData('shipping_method', 'is_show')): ?>
+                <?php if ($this->isStepComplete('shipping_method')): ?>
+                    <dt class="complete">
+                        <?php echo $this->__('Shipping Method') ?> <span class="separator">|</span>
+                        <a href="#shipping_method" onclick="checkout.gotoSection('shipping_method'); return false;"><?php echo $this->__('Change') ?></a>
+                    </dt>
+                    <dd class="complete">
+                        <?php if ($this->getShippingMethod()): ?>
+                            <?php $swipeZoomRateTitles = explode('-', $this->getShippingDescription(), 2);?>
+
+                            <?php echo $swipeZoomRateTitles[0]; ?>
+                            <?php
+                                /*
+                                * Display swipezoom rates details 
+                                */
+
+                                $shippingMethod = $this->getShippingMethod() ;
+                                if(strpos($shippingMethod,"swipezoom") !== FALSE):
+                                    $extraRates = Mage::getSingleton('checkout/session')->getSwipezoomExtraRates();
+                                ?>
+                                <div class="progress-swipezoom-rates"> 
+                                    <div class="progress-rate">
+                                        <label  class="progress-rate-label" ><?php echo $swipeZoomRateTitles[1];?></label>
+                                        <span class="price-notice"><span class="price"> 
+                                                <?php echo $this->formatPrice($extraRates["shipping"]); ?>
+                                            </span></span>
+                                    </div>
+                                    <div class="progress-rate">
+                                        <label for="swipezoom_duty_taxes" class="progress-rate-label"><?php echo $this->__('Prepaid duties &amp; taxes') ?> </label><span class="price-notice"><span class="price"><?php echo (strpos($shippingMethod,"withduties") !== FALSE && $extraRates["CustCourierDuties"] > 0 )? Mage::helper('core')->currency($extraRates["CustCourierDuties"],true,false): "N/A";  ?></span></span>
+                                    </div>
+                                    <div class="progress-rate">
+                                        <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Insurance') ?></label>
+                                        <span class="price-notice"><span class="price">
+                                            <?php echo (strpos($shippingMethod,"withinsurance") !== FALSE && $extraRates["CustInsuranceCharges"] > 0 )? Mage::helper('core')->currency($extraRates["CustInsuranceCharges"],true,false): "N/A";  ?></span></span>
+                                    </div>
+                                    <div class="progress-rate total-rate-block">
+
+                                        <label for="" class="progress-rate-label"><?php echo $this->__('Total'); ?></label>
+                                        <span class="price-notice"><?php $_excl = $this->getShippingPriceExclTax(); ?>
+                                            <?php $_incl = $this->getShippingPriceInclTax(); ?>
+                                            <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                                                <?php echo $_incl; ?>
+                                                <?php else: ?>
+                                                <?php echo $_excl; ?>
+                                                <?php endif; ?>
+                                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?></span>
+
+                                    </div>
+
+                                </div>
+                                <?php endif;
+                            ?>
+
+                            <?php else: ?>
+                            <?php echo $this->__('Shipping method has not been selected yet') ?>
+                            <?php endif; ?>
+                    </dd>
+                    <?php else: ?>
+                    <dt>
+                        <?php echo $this->__('Shipping Method') ?>
+                    </dt>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+            <?php if ($this->getCheckout()->getStepData('payment', 'is_show')): ?>
+                <?php if ($this->isStepComplete('payment')): ?>
+                    <dt class="complete">
+                        <?php echo $this->__('Payment Method') ?> <span class="separator">|</span>
+                        <a href="#payment" onclick="checkout.gotoSection('payment'); return false;"><?php echo $this->__('Change') ?></a>
+                    </dt>
+                    <dd class="complete">
+                        <?php echo $this->getPaymentHtml() ?>
+                    </dd>
+                    <?php else: ?>
+                    <dt>
+                        <?php echo $this->__('Payment Method') ?>
+                    </dt>
+                    <?php endif; ?>
+                <?php endif; ?>
+        </dl>
+    </div>
+</div>

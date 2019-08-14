@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.api.sz.com/ws/schema/transaction/response" xmlns:ResponseSchema="http://www.api.sz.com/ws/schema/transaction/response"
+	xmlns:CommonSchema="http://www.api.sz.com/ws/schema/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xsd:import namespace="http://www.api.sz.com/ws/schema/common" schemaLocation="../common_schema.xsd" />
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEBSERVICES TYPE DECLARATIONS #### -->
+	<!-- ************************************************************** -->
+
+	<xsd:element name="EchoResponse" type="ResponseSchema:EchoResponseType" />
+	<xsd:element name="TransAddressLabelingResponse" type="ResponseSchema:TransAddressLabelingResponseType" />
+	<xsd:element name="TransAddressValidationResponse" type="ResponseSchema:TransAddressValidationResponseType" />
+	<xsd:element name="TransLogisticsReqResponse" type="ResponseSchema:TransLogisticsReqResponseType" />
+	<xsd:element name="TransLogisticsConfirmResponse" type="ResponseSchema:TransLogisticsConfirmResponseType" />
+
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEBSERVICES TYPE DEFINITIONS #### -->
+	<!-- ************************************************************** -->
+
+	<xsd:complexType name="EchoResponseType">
+		<xsd:sequence>
+			<xsd:group ref="CommonSchema:CommonResponseGroup" />
+			<xsd:element name="echoMessage" type="CommonSchema:AN...500" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TransAddressLabelingResponseType">
+		<xsd:sequence>
+			<xsd:group ref="CommonSchema:CommonResponseGroup" />
+			<xsd:element name="AddressFormats" type="ResponseSchema:AddressFormatsType" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransAddressValidationResponseType">
+		<xsd:sequence>
+			<xsd:group ref="CommonSchema:CommonResponseGroup" />
+			<xsd:element name="FormatedAddress" type="CommonSchema:ANS...500" minOccurs="0"/>
+			<xsd:element name="AddressValidationErrors" type="ResponseSchema:AddressValidationErrorsType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransLogisticsReqResponseType">
+		<xsd:sequence>
+			<xsd:group ref="CommonSchema:CommonResponseGroup" />
+			<xsd:element name="OrderDetails" type="ResponseSchema:OrderDetailsType" />
+			<xsd:element name="LogisticDetails" type="ResponseSchema:LogisticDetailsType" />
+			<xsd:element name="OrderMerchantDetails" type="ResponseSchema:OrderMerchantDetailsType" />
+			<xsd:element name="OrderCustomerDetails" type="ResponseSchema:OrderCustomerDetailsType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TransLogisticsConfirmResponseType">
+		<xsd:sequence>
+			<xsd:group ref="CommonSchema:CommonResponseGroup" />
+			<!-- xsd:element name="OrderInvoiceFile" type="CommonSchema:FileType" / -->
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AddressFormatsType">
+		<xsd:sequence>
+			<xsd:element name="AddressFormat" type="ResponseSchema:AddressFormatType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AddressFormatType">
+		<xsd:sequence>
+			<xsd:element name="FieldType" type="CommonSchema:A1" />
+			<xsd:element name="FieldLabel" type="CommonSchema:AN...40" />
+			<xsd:element name="IsVisible" type="CommonSchema:BOOL_YN_A1" />
+			<xsd:element name="IsMandatory" type="CommonSchema:BOOL_YN_A1" />
+			<xsd:element name="IsLineBreakRequired" type="CommonSchema:BOOL_YN_A1" />
+			<xsd:element name="DisplayOrder" type="CommonSchema:N...3" />
+			<xsd:element name="MaxLength" type="CommonSchema:N...3" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AddressValidationErrorsType">
+		<xsd:sequence>
+			<xsd:element name="AddressValidationError" type="ResponseSchema:AddressValidationErrorType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AddressValidationErrorType">
+		<xsd:sequence>
+			<xsd:element name="AddressLabelType" type="CommonSchema:A1" />
+			<xsd:element name="ErrorCode" type="CommonSchema:AN3" />
+			<xsd:element name="ErrorDescription" type="CommonSchema:AN...60" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="OrderDetailsType">
+		<xsd:sequence>
+			<xsd:element name="OrderNo" type="CommonSchema:N...20" />
+			<xsd:element name="OrderDatetime" type="CommonSchema:DT" />
+			<xsd:element name="ServiceCharges" type="CommonSchema:AM" />
+			<xsd:element name="ServiceChargesCurrency" type="CommonSchema:A3_CURRENCY_CODE" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LogisticDetailsType">
+		<xsd:sequence>
+			<xsd:element name="TotalBoxQty" type="CommonSchema:N...3" />
+			<xsd:element name="TotalItemsQty" type="CommonSchema:N...3" />
+			<xsd:element name="WeigthUnit" type="CommonSchema:A2" />
+			<xsd:element name="GrossWeight" type="CommonSchema:AM" />
+			<xsd:element name="NetWeight" type="CommonSchema:AM" />
+			<xsd:element name="TotalVolumetricWeight" type="CommonSchema:AM" />
+			<xsd:element name="PrepaidDutiesAllowed" type="CommonSchema:BOOL_YN_A1" default="Y" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OrderMerchantDetailsType">
+		<xsd:sequence>
+			<xsd:element name="MerchantProductAmount" type="CommonSchema:AM" />
+			<xsd:element name="MerchantOrderCurrency" type="CommonSchema:A3_CURRENCY_CODE" />
+			<xsd:element name="MerchantShippingCharges" type="CommonSchema:AM" />
+			<xsd:element name="MerchantShippingDuties" type="CommonSchema:AM" />
+			<xsd:element name="MerchantInsuranceCharges" type="CommonSchema:AM" />
+			<xsd:element name="MerchantTotalTransAmount" type="CommonSchema:AM" />
+			<xsd:element name="MerchantTransDatetime" type="CommonSchema:DT" />
+			<xsd:element name="MerchantPickupDueDatetime" type="CommonSchema:DT" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OrderCustomerDetailsType">
+		<xsd:sequence>
+			<xsd:element name="CustCurrency" type="CommonSchema:A3_CURRENCY_CODE" />
+			<xsd:element name="CustCurrencyExcRate" type="CommonSchema:AM" />
+			<xsd:element name="CustItemSubtotal" type="CommonSchema:AM" />
+			<xsd:element name="CustShippingcharges" type="CommonSchema:AM" />
+			<xsd:element name="CustCourierDuties" type="CommonSchema:AM" />
+			<xsd:element name="CustInsuranceCharges" type="CommonSchema:AM" />
+			<xsd:element name="CustTotalTransAmount" type="CommonSchema:AM" />
+			<xsd:element name="TransitDays" type="CommonSchema:N...3" />
+			<xsd:element name="CustEstimatedDeliveryDatetime" type="CommonSchema:DT" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

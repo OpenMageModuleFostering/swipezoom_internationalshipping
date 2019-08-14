@@ -1,0 +1,284 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	
+	<adminhtml_system_config_edit>
+        <reference name="head">
+        	<action method="addJs"><script>swipezoom/autocomplete/jquery-1.8.2.min.js</script></action>
+            <action method="addJs"><script>swipezoom/sz_admin.js</script></action>
+        </reference>
+    </adminhtml_system_config_edit>
+	<adminhtml_sales_order_index>
+		 <reference name="head">
+			<action method="addJs"><script>swipezoom/order.js</script></action>
+			<action method="removeItem"><type>js</type><name>mage/adminhtml/grid.js</name></action>
+		</reference>
+	</adminhtml_sales_order_index>
+	<adminhtml_sales_invoice_index>
+	 <reference name="head">
+        <action method="addJs"><script>swipezoom/order.js</script></action>
+		<action method="removeItem"><type>js</type><name>mage/adminhtml/grid.js</name></action>
+    </reference>
+	</adminhtml_sales_invoice_index>
+	<adminhtml_sales_shipment_index>
+	 <reference name="head">
+        <action method="addJs"><script>swipezoom/order.js</script></action>
+		<action method="removeItem"><type>js</type><name>mage/adminhtml/grid.js</name></action>
+    </reference>
+	</adminhtml_sales_shipment_index>
+	
+     <adminhtml_sales_order_view>
+	 
+        <reference name="order_tab_info">
+            <action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/info.phtml</template>
+            </action>
+        </reference>
+        <reference name="order_info">
+            <action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/order/info.phtml</template>
+            </action>
+        </reference>
+        <reference name="order_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/order/items.phtml</template>
+            </action>
+		</reference>
+		<reference name="order_history">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/order/history.phtml</template>
+            </action>
+		</reference>
+		
+    </adminhtml_sales_order_view>
+	<adminhtml_sales_order_invoice_view>
+		<reference name="form">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/view/form.phtml</template>
+            </action>
+			 <block type="adminhtml/sales_order_view_info" name="swipezoomordergrid" template="internationalshipping/invoice/grid.phtml"></block>
+		</reference>
+		<reference name="invoice_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/view/items.phtml</template>
+            </action>
+		</reference>
+		<reference name="order_info">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/info.phtml</template>
+            </action>
+		</reference>
+		<reference name="order_comments">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/order/comment.phtml</template>
+            </action>
+			<action method="setParentType"><type>invoice</type></action>
+		</reference>
+	</adminhtml_sales_order_invoice_view>
+	<adminhtml_sales_order_invoice_new>
+		<reference name="form">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/form.phtml</template>
+            </action>
+			 <block type="adminhtml/sales_order_view_info" name="swipezoomordergrid" template="internationalshipping/invoice/grid.phtml"></block>
+		</reference>
+		<reference name="order_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/items.phtml</template>
+            </action>
+			 <action method="addItemRender"><type>default</type><block>adminhtml/sales_items_renderer_default</block><template>internationalshipping/invoice/rederer/default.phtml</template></action>
+		</reference>
+		<reference name="order_info">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/info.phtml</template>
+            </action>
+		</reference>
+		
+		
+	</adminhtml_sales_order_invoice_new>
+	<adminhtml_sales_order_shipment_new>
+		<reference name="form">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/form.phtml</template>
+            </action>
+			 <block type="adminhtml/sales_order_view_info" name="swipezoomordergrid" template="internationalshipping/shipment/grid.phtml"></block>
+		</reference>
+		<reference name="order_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/items.phtml</template>
+            </action>
+		</reference>
+		
+		<reference name="order_info">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/info.phtml</template>
+            </action>
+		</reference>
+		
+	</adminhtml_sales_order_shipment_new>
+	<adminhtml_sales_order_shipment_view>
+		<reference name="form">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/view/form.phtml</template>
+            </action>
+			 <block type="adminhtml/sales_order_view_info" name="swipezoomordergrid" template="internationalshipping/shipment/view/grid.phtml"></block>
+		</reference>
+		<reference name="shipment_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/view/items.phtml</template>
+            </action>
+		</reference>
+		
+		<reference name="order_info">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/info.phtml</template>
+            </action>
+		</reference>
+		<reference name="order_comments">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/order/comment.phtml</template>
+            </action>
+			<action method="setParentType"><type>shipment</type></action>
+		</reference>
+		
+	</adminhtml_sales_order_shipment_view>
+	<adminhtml_sales_order_creditmemo_view>
+		<reference name="form">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/view/form.phtml</template>
+            </action>
+		</reference>
+	</adminhtml_sales_order_creditmemo_view>
+	<adminhtml_sales_order_creditmemo_new>
+		<reference name="form">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/form.phtml</template>
+            </action>
+			<!-- <block type="adminhtml/sales_order_view_info" name="swipezoomordergrid" template="internationalshipping/creditmemo/grid.phtml"></block>-->
+		</reference>
+		<reference name="order_info">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/shipment/info.phtml</template>
+            </action>
+		</reference>
+		<reference name="order_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/items.phtml</template>
+            </action>
+		</reference>
+		<reference name="adjustments">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/total/adjustments.phtml</template>
+            </action>
+		</reference>
+		<reference name="creditmemo_totals">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/total/totals.phtml</template>
+            </action>
+		</reference>
+		
+	</adminhtml_sales_order_creditmemo_new>
+	<adminhtml_sales_order_creditmemo_updateqty>
+		<reference name="order_items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/items.phtml</template>
+            </action>
+		</reference>
+		<reference name="adjustments">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/total/adjustments.phtml</template>
+            </action>
+		</reference>
+		<reference name="creditmemo_totals">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/creditmemo/total/totals.phtml</template>
+            </action>
+		</reference>
+		
+	</adminhtml_sales_order_creditmemo_updateqty>
+	<adminhtml_sales_order_creditmemo_view>
+		<reference name="order_info">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/invoice/info.phtml</template>
+            </action>
+		</reference>
+	</adminhtml_sales_order_creditmemo_view>
+	
+	<adminhtml_sales_order_create_index>
+		 <reference name="head">
+			<action method="addJs"><script>swipezoom/sales.js</script></action>
+			<action method="removeItem"><type>js</type><name>mage/adminhtml/sales.js</name></action>
+		</reference>
+		<reference name="items_grid">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/items/sz_grid.phtml</template>
+            </action>
+			<block type="adminhtml/sales_order_create" name="parentdetail" template="internationalshipping/sales/order/create/parentdetail.phtml"></block>
+		</reference>
+		<reference name="items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/items.phtml</template>
+            </action>
+			
+		</reference>
+		<reference name="data">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/data.phtml</template>
+            </action>
+<block type="adminhtml/sales_order_create_sidebar" template="internationalshipping/sales/order/create/sidebar.phtml" name="sidebar">
+			<block type="adminhtml/sales_order_create_sidebar_reorder" template="internationalshipping/sales/order/create/sidebar/items.phtml" name="reorder" ifconfig="carriers/swipezoom/active" />
+			</block>
+		</reference>
+	</adminhtml_sales_order_create_index>
+	<adminhtml_sales_order_create_load_block_sidebar>
+	 <reference name="content">
+		 <block type="adminhtml/sales_order_create_sidebar" template="internationalshipping/sales/order/create/sidebar.phtml" name="sidebar">
+			<block type="adminhtml/sales_order_create_sidebar_reorder" template="internationalshipping/sales/order/create/sidebar/items.phtml" name="reorder" ifconfig="carriers/swipezoom/active" />
+		</block>
+	 </reference>
+	</adminhtml_sales_order_create_load_block_sidebar>
+	<adminhtml_sales_order_create_load_block_data>
+		<reference name="items_grid">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/items/sz_grid.phtml</template>
+            </action>
+			<block type="adminhtml/sales_order_create" name="parentdetail" template="internationalshipping/sales/order/create/parentdetail.phtml"></block>
+		</reference>
+		<reference name="items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/items.phtml</template>
+            </action>
+			
+		</reference>
+		<reference name="data">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/data.phtml</template>
+            </action>
+			<block type="adminhtml/sales_order_create_sidebar" template="internationalshipping/sales/order/create/sidebar.phtml" name="sidebar">
+				<block type="adminhtml/sales_order_create_sidebar_reorder" template="internationalshipping/sales/order/create/sidebar/items.phtml" name="reorder" ifconfig="carriers/swipezoom/active" />
+			</block>
+		</reference>
+	</adminhtml_sales_order_create_load_block_data>
+	<adminhtml_sales_order_create_load_block_items>
+		<reference name="items_grid">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/items/sz_grid.phtml</template>
+            </action>
+			<block type="adminhtml/sales_order_create" name="parentdetail" template="internationalshipping/sales/order/create/parentdetail.phtml"></block>
+		</reference>
+		<reference name="items">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/items.phtml</template>
+            </action>
+			
+		</reference>
+		<reference name="data">
+			<action method="setTemplate" ifconfig="carriers/swipezoom/active" >
+                <template>internationalshipping/sales/order/create/data.phtml</template>
+            </action>
+<block type="adminhtml/sales_order_create_sidebar" template="internationalshipping/sales/order/create/sidebar.phtml" name="sidebar">
+			<block type="adminhtml/sales_order_create_sidebar_reorder" template="internationalshipping/sales/order/create/sidebar/items.phtml" name="reorder" ifconfig="carriers/swipezoom/active" />
+			</block>
+		</reference>
+		
+	</adminhtml_sales_order_create_load_block_items>
+</layout>

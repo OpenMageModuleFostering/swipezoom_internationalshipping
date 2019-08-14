@@ -1,0 +1,122 @@
+@charset "utf-8";
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+#sw_card_errors {
+	color: red;
+	font-size: 11px;
+}
+
+.sz_card_payment {
+	width: 40px;
+}
+
+.sz_logo {
+	width: 83px;
+	margin-top: -38px;
+	margin-right: 344px;
+}
+
+form #cardpayment_cc_number {
+background-image: url(images.png), url(images.png);
+  background-position: 2px -121px, 260px -61px;
+  background-size: 120px 451px, 120px 451px;
+  background-repeat: no-repeat;
+  padding-left: 54px;
+  width: 288px !important;
+  height: 34px !important;
+}
+form #cardpayment_cc_owner {
+  width: 288px !important;
+  height: 34px !important;
+}
+
+form #cardpayment_expiration,#cardpayment_expiration_yr {
+	height:32px !important;
+  border: 1px solid silver;
+  border-radius: 2px;
+}
+
+form #cardpayment_cc_cid {
+	height: 32px !important;
+}
+
+form #cardpayment_cc_number.sz_visa {
+  background-position: 2px -163px, 260px -61px;
+}
+form #cardpayment_cc_number.sz_visa_electron {
+  background-position: 2px -205px, 260px -61px;
+}
+form #cardpayment_cc_number.sz_mastercard {
+  background-position: 2px -247px, 260px -61px;
+}
+form #cardpayment_cc_number.sz_maestro {
+  background-position: 2px -289px, 260px -61px;
+}
+form #cardpayment_cc_number.sz_discover {
+  background-position: 2px -331px, 260px -61px;
+}
+form #cardpayment_cc_number.sz_jcb {
+  background-position: 2px -422px, 260px -61px;
+  background-size: 192px 451px, 120px 451px;
+}
+form #cardpayment_cc_number.sz_diners_club_international,form #cardpayment_cc_number.sz_diners_club_carte_blanche {
+  background-position: 2px -392px, 260px -61px;
+  background-size: 192px 451px, 120px 451px;
+}
+form #cardpayment_cc_number.sz_union_pay {
+  background-position: 2px -362px, 260px -61px;
+  background-size: 192px 451px, 120px 451px;
+}
+form #cardpayment_cc_number.valid.sz_visa {
+  background-position: 2px -163px, 260px -87px;
+}
+form #cardpayment_cc_number.valid.sz_visa_electron {
+  background-position: 2px -205px, 260px -87px;
+}
+form #cardpayment_cc_number.valid.sz_mastercard {
+  background-position: 2px -247px, 260px -87px;
+}
+form #cardpayment_cc_number.valid.sz_maestro {
+  background-position: 2px -289px, 260px -87px;
+}
+form #cardpayment_cc_number.valid.sz_discover {
+  background-position: 2px -331px, 260px -87px;
+}
+form #cardpayment_cc_number.valid.sz_jcb {
+  background-position: 2px -422px, 260px -87px;
+  background-size: 192px 451px, 120px 451px;
+}
+form #cardpayment_cc_number.valid.sz_diners_club_international,form #cardpayment_cc_number.valid.sz_diners_club_carte_blanche {
+  background-position: 2px -392px, 260px -87px;
+  background-size: 192px 451px, 120px 451px;
+}
+form #cardpayment_cc_number.valid.sz_union_pay {
+  background-position: 2px -362px, 260px -87px;
+  background-size: 192px 451px, 120px 451px;
+}
+
+label[for=swipezoom_insurance],label[for=swipezoom_duty_taxes]
+{
+    min-width: 210px !important;
+}
+
+.sp-methods .price {
+  font-size: 11px !important;
+}
+
+.swipezoom-rates-block label {
+  font-size:13px !important;
+}
+
+.opc select {
+  height: 30px !important;
+}

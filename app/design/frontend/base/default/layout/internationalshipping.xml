@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <checkout_cart_index>
+        <remove name="checkout.cart.shipping" />
+    </checkout_cart_index>
+    <checkout_onepage_shippingmethod>
+        <!-- Mage_Checkout -->
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <block type="checkout/onepage_shipping_method_available" name="root" output="toHtml" template="internationalshipping/onepage/shipping_method/available.phtml"  />
+    </checkout_onepage_shippingmethod> 
+    <checkout_onepage_index>
+    	 <reference name="head">
+			<action method="addCss"><stylesheet>internationalshipping/css/jquery.autocomplete.css</stylesheet></action>
+            <action method="addCss"><stylesheet>internationalshipping/css/sz_common.css</stylesheet></action>
+			<action method="addJs"><script>swipezoom/autocomplete/jquery-1.8.2.min.js</script></action>
+			<action method="addJs"><script>swipezoom/autocomplete/jquery.autocomplete.js</script></action>
+            <action method="addJs"><script>swipezoom/jquery.creditCardValidator.js</script></action>
+            <action method="addJs"><script>swipezoom/sz_common.js</script></action>
+		</reference>
+		
+        <reference name="checkout.onepage.billing">
+            <action method="setTemplate" ifconfig="carriers/swipezoom/active"><template>internationalshipping/checkout/onepage/billing.phtml</template></action>
+        </reference>  
+        <reference name="checkout.onepage.shipping"> 
+        <action method="setTemplate" ifconfig="carriers/swipezoom/active"><template>internationalshipping/checkout/onepage/shipping.phtml</template></action>           
+        </reference>  
+    </checkout_onepage_index>    
+    <checkout_onepage_progress>
+        <!-- Mage_Checkout -->
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <block type="checkout/onepage_progress" ifconfig="carriers/swipezoom/active" name="root" output="toHtml" template="internationalshipping/onepage/progress.phtml" >
+            <block type="checkout/onepage_payment_info" name="payment_info">
+                <action method="setInfoTemplate"><method></method><template></template></action>
+            </block>
+        </block>
+    </checkout_onepage_progress>
+	
+ 
+    <checkout_onepage_success translate="label">
+        <block type="checkout/onepage_success" ifconfig="carriers/swipezoom/active" name="checkout.success" template="internationalshipping/success.phtml"/>
+    </checkout_onepage_success>
+    <internationalshipping_index_index>
+        <reference name="content">
+            <block type="checkout/onepage_billing" name="internationalshipping" template="internationalshipping/test.phtml" />
+        </reference>
+    </internationalshipping_index_index>
+	<internationalshipping_index_cancel>
+		<label>Cancel Order</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="checkout/onepage_billing" name="cancelorder" template="internationalshipping/cancel.phtml" />
+        </reference>
+    </internationalshipping_index_cancel>
+	<internationalshipping_index_printall>
+		<label>Cancel Order</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/popup.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="checkout/onepage_billing" name="printall" template="internationalshipping/printall.phtml" />
+        </reference>
+    </internationalshipping_index_printall>
+	<internationalshipping_index_openpdf>
+		<label>Cancel Order</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/popup.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="checkout/onepage_billing" name="openpdf" template="internationalshipping/openpdf.phtml" />
+        </reference>
+    </internationalshipping_index_openpdf>
+	<internationalshipping_index_printpack>
+		<label>Print packages</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/popup.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="sales/order_print" name="sales.order.print" template="internationalshipping/sales/order/print.phtml">
+                <action method="addItemRender"><type>default</type><block>sales/order_item_renderer_default</block><template>sales/order/items/renderer/default.phtml</template></action>
+                <action method="addItemRender"><type>grouped</type><block>sales/order_item_renderer_grouped</block><template>sales/order/items/renderer/default.phtml</template></action>
+                <block type="sales/order_totals" name="order_totals" template="sales/order/totals.phtml">
+                    <action method="setLabelProperties"><value>colspan="5" class="a-right"</value></action>
+                    <action method="setValueProperties"><value>class="last a-right"</value></action>
+                    <block type="tax/sales_order_tax" name="tax" template="tax/order/tax.phtml">
+                        <action method="setIsPlaneMode"><value>1</value></action>
+                    </block>
+                </block>
+            </block>
+        </reference>
+        <block type="core/text_list" name="additional.product.info" />
+    </internationalshipping_index_printpack>
+	<shipping_tracking_popup translate="label">
+        <reference name="shipping.tracking.popup">
+            <action method="setTemplate" ifconfig="carriers/swipezoom/active"><template>internationalshipping/shipping/tracking/popup.phtml</template></action>
+        </reference>
+    </shipping_tracking_popup>
+	<sales_order_print translate="label">
+        <reference name="sales.order.print">
+            <action method="setTemplate" ifconfig="carriers/swipezoom/active"><template>internationalshipping/sales/order/print.phtml</template></action>
+        </reference>
+    </sales_order_print>
+</layout> 

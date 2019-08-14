@@ -1,0 +1,106 @@
+
+<div id="content" >
+<?php 
+		function getCallerArray(){
+	        $merchantRefNo = "123";
+	        $callerObj = array("MerchantID" => Mage::getStoreConfig('carriers/swipezoom/merchantid',Mage::app()->getStore()),
+	        "MerchantKey" => Mage::getStoreConfig('carriers/swipezoom/merchantkey',Mage::app()->getStore()),
+	        "Version"=> "SW0101", 
+	        "Datetime"      => date("Y-m-d h:i:s"),
+	        "MerchantRefNo"      => $merchantRefNo); 
+	        return $callerObj; 
+	    }
+	
+		$folder1 =  Mage::getBaseDir('media') . DS . 'Swipzoom'. DS;
+		if (!(@is_dir($folder1) || @mkdir($folder1, 0777, true))) {
+			echo "Unable to create directory '{$folder1}'.";
+		}
+		$folder =  Mage::getBaseDir('media') . DS . 'Swipzoom'. DS . $this->getRequest()->getParam('szoomorder'). DS ;
+		if (!(@is_dir($folder) || @mkdir($folder, 0777, true))) {
+			echo "Unable to create directory '{$folder}'.";
+		}
+		foreach( glob( $folder.'*.pdf'  ) as $filename ) {			chmod($filename, 0777);	}
+		foreach( glob( $folder.'*.zip' ) as $filename ) {$filename;chmod($filename, 0777);}
+		
+		
+		
+		if(!$filename){
+		try {
+					$client = Mage::helper('internationalshipping')->_createSoapClient();
+					$params = array("Caller" => getCallerArray(),"OrderNo" => $this->getRequest()->getParam('szoomorder'));
+					$response = $client->ShipDoc($params);
+					
+					if($response->ResponseStatusCode == '000'){				
+					$imageFilename      = basename($response->ShipDoc->FileName);    
+					$image_type         = substr(strrchr($imageFilename,"."),1); //find the image extension
+					$zipfile=  $filename           = $imageFilename; //give a new name, you can modify as per your requirement
+					$filepath           = Mage::getBaseDir('media') . DS . 'Swipzoom'. DS . $this->getRequest()->getParam('szoomorder'). DS . $filename; //path for temp storage folder: ./media/import/
+					$newImgUrl          = file_put_contents($filepath, $response->ShipDoc->Contents); //store the image from external url to the temp storage folder
+						$zip = new ZipArchive;
+						if ($zip->open($filepath) === TRUE) {
+							$zip->extractTo(Mage::getBaseDir('media') . DS . 'Swipzoom'. DS . $this->getRequest()->getParam('szoomorder'). DS);
+							$zip->close();
+							//echo 'ok';
+						}
+					
+					} else {
+						Mage::helper('internationalshipping')->sendServiceFailureAlert($params,$response,'ShipDoc');
+					}
+			} catch (Exception $e) {
+					$debugData['result'] = array('error' => $e->getMessage(), 'code' => $e->getCode());
+					Mage::log($debugData,null,'debug.log');
+					Mage::logException($e);
+			}
+		}
+		foreach( glob( $folder.'*.pdf'  ) as $filename ) {			chmod($filename, 0777);	}
+		foreach( glob( $folder.'*.zip' ) as $filename ) {$filename;chmod($filename, 0777);}
+
+//echo 	$zipfile;
+$dir=$folder; // Directory where files are stored ?>
+<?php 
+foreach( glob( $folder.'*.zip' ) as $filename ) {$filename;}
+if($filename){
+
+?>
+<h1> <?php echo $this->helper('sales')->__('Order Document') ?> </h1>
+<?php 
+
+$zip = explode($this->getRequest()->getParam('szoomorder'),$filename,2);
+?>
+<table width="100%" id="orderdocuments"  class="data-table">
+  <tr>
+    <td colspan="2" align="right"><a style="float:right;" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA). DS . 'Swipzoom'. DS .$this->getRequest()->getParam('szoomorder').DS. $zip[1]; ?>">
+    	<?php echo $this->helper('sales')->__('Donwload All') ?></a></td>
+  </tr>
+  <?php  if ($dir_list = opendir($dir)) { ?>
+  <?php while(($filename = readdir($dir_list)) != false){
+		if('zip' != substr(strrchr($filename,"."),1)  && strlen($filename) > 4){
+
+		$fileurl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA). DS . 'Swipzoom'. DS . $this->getRequest()->getParam('szoomorder'). DS.$filename;
+		$fileurlview = $this->getUrl('internationalshipping/index/openpdf', array('szoomorder'=>$this->getRequest()->getParam('szoomorder'), 'file'=> $filename))
+	?>
+  <tr>
+    <td><?php echo str_replace('_',' ', str_replace('SZ_','',$filename));  ?></td>
+    <td><a target="_blank" href="<?php echo "https://docs.google.com/gview?url=".$fileurl; ?>"><?php echo '  View  ';  ?></a>|<a href="<?php echo $fileurlview ?>"><?php echo '  Download  ';  ?></a></td>
+  </tr>
+  <?php } } ?>
+</table>
+<?php closedir($dir_list);} ?>
+<script type="text/javascript">decorateTable('orderdocuments');</script>
+<div class="buttons-set">
+  <button onclick="window.parent.closePopup();" class="button" title="Close Window" type="button"><span><span>Close Window</span></span></button>
+</div>
+
+
+<?php }
+
+
+ ?>
+
+</div>
+
+<script>
+window.onload = function(){
+window.parent.hideloading();
+}
+</script>

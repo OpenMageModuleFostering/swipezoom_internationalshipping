@@ -1,0 +1,25 @@
+<jaxws:bindings wsdlLocation="GecaWs.wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+ xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0"
+ xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jaxb:extensionBindingPrefixes="xjc">
+
+ <jaxb:globalBindings>
+  <xjc:simple />
+ </jaxb:globalBindings>
+
+ <jaxb:schemaBindings>
+  <jaxb:package name="com.sz.geca.ws" />
+  <jaxb:enableWrapperStyle>false</jaxb:enableWrapperStyle>
+ </jaxb:schemaBindings>
+
+ <jaxws:bindings node="wsdl:definitions">
+  <jaxb:bindings node="wsdl:portType">
+   <jaxb:class name="GecaWsHandler" />
+  </jaxb:bindings>
+ </jaxws:bindings>
+ <jaxws:bindings node="wsdl:definitions">
+  <jaxb:bindings node="wsdl:service">
+   <jaxb:class name="GecaWs" />
+  </jaxb:bindings>
+ </jaxws:bindings>
+</jaxws:bindings>                        
+  

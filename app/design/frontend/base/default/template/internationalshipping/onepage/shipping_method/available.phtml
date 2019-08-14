@@ -1,0 +1,315 @@
+
+<style type="text/css">
+    .rate-method-title .price-notice{padding-left: 45px;}
+    .poweredby { display: inline;    font-size: 9px;    padding-left: 0; font-weight: normal;}
+    .sz-total-block { background: none repeat scroll 0 0 #F2F2F2;        color: black;        margin-top: 10px;        padding: 8px;  width: 350px;   }
+    .sz-total-title { color: black !important; font-size: 13px; width:340px !important;}
+    .sz-total-title .price { float: right; font-size: 12px;}
+    .progress-rate-label .price-notice { float: right; }    
+    ul.swipezoom-rates-block { padding-left: 20px; width: 272px;}
+    ul.swipezoom-rates-block > li { width: 320px;    }
+    label.shipping-label{ padding-left:19px;    }
+    .swipezoom-rates-block label { font-weight: normal;    }
+    .tool-tip-anchor{ cursor:help; margin-left:5px;    }
+    .alert-content-duties { color: red; margin-top: 10px;}
+    .progress-rate .price-notice {    float: right;}
+    .progress-rate-label {    display: inline;    width: 111px; float:left;}
+    .progress-rate{overflow: hidden;}
+    .progress-rate.total-rate-block{        border-top: 1px solid #999999;padding-top: 15px;}
+    .sz-rate-display-available {width: 340px;}
+    .sz-rate-display-available .price-notice, .swipezoom-rates-block .price-notice {    float: right;}
+    .bold{font-weight: bold;}
+</style>
+
+<?php
+
+    if (version_compare(Mage::getVersion(), '1.9', '<')) {
+        ?>
+            <style>
+                .sz-total-block {width:333px;}
+                #cardpayment_expiration_yr {
+                    width: 110px !important;
+                }
+                #cardpayment_expiration {
+                    width: 130px !important;
+                }
+
+            </style>
+        <?php
+    }
+
+?>
+<?php 
+    
+ 
+    $_shippingRateGroups = $this->getShippingRates(); 
+
+    $sz_enabled = false;
+    foreach ($_shippingRateGroups as $code => $_rates) {
+        foreach ($_rates as $_rate) {
+            if($code == 'swipezoom') {
+
+                $swAllowedCountries = Mage::getStoreConfig('carriers/swipezoom/sallowspecific',Mage::app()->getStore());
+                $swSpecificCountries = Mage::getStoreConfig('carriers/swipezoom/specificcountry',Mage::app()->getStore());
+                $swDestinationCountry = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getCountry();
+                if($swAllowedCountries == 0) {
+                    $sz_enabled = true;
+                } else {
+                    $availableCountries = explode(',',$swSpecificCountries);
+                    if ($availableCountries && in_array($swDestinationCountry, $availableCountries)) {
+                        $sz_enabled = true;
+                    }
+                }
+            }
+        }
+    }
+
+    if($sz_enabled == true) {
+        $ship_temp = $_shippingRateGroups;
+        foreach ($_shippingRateGroups as $code => $_rates) {
+            if($code == 'swipezoom') {
+                continue;
+            }
+            unset($ship_temp[$code]);
+        }
+        $_shippingRateGroups = $ship_temp;
+    } else {
+        $ship_temp = $_shippingRateGroups;
+        foreach ($_shippingRateGroups as $code => $_rates) {
+            if($code == 'swipezoom') {
+                unset($ship_temp[$code]);
+            }
+        }
+        $_shippingRateGroups = $ship_temp;
+    }
+?>
+<?php if (!$_shippingRateGroups): ?>
+    <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
+    <?php else: ?>
+    <dl class="sp-methods">
+        <?php $shippingCodePrice = array(); ?>
+        <?php $_sole = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
+            <dt <?php echo ($code == "swipezoom")? "style='font-size:16px'":""; ?>><?php echo $this->escapeHtml($this->getCarrierName($code)) ?> <?php if($code == "swipezoom"){?><p class="poweredby"><?php echo $this->__('Powered by ')?><span class="bold"><?php echo $this->__('Swipezoom')?></span></p><?php }?></dt>
+        <dd>
+            <ul>
+                <?php $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
+                    <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+                    <li>
+                        <?php if ($_rate->getErrorMessage()): ?>
+                            <ul class="messages"><li class="error-msg"><ul><li><?php echo $this->escapeHtml($_rate->getErrorMessage()) ?></li></ul></li></ul>
+                            <?php else: ?>
+
+                            <?php
+                             if($code == "swipezoom"){
+                                ?>
+
+                                <?php if($_rate->getCode() == "swipezoom_custshippingcharges_noduties_noinsurance"):?>
+                                <div class="sz-rate-display-available">
+                                    <?php if (count($_shippingRateGroups) == 1) : ?>
+                                <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo "swipezoom_custshippingcharges_withduties_withinsurance" ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" class="radio"/></span>
+                                <?php else: ?>
+                                    <input name="shipping_method" type="radio" value="<?php echo "swipezoom_custshippingcharges_withduties_withinsurance" ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php $addresssShippingMethod = $this->getAddressShippingMethod(); if(strpos($this->getAddressShippingMethod(),"swipezoom") !== FALSE || empty($addresssShippingMethod)) echo ' checked="checked"' ?> class="radio"/>
+                                    <?php endif; ?>
+                                    
+                                <label id="label_s_method_<?php echo $_rate->getCode() ?>" for="s_method_<?php echo $_rate->getCode() ?>" class="rate-method-title"><?php echo $this->escapeHtml($_rate->getMethodTitle()) ?> 
+                                    
+                                </label>
+                                <span class="price-notice">
+                                        <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                        <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                        <?php echo $_excl; ?>
+                                        <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                            (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                            <?php endif; ?>
+                                    </span>
+                                    </div>
+                                <?php
+                                    /*                    
+                                    * Swipezoom Insurance & taxes rates
+                                    */
+                                    
+                                    if ($_rate->getCode() === "swipezoom_custshippingcharges_noduties_noinsurance"){
+
+                                        $ExtraRates = $_rate->getMethodDescription();
+                                        if(is_array($ExtraRates) && count($ExtraRates) > 0){
+                                        ?>
+                                        <ul class="swipezoom-rates-block">
+                                            <li <?php if($ExtraRates['PrepaidDutiesAllowed'] != 'Y') echo 'style="display:none"'; ?>>
+                                                <input type="checkbox" value="<?php echo $ExtraRates["CustCourierDuties"] ?>" id="duties" <?php echo ($ExtraRates["CustCourierDuties"] > 0 )? "": "disabled";  ?> <?php echo ($ExtraRates["CustCourierDuties"] > 0 )? "checked='true'": "";  ?> name="swipezoom" class="checkbox duties-checkbox" >
+                                                <label for="swipezoom_duty_taxes"><?php echo $this->__("Prepaid duties & taxes") ?>
+
+                                                    <a href="#" id="tool-tip-duties" class="tool-tip-anchor tool-tip-duties" >
+                                                        <img src="<?php echo $this->getSkinUrl("internationalshipping/images/que.png") ?>" title="<?php echo $this->__('For your convenience, we provide you the option to pre-pay Duties and Taxes. If you choose to pre-pay such Duties and Taxes, you may avoid customs delays and we guarantee that you will not be required to pay anything upon arrival of your shipment. If you do not choose the option to prepay the Duties and Taxes, you will be responsible for paying all Duties, Taxes and any related charges that may be due upon delivery. Duties and Taxes are calculated and charged as per the rules and regulations of the customs authority in your country.') ?>" class="fadeeffect"/></a>
+                                                    <?php (!empty($ExtraRates["CustCourierDuties"]))?$dutiesRate = $ExtraRates["CustCourierDuties"]: $dutiesRate = "N/A";?>              
+</label>
+                                                        <span class="price-notice"><span class="price"><?php echo ($ExtraRates["CustCourierDuties"] > 0 )? Mage::helper('core')->currency($ExtraRates["CustCourierDuties"],true,false): "N/A";  ?> </span></span>
+
+                                                <p id="alert-content-duties" class="alert-content-duties" style="display: none;"><?php echo $this->__('You have chosen to NOT prepay duties & taxes for this order and therefore will be responsible to pay these charges at the time of delivery.');  ?>
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" value="<?php echo $ExtraRates["CustInsuranceCharges"] ?>" <?php echo ($ExtraRates["CustInsuranceCharges"] > 0 )? "": "disabled";  ?>  <?php echo ($ExtraRates["CustInsuranceCharges"] > 0 )? "checked='true'": "";  ?>  id="insurance" name="swipezoom" class="checkbox">
+                                                <label for="swipezoom_insurance"><?php echo $this->__("Insurance") ?>
+
+                                                    <a href="#" id="tool-tip-insurance" class="tool-tip-anchor tool-tip-insurance" >
+                                                        <img src="<?php echo $this->getSkinUrl("internationalshipping/images/que.png") ?>" title="<?php echo $this->__("If you wish to insure your shipment against damage or loss during transit, you may purchase shipment insurance by selecting this option. In the event of loss or damage during transit, you will be reimbursed the value of the goods and shipping costs only. you will not be reimbursed amounts paid towards customs duties or taxes. If insurance is not purchased, your shipment will not be covered for loss or damage during transit.");?>" class="fadeeffect"/></a>
+                                                    <?php (!empty($ExtraRates["CustInsuranceCharges"]))?$insuranceRate = $ExtraRates["CustInsuranceCharges"]: $insuranceRate = "N/A";?>
+                                                   </label>
+                                                    <span class="price-notice"><span class="price"><?php echo ($ExtraRates["CustInsuranceCharges"] > 0 )? Mage::helper('core')->currency($ExtraRates["CustInsuranceCharges"],true,false): "N/A";  ?> </span></span>
+
+
+                                            </li>
+                                        </ul>
+
+
+                                        <?php 
+                                        }
+                                    ?>
+                                    <div class="sz-total-block">
+                                        <label class="sz-total-title" id="sz-total-title"><?php echo $this->__('Shipping Total'); ?> 
+                                            <span class="price-notice"><span class="price"><?php echo Mage::helper('core')->currency(($ExtraRates["CustCourierDuties"] + $ExtraRates["CustInsuranceCharges"] + $ExtraRates["shipping"] ),true,false);  ?> </span></span>
+                                        </label>
+                                    </div>
+                                    <?php }
+                                ?>
+                                <?php else: ?>
+                                <input name="c_shipping_method" type="checkbox" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio no-display"/>
+                            <?php endif; ?>
+
+                            <?php  }else{?>
+
+                            <?php if ($_sole) : ?>
+                                <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                                <?php else: ?>
+                                <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+
+                            <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                                <script type="text/javascript">
+                                    //<![CDATA[
+                                    lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                                    //]]>
+                                </script>
+                                <?php endif; ?>
+
+                            <?php endif; ?>
+                            <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $this->escapeHtml($_rate->getMethodTitle()) ?>
+                                <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                                <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                                <?php echo $_excl; ?>
+                                <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                    (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                                    <?php endif; ?>
+                            </label>
+                            <?php } ?>
+                        <?php endif ?>
+                    </li>
+                    <?php endforeach; ?>
+            </ul>
+        </dd>
+        <?php endforeach; ?>
+</dl>
+<script type="text/javascript">
+    //<![CDATA[
+    <?php if (!empty($shippingCodePrice)): ?>
+        var shippingCodePrice = {<?php echo implode(',',$shippingCodePrice); ?>};
+        <?php endif; ?>
+
+    var datastorageurl = "<?php echo $ExtraRates['DataStorageUrl']; ?>";
+
+    if(datastorageurl) {
+        if($(".wirecard-datastorage"))
+            $(".wirecard-datastorage").remove();
+        var filename = datastorageurl;
+
+        var fileref = document.createElement('script');
+        fileref.setAttribute("type", "text/javascript");
+        fileref.setAttribute("src", filename);
+        fileref.setAttribute("class",'wirecard-datastorage')
+        document.getElementsByTagName("head")[0].appendChild(fileref);
+    }
+
+    $$('input[type="radio"][name="shipping_method"]').each(function(el){
+        Event.observe(el, 'click', function(){
+            if (el.checked == true) {
+                var getShippingCode = el.getValue();
+                <?php if (!empty($shippingCodePrice)): ?>
+                    var newPrice = shippingCodePrice[getShippingCode];
+                    if (!lastPrice) {
+                        lastPrice = newPrice;
+                        quoteBaseGrandTotal += newPrice;
+                    }
+                    if (newPrice != lastPrice) {
+                        quoteBaseGrandTotal += (newPrice-lastPrice);
+                        lastPrice = newPrice;
+                    }
+                    <?php endif; ?>
+                checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+                return false;
+            }
+        });
+    });
+
+    // SwipeZoom Rates    
+    $$('input[type="checkbox"][name="swipezoom"]').each(function(el){
+        Event.observe(el, 'click', function(){
+            var oldValue = ($("sz-total-title").down().down().innerHTML).replace(/[<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>]*/, '');
+            if(el.checked)
+                $("sz-total-title").down().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+ (parseFloat(oldValue) + parseFloat(el.value)).toFixed(2)+'';
+            else
+                $("sz-total-title").down().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+ (parseFloat(oldValue) - parseFloat(el.value)).toFixed(2)+'';
+
+            var id="swipezoom_custshippingcharges";
+            $$('input[type="checkbox"][name="swipezoom"]').each(function(el){
+                if(el.checked){
+                    id+="_"+"with"+el.id;
+                }else{
+                    id+="_"+"no"+el.id;
+                }
+            });
+            $("s_method_swipezoom_custshippingcharges_noduties_noinsurance").value = id;
+            $("s_method_swipezoom_custshippingcharges_noduties_noinsurance").checked= true;
+
+        });
+    });
+
+    function dutiesTest(el){
+            var oldValue = ($("sz-total-title").down().down().innerHTML).replace(/[<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>]*/, '');
+            if(el.checked)
+                $("sz-total-title").down().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+ (parseFloat(oldValue) + parseFloat(el.value)).toFixed(2)+'';
+            else
+                $("sz-total-title").down().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+ (parseFloat(oldValue) - parseFloat(el.value)).toFixed(2)+'';
+
+            var id="swipezoom_custshippingcharges";
+            $$('input[type="checkbox"][name="swipezoom"]').each(function(el){
+                if(el.checked){
+                    id+="_"+"with"+el.id;
+                }else{
+                    id+="_"+"no"+el.id;
+                }
+            });
+            $("s_method_swipezoom_custshippingcharges_noduties_noinsurance").value = id;
+            $("s_method_swipezoom_custshippingcharges_noduties_noinsurance").checked= true;
+
+        }
+        
+    $$('.duties-checkbox').each(function(ele){
+        Event.observe(ele, 'click', function(){
+            if (!ele.checked)
+                {
+                $('alert-content-duties').show(); 
+            }else
+                {
+                $('alert-content-duties').hide(); 
+            }
+        });
+    });
+    
+    <?php if($ExtraRates["CustCourierDuties"] == 0){?>
+      dutiesTest($("duties"));  
+   <?php }?>
+   <?php if($ExtraRates["CustInsuranceCharges"] == 0){?>
+      dutiesTest($("insurance"));  
+   <?php }?>
+    //]]>
+</script>
+<?php endif; ?>

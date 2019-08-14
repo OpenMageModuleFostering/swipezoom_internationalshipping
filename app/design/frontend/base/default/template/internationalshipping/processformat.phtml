@@ -1,0 +1,291 @@
+<?php
+      //      
+    $type=Mage::app()->getRequest()->getParam("type");
+
+    $flag = $this->getFlag();
+
+    if($flag  != "reset"):
+        $response = $this->getResponseArray();
+        $chk=json_decode(json_encode($response), true);
+
+
+
+        $key = "DisplayOrder";
+        $array=$response;
+        $chk2=$chk1['AddressFormat'];
+
+        foreach ($array as $ii => $va) {
+            // foreach ($array[$ii] as $i => $val) {
+            $sorter[$ii]=$va[$key];
+            //}
+        }
+        asort($sorter);
+        foreach ($sorter as $element => $value) {
+            $ret[$element]=$array[$element];
+        }
+        $array=$ret;
+
+        for($i=0;$i<count($chk2);$i++)
+        {
+            $labelcol[]=$chk2[$i];
+        }
+        // echo json_encode($labelcol);
+        //    
+
+    ?>
+    <ul id="<?php echo $type?>-row32">
+        <?php 
+            $regionFlag = false;
+            $cityFlag = false;
+            $zipFlag = false;
+            //  
+            foreach($array as $data)
+            {    
+
+                if(($data['FieldType'])=="D"){
+                    $regionFlag = true;
+                }
+                if(($data['FieldType'])=="C"){
+                    $cityFlag = true;
+                }
+                if(($data['FieldType'])=="P"){
+                    $zipFlag = true;
+                }
+
+                if(($data['FieldType'])==1)
+                {
+                ?>
+                <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
+                <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+                <li class="wide">
+                    <label for="<?php echo $type?>:street1" class="<?php if(($data['IsMandatory'])=="Y"){ ?>required<?php } ?>"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__($data['FieldLabel']) ?></label>
+                    <div class="input-box">
+                        <input type="text" maxlength="35" title="<?php echo $this->__('Street Address') ?>" name="<?php echo $type?>[street][]" id="<?php echo $type?>:street1" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>" class="<?php if($data['IsMandatory'] == "Y"){ echo "required-entry" ?><?php } ?> input-text text" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> /></div>
+                </li>
+                <?php   
+                }
+                if(($data['FieldType'])==2)
+                {  
+                ?>
+                <li class="wide">
+                    <div class="input-box">
+                        <label for="<?php echo $type?>:street2"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__($data['FieldLabel']) ?></label>
+                        <div class="input-box">
+
+
+                            <input type="text" maxlength="35" title="<?php echo $this->__('Street Address %s', 2) ?>" name="<?php echo $type?>[street][]" id="<?php echo $type?>:street2" value="" class="input-text <?php if(($data['IsMandatory'])=="Y"){ echo "required-entry" ?><?php } ?>" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+
+                        </div>
+                    </div>
+                </li>      
+                <?php
+                }
+                if(($data['FieldType'])=="C")
+                {
+                ?>
+                <li class="fields"> 
+                    <div class="field">
+                        <label for="<?php echo $type?>:city" class="required"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__($data['FieldLabel']) ?></label>
+                        <div class="input-box">
+                            <input type="text" maxlength="30" title="<?php echo $this->__('City') ?>" name="<?php echo $type?>[city]" value="<?php echo $this->escapeHtml($this->getAddress()->getCity()) ?>" class="input-text <?php if($data['IsMandatory']=="Y"){ echo "required-entry"; }?> validate-city" id="<?php echo $type?>:city" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+
+                        </div>
+                    </div>
+                    <?php } 
+                ?>
+                <?php 
+
+                    if(($data['FieldType'])=="D")
+                    {
+                        // 
+                    ?>
+                    <div class="field">
+                        <label for="<?php echo $type?>:region_id" class="<?php if($data['IsMandatory']=="Y"){ echo "required"; }?>"><?php if($data['IsMandatory'] == "Y"){ ?><em>*</em><?php } ?><?php echo $this->__($data['FieldLabel']) ?></label>
+
+
+                        <div class="input-box">
+                            <select id="<?php echo $type?>:region_id" name="<?php echo $type?>[region_id]" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> title="<?php echo $this->__('Province/Territory') ?>" class="<?php if(($data['IsMandatory'])=="Y"){ ?>validate-select<?php } ?> " style="display:none;">
+                                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                            </select>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                $('<?php echo $type?>:region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+                                //]]>
+                            </script>
+                            <input type="text" maxlength="30" id="<?php echo $type?>:region" name="<?php echo $type?>[region]" value="<?php echo $this->escapeHtml($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text <?php if(($data['IsMandatory'])=="Y"){ ?>required-entry<?php } ?>" style="display:none;" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+                        </div>
+                    </div>
+                </li>
+                <?php
+                }
+                if(($data['FieldType'])=="P")
+                {
+                    //  
+                ?>
+                <div class="field">
+                    <label for="<?php echo $type?>:postcode" class="required"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__($data['FieldLabel']) ?></label>
+                    <div class="input-box">
+                        <input type="text" maxlength="10" title="<?php echo $this->__('Postal Code') ?>" name="<?php echo $type?>[postcode]" id="<?php echo $type?>:postcode" value="<?php echo $this->escapeHtml($this->getAddress()->getPostcode()) ?>" class="<?php if(($data['IsMandatory'])=="Y"){ echo "required-entry"; } ?> input-text" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+                    </div>
+                </div>          <?php  
+                }                      
+
+            }
+
+            if(!$regionFlag)                          {
+            ?>
+            <div class="field" style="display: none;">
+                <label for="<?php echo $type?>:region_id" class="<?php if(($data['IsMandatory'])=="Y"){ ?>required<?php } ?>"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__('State') ?></label>
+
+
+                <div class="input-box">
+                    <select id="<?php echo $type?>:region_id" name="<?php echo $type?>[region_id]" title="<?php echo $this->__('Province/Territory') ?>" class="<?php if(($data['IsMandatory'])=="Y"){ ?>validate-select<?php } ?> " style="display:none;" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?>>
+                        <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                    </select>
+                    <script type="text/javascript">
+                        //<![CDATA[
+                        $('<?php echo $type?>:region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+                        //]]>
+                    </script>
+                    <input type="text" id="<?php echo $type?>:region" name="<?php echo $type?>[region]" value="<?php echo $this->escapeHtml($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text <?php if(($data['IsMandatory'])=="Y"){ ?>required-entry<?php } ?>" style="display:none;" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+                </div>
+            </div>
+            <?php
+            }
+            if(!$cityFlag){?>
+            <div class="field" style="display: none;">
+                <label for="<?php echo $type?>:city" class="required"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__("City") ?></label>
+                <div class="input-box">
+                    <input type="text" title="<?php echo $this->__('City') ?>" name="<?php echo $type?>[city]" value="<?php echo $this->escapeHtml($this->getAddress()->getCity()) ?>" class="input-text <?php if(($data['IsMandatory'])=="Y"){ echo "required-entry"?><?php } ?> validate-city" id="<?php echo $type?>:city" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+
+                </div>
+            </div>
+            <?php
+            }
+
+            if(!$zipFlag){?>
+            <div class="field" style="display: none;">
+                <label for="<?php echo $type?>:postcode" class="required"><?php if(($data['IsMandatory'])=="Y"){ ?><em>*</em><?php } ?><?php echo $this->__("Postcode") ?></label>
+                <div class="input-box">
+                    <input type="text" title="<?php echo $this->__('Postal Code') ?>" name="<?php echo $type?>[postcode]" id="<?php echo $type?>:postcode" value="<?php echo $this->escapeHtml($this->getAddress()->getPostcode()) ?>" class="<?php if(($data['IsMandatory'])=="Y"){ ?>required-entry<?php } ?> input-text  " <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+                </div>
+            </div>
+            <?php }
+        ?>
+    </ul>
+
+    <?php else: ?>
+    <ul id="<?php echo $type?>-row32">
+    <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
+    <li class="wide containers1" >
+        <label for="<?php echo $type?>:street1" class="required"><em>*</em><?php echo $this->__('Address') ?></label>
+        <div class="input-box">
+            <input type="text" title="<?php echo $this->__('Street Address') ?>" name="<?php echo $type?>[street][]" id="<?php echo $type?>:street1" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>" class="input-text <?php echo $_streetValidationClass ?>" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+        </div>
+    </li>
+    <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+    <?php for ($_i = 2, $_n = $this->helper('customer/address')->getStreetLines(); $_i <= $_n; $_i++): ?>
+        <li class="wide">
+            <label for="<?php echo $type?>:street<?php echo $_i;?>>" class=""></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('Street Address %s', $_i) ?>" name="<?php echo $type?>[street][]" id="<?php echo $type?>:street<?php echo $_i ?>" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet($_i)) ?>" class="input-text <?php echo $_streetValidationClass ?>" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+            </div>
+        </li>
+        <?php endfor; ?>
+    <?php if ($this->helper('customer/address')->isVatAttributeVisible()) : ?>
+        <li class="wide">
+            <label for="<?php echo $type?>:vat_id"><?php echo $this->__('VAT Number') ?></label>
+            <div class="input-box">
+                <input type="text" id="<?php echo $type?>:vat_id" name="<?php echo $type?>[vat_id]" value="<?php echo $this->escapeHtml($this->getAddress()->getVatId()) ?>" title="<?php echo $this->__('VAT Number') ?>" class="input-text" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+            </div>
+        </li>
+        <?php endif; ?>     
+<li class="fields">
+    <div class="field">
+        <label for="<?php echo $type?>:city" class="required"><em>*</em><?php echo $this->__('City') ?></label>
+        <div class="input-box">
+            <input type="text" title="<?php echo $this->__('City') ?>" name="<?php echo $type?>[city]" value="<?php echo $this->escapeHtml($this->getAddress()->getCity()) ?>" class="input-text required-entry <?php echo $this->helper('customer/address')->getAttributeValidationClass('city') ?> validate-city" id="<?php echo $type?>:city" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+        </div>
+    </div>
+    <div class="field containers3" >
+        <?php
+            //    
+        ?>
+        <label for="<?php echo $type?>:region_id" class="required"><em>*</em><?php echo $this->__('State/Province') ?></label>
+        <div class="input-box">
+            <select id="<?php echo $type?>:region_id" name="<?php echo $type?>[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?>>
+                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+            </select>
+            <script type="text/javascript">
+                //<![CDATA[
+                $('<?php echo $type?>:region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+                //]]>
+            </script>
+            <input type="text" id="<?php echo $type?>:region" name="<?php echo $type?>[region]" value="<?php echo $this->escapeHtml($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none;" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+        </div>
+    </div>
+</li>    
+<li class="fields">
+    <div class="field">
+        <label for="<?php echo $type?>:postcode" class="required"><em>*</em><?php echo $this->__('Zip/Postal Code') ?></label>
+        <div class="input-box">
+            <input type="text" title="<?php echo $this->__('Zip/Postal Code') ?>" name="<?php echo $type?>[postcode]" id="<?php echo $type?>:postcode" value="<?php echo $this->escapeHtml($this->getAddress()->getPostcode()) ?>" class="input-text" <?php if($type=='shipping') { ?> onchange="shipping.setSameAsBilling(false);" <?php } ?> />
+        </div>
+    </div>
+</li>
+
+</ul>
+<?php endif;?>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		// here call autocomplete for city and state.
+		if('<?php echo $type?>' == 'billing') {
+			
+			if(jQuery("input[name='billing[city]']").length) {
+				jQuery("input[name='billing[city]']").autocomplete('<?php echo $this->getUrl('internationalshipping/index/getCitiesForAutoComplete') ?>', {
+					extraParams: {
+						countrycode: function() { return jQuery('select[name="billing[country_id]"]').val();},
+						city: function() { return jQuery("input[name='billing[city]']").val(); }
+					},	   
+					minChars: 0,
+					max: 200,
+					multiple:false,
+					scrollHeight: 220,
+					autoFill: false,
+				   	mustMatch: false,
+				   	selectFirst:true,
+					cacheLength:1
+				}).focusout(function(){ 
+					
+				});
+
+				
+			} 
+		} else if('<?php echo $type?>' == 'shipping'){
+			
+			if(jQuery("input[name='shipping[city]']").length) {
+				if(jQuery("input[name='shipping[city]']").length) {
+					jQuery("input[name*='shipping[city]']").autocomplete('<?php echo $this->getUrl('internationalshipping/index/getCitiesForAutoComplete') ?>', {
+						extraParams: {
+							countrycode: function() { return jQuery('select[name="shipping[country_id]"]').val();},
+							city: function() { return jQuery("input[name='shipping[city]']").val(); }
+						},	   
+						minChars: 0,
+						max: 200,
+						multiple:false,
+						scrollHeight: 220,
+						autoFill: false,
+					   	mustMatch: false,
+					   	selectFirst:true,
+						cacheLength:1
+					}).focusout(function(){ 
+						
+					});					
+					
+				}		
+				
+			}	
+		}
+	});
+	
+</script>

@@ -1,0 +1,61 @@
+<?php
+ 
+    $order = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+    $paymentmode = Mage::getStoreConfig('carriers/swipezoom/paymentenabled',Mage::app()->getStore());
+
+    $shippingMethod = $order->getData("shipping_method");
+    if(strpos($shippingMethod,"swipezoom") !== FALSE && $paymentmode!=1):
+
+        $order->getSwipezoomOrderConfirmed();
+        $result = $result = Mage::getModel("Swipezoom_InternationalShipping_Model_Carrier_Swipezoom")->confirmOrderInvoiceRequest($order->getData("shipping_method"),Mage::getSingleton('sales/quote')->load($order->getQuoteId())->getSwipezoomOrderNumber(),$this->getOrderId(),0);
+        $read= Mage::getSingleton('core/resource')->getConnection('core_write');
+        if(is_array($result) && $result[0] == "000"){
+            $order->setSwipezoomOrderConfirmed(1);
+            $value=$read->query("update sales_flat_order SET swipezoom_order_confirmed = '1' where entity_id=".$order->getEntityId());
+        }else{
+            $order->setSwipezoomOrderConfirmed(0);
+            $order->setSwipezoomOrderConfirmedErrormessage($result[1]);
+            $value=$read->query("update sales_flat_order SET swipezoom_order_confirmed = '0' , swipezoom_order_confirmed_errormessage='".$result[1]."' where entity_id=".$order->getEntityId());
+        } 
+
+    endif;
+
+    if(strpos($shippingMethod,"swipezoom") !== FALSE && $paymentmode==1 && $order->getPayment()->method == 'cardpayment'):
+        
+        $payment_result = Mage::getModel("Swipezoom_InternationalShipping_Model_Carrier_Swipezoom")->setPaymentAdditionalData(Mage::getSingleton('sales/quote')->load($order->getQuoteId())->getSwipezoomOrderNumber(),$this->getOrderId(),'S');
+
+    endif;
+
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+    <?php if ($this->getCanViewOrder()) :?>
+        <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+        <?php  else :?>
+        <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+        <?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order.') ?></p>
+    <?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+    <?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+    <p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+    <ul class="disc">
+        <?php foreach($profiles as $profile):?>
+            <?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+            <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+            <?php endforeach;?>
+    </ul>
+    <?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>

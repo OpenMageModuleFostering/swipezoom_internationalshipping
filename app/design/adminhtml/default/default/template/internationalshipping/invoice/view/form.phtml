@@ -1,0 +1,199 @@
+
+<?php $_invoice = $this->getInvoice() ?>
+<?php $_order = $_invoice->getOrder() ?>
+<?php echo $this->getChildHtml('order_info') ?>
+<?php if (!$_order->getIsVirtual()): ?>
+<div class="box-left">
+<?php else: ?>
+<div class="box-right">
+<?php endif; ?>
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-payment-method"><?php echo $this->helper('sales')->__('Payment Information') ?></h4>
+        </div>
+        <fieldset>
+            <div><?php echo $this->getChildHtml('order_payment') ?></div>
+            <div><?php echo Mage::helper('sales')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+        </fieldset>
+    </div>
+</div>
+<?php if (!$_order->getIsVirtual()): ?>
+<div class="box-right">
+    <!--Shipping Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-shipping-method"><?php echo $this->helper('sales')->__('Shipping Information') ?></h4>
+        </div>
+        <fieldset>
+            <strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>
+            
+
+            <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
+            <?php else: ?>
+                <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
+            <?php endif; ?>
+            <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
+            <br />
+			<?php echo $this->helper('sales')->__('Total Shipping Charges'); ?>:
+            <?php echo $_excl; ?>
+            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+            <?php endif; ?>
+             <br />
+                    <?php 
+					 $szOrderId = $_order->getSwipezoomOrderNumberTemp();
+					 if($szOrderId){
+						 $counts = Mage::getModel('internationalshipping/shipmentdetail')->getCollection()->addFieldToFilter('swipezoomorderid',$szOrderId);
+						 if(count($counts)){
+							foreach($counts as $sh)	{
+								echo "Pickup Due : ".$sh->getPickupdue()."</br>";
+								echo "Airway Bill # : ".$sh->getCourierwaybillno()."</br>";
+							}
+						}
+					 }
+					
+					?>
+            <div><?php echo $this->getChildHtml('shipment_tracking') ?></div>
+        </fieldset>
+    </div>
+<?php endif; ?>
+</div>
+<div class="clear"></div>
+  <?php 
+	  $shippingMethod = $_order->getData("shipping_method") ;
+                if(strpos($shippingMethod,"swipezoom") !== FALSE){ ?>
+					<div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Swipezoom Order Information') ?></h4>
+            </div><fieldset>
+
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Swipezoom Order #') ?><span class="price-notice"><span class="price">
+                            <?php echo $_order->getSwipezoomOrderNumberTemp();  ?></span></span></label>
+                </div>
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Shipping Charges : ') ?><span class="price-notice"><span class="price">
+                            <?php echo Mage::helper('core')->currency($_order->getSwipezoomOrderShippingCharges(),true,false);  ?></span></span></label>
+                </div>
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Prepaid duties &amp; taxes : ') ?><span class="price-notice"><span class="price">
+                            <?php echo Mage::helper('core')->currency($_order->getSwipezoomOrderDutiesTaxes(),true,false);  ?></span></span></label>
+                </div>
+
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Insurance :') ?><span class="price-notice"><span class="price">
+                            <?php echo Mage::helper('core')->currency($_order->getSwipezoomOrderInsuranceCharges(),true,false);  ?></span></span></label>
+                </div>
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Duties Taxes Prepaid :') ?><span class="price-notice"><span class="price">
+                            <?php echo ($_order->getSwipezoomOrderDutiesTaxPrepaid() == "Y")?"Yes":"No";  ?></span></span></label>
+                </div>
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Insurance Paid :') ?><span class="price-notice"><span class="price">
+                            <?php echo ($_order->getSwipezoomOrderInsurancePaid() == "Y")?"Yes":"No";  ?></span></span></label>
+                </div>
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Confirmation Call :') ?><span class="price-notice"><span class="price">
+                            <?php echo ($_order->getSwipezoomOrderConfirmed() == "1")?"Ok":"Error";  ?>
+                            </span></span></label>
+                </div>
+                
+                <?php if($_order->getSwipezoomOrderConfirmed() == 0): ?>
+                <div class="swipezoom-container">
+                    <label for="swipezoom_insurance_taxes" class="progress-rate-label"><?php echo $this->__('Error Message :') ?><span class="price-notice"><span class="price"><?php echo $_order->getSwipezoomOrderConfirmedErrormessage();; ?>
+                            </span></span></label>
+                </div>
+                <?php endif; ?>
+               </fieldset>
+            </div>
+					
+				<?php } ?>
+<div class="entry-edit">
+<?php if($swipwzoomorder = $_order->getSwipezoomOrderNumberTemp() && $_order->getSwipezoomOrderCreditmemo() < 3){ ?> 
+				
+<style>
+.entry-edit-head .tools a{display:none;}
+.swipezoom-container .price-notice {    float: right;}
+.swipezoom-container {    width: 50%;}
+</style>
+ <div class="clear"></div>
+	<div class="entry-edit">
+        <div class="entry-edit-head">
+            <?php
+                $_itemsGridLabel1 = 'Items Packing Detail';
+            ?>
+            <h4 class="icon-head head-products"><?php echo Mage::helper('sales')->__('%s', $_itemsGridLabel1) ?></h4>
+        </div> 
+        
+    </div>
+    <div id="swipezoom_grid_container">
+    
+          <?php echo $this->getChildHtml('swipezoomordergrid') ?>
+    </div>
+<div class="clear" style="margin-bottom:15px;"></div>
+  
+<?php }else{?>
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-products"><?php echo $this->helper('sales')->__('Items Invoiced') ?></h4>
+    </div>
+     <?php } ?>
+    <div id="invoice_item_container">
+        <?php echo $this->getChildHtml('invoice_items') ?>
+    </div>
+</div>
+
+<div class="box-left entry-edit">
+    <div class="entry-edit-head"><h4><?php echo $this->__('Invoice History') ?></h4></div>
+    <fieldset><?php echo $this->getChildHtml('order_comments') ?></fieldset>
+</div>
+
+<div class="box-right entry-edit" id="history_form">
+    <div class="entry-edit-head"><h4><?php echo $this->__('Invoice Totals') ?></h4></div>
+    <div class="order-totals"><?php echo $this->getChildHtml('invoice_totals') ?></div>
+</div>
+<div class="clear"></div>
+
+
+ 				 <script type="text/javascript">
+					function openMyPopup(url) {
+						if ($('browser_window') && typeof(Windows) != 'undefined') {
+							Windows.focus('browser_window');
+							return;
+						}
+						var dialogWindow = Dialog.info(null, {
+							closable:true,
+							resizable:false,
+							draggable:true,
+							className:'magento',
+							windowClassName:'popup-window',
+							title:'Popup Dialog',
+							top:50,
+							width:800,
+							height:550,
+							zIndex:1000,
+							recenterAuto:false,
+							hideEffect:Element.hide,
+							showEffect:Element.show,
+							id:'browser_window',
+							url:url,
+							onClose:function (param, el) {
+							   // alert('onClose');
+							}
+						});
+					}
+					function closePopup() {
+						Windows.close('browser_window');
+					}
+					function cancelOrder() {
+						//setLocation('<?php echo $this->getUrl('adminhtml/sales_order/cancel',array('order_id'=> $_order->getId())) ?>');
+					}
+					
+					
+				</script>
+                <style>
+            #browser_window {position:absolute;}
+			#overlay_modal{background:#000;opacity:0.5;}
+			.magento_close{background:url('<?php echo Mage::getDesign()->getSkinUrl('internationalshipping/images',array('_area'=>'adminhtml')) ?>/popupclose.png') no-repeat; height: 28px;left: 790px; position: absolute;top: 7px;width: 28px;cursor:pointer;}
+            </style>

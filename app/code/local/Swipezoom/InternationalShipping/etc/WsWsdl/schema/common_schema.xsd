@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.api.sz.com/ws/schema/common" xmlns:CommonSchema="http://www.api.sz.com/ws/schema/common"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEBSERVICES GROUP DEFINITIONS #### -->
+	<!-- ************************************************************** -->
+
+	<xsd:group name="CommonResponseGroup">
+		<xsd:sequence>
+			<xsd:element name="ResponseStatusCode" type="CommonSchema:AN3" />
+			<xsd:element name="ResponseStatusDesc" type="CommonSchema:AN...60" />
+			<xsd:element name="SWRefNo" type="CommonSchema:N...20" />
+			<xsd:element name="MerchantRefNo" type="CommonSchema:AN...20" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:group name="AddressGroup">
+		<xsd:sequence>
+			<xsd:element name="Country" type="CommonSchema:A3_COUNTRY_CODE" />
+			<xsd:element name="FirstName" type="CommonSchema:ANS...30" />
+			<xsd:element name="MiddleName" type="CommonSchema:ANS...30" minOccurs="0" />
+			<xsd:element name="LastName" type="CommonSchema:ANS...30" />
+			<xsd:element name="AddressLine1" type="CommonSchema:ANS...35" />
+			<xsd:element name="AddressLine2" type="CommonSchema:ANS...35" minOccurs="0" />
+			<xsd:element name="City" type="CommonSchema:ANS...30" />
+			<xsd:element name="StateDivision" type="CommonSchema:ANS...30" minOccurs="0" />
+			<xsd:element name="PostalCode" type="CommonSchema:AN...10" minOccurs="0" />
+			<xsd:element name="PhoneNumber" type="CommonSchema:AN...20" />
+			<xsd:element name="AlternatePhoneNumber" type="CommonSchema:AN...20" minOccurs="0" />
+			<xsd:element name="Email" type="CommonSchema:EMAIL" />
+		</xsd:sequence>
+	</xsd:group>
+
+	<!-- ************************************************************** -->
+	<!-- #### COMMON COMPLEX TYPES #### -->
+	<!-- ************************************************************** -->
+
+	<xsd:complexType name="CallerType">
+		<xsd:sequence>
+			<xsd:element name="MerchantID" type="CommonSchema:N...20" />
+			<xsd:element name="MerchantKey" type="CommonSchema:ANS...60" />
+			<xsd:element name="Version" type="CommonSchema:AN6_VERSION_TYPE_E" />
+			<xsd:element name="Datetime" type="CommonSchema:DT" />
+			<xsd:element name="MerchantRefNo" type="CommonSchema:AN...20" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PagingRequestType">
+		<xsd:sequence>
+			<xsd:element name="CurrentPage" type="CommonSchema:N" minOccurs="0" />
+			<xsd:element name="RecordsPerPage" type="CommonSchema:N" minOccurs="0" />
+			<xsd:element name="ReturnTotalRecordCount" type="CommonSchema:BOOL_YN_A1" default="N" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="PagingResponseType">
+		<xsd:sequence>
+			<xsd:element name="CurrentPage" type="CommonSchema:N" />
+			<xsd:element name="RecordsPerPage" type="CommonSchema:N" />
+			<xsd:element name="TotalRecords" type="CommonSchema:N" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AddressType">
+		<xsd:sequence>
+			<xsd:group ref="CommonSchema:AddressGroup" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CourierType">
+		<xsd:sequence>
+			<xsd:element name="InterfaceName" type="CommonSchema:COURIER_TYPE_E" />
+			<xsd:element name="ServiceName" type="CommonSchema:AN...500" />
+			<xsd:element name="WayBillNo" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="EstimatedDeliveryDay" type="CommonSchema:AN...500" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PaymentGatewayType">
+		<xsd:sequence>
+			<xsd:element name="WebConfirmed" type="CommonSchema:BOOL_YN_A1" />
+			<xsd:element name="InterfaceName" type="CommonSchema:AN...500" />
+			<xsd:element name="PaymentRefNo" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="CardAccountType" type="CommonSchema:AN...500" />
+			<xsd:element name="AnonymousPan" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="MaskedPan" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="GatewayRefNo" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="GatewayErrorMessage" type="CommonSchema:AN...500" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CustomersType">
+		<xsd:sequence>
+			<xsd:element name="Customer" type="CommonSchema:AddressType" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PackingBoxesType">
+		<xsd:sequence>
+			<xsd:element name="PackingBox" type="CommonSchema:PackingBoxType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PackingBoxType">
+		<xsd:sequence>
+			<xsd:element name="BoxNo" type="CommonSchema:N" />
+			<xsd:element name="BoxCode" type="CommonSchema:AN...500" />
+			<xsd:element name="ItemQuantity" type="CommonSchema:N" />
+
+			<xsd:element name="DimensionUnit" type="CommonSchema:A2" />
+			<xsd:element name="Length" type="CommonSchema:F" />
+			<xsd:element name="Width" type="CommonSchema:F" />
+			<xsd:element name="Height" type="CommonSchema:F" />
+
+			<xsd:element name="WeightUnit" type="CommonSchema:A2" />
+			<xsd:element name="Weight" type="CommonSchema:F" />
+
+			<xsd:element name="ProductLineItems" type="CommonSchema:ProductLineItemsType" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProductLineItemsType">
+		<xsd:sequence>
+			<xsd:element name="ProductLineItem" type="CommonSchema:ProductLineItemType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProductLineItemType">
+		<xsd:sequence>
+			<xsd:element name="LineItemNo" type="CommonSchema:AN...500" />
+			<xsd:element name="ProductCode" type="CommonSchema:AN...500" />
+			<xsd:element name="Description" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="HSCode" type="CommonSchema:AN...500" />
+			<xsd:element name="Price" type="CommonSchema:F" />
+			<xsd:element name="Quantity" type="CommonSchema:N" />
+			<xsd:element name="SaleValue" type="CommonSchema:F" />
+			<xsd:element name="Size" type="CommonSchema:AN...500" minOccurs="0" />
+			<xsd:element name="Color" type="CommonSchema:A" minOccurs="0" />
+
+			<xsd:element name="DimensionUnit" type="CommonSchema:DIMENSION_UNIT_TYPE_E" />
+			<xsd:element name="Length" type="CommonSchema:F" />
+			<xsd:element name="Width" type="CommonSchema:F" />
+			<xsd:element name="Height" type="CommonSchema:F" />
+
+			<xsd:element name="WeightUnit" type="CommonSchema:WEIGHT_UNIT_TYPE_E" />
+			<xsd:element name="Weight" type="CommonSchema:F" />
+
+			<xsd:element name="IsReturnable" type="CommonSchema:BOOL_YN_A1" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FilesType">
+		<xsd:sequence>
+			<xsd:element name="File" type="CommonSchema:FileType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FileType">
+		<xsd:sequence>
+			<xsd:element name="FileName" type="CommonSchema:AN...500" />
+			<xsd:element name="MimeType" type="CommonSchema:AN...500" minOccurs="0"/>
+			<xsd:element name="Contents" type="xsd:base64Binary" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="VouchersType">
+		<xsd:sequence>
+			<xsd:element name="Voucher" type="CommonSchema:VoucherType" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="VoucherType">
+		<xsd:sequence>
+			<xsd:element name="VoucherType" type="CommonSchema:A" />
+			<xsd:element name="VoucherDate" type="CommonSchema:DATE" />
+			<xsd:element name="VoucherNo" type="CommonSchema:N" />
+			<xsd:element name="VoucherComments" type="CommonSchema:AN...60" minOccurs="0" />
+			<xsd:element name="VoucherCurrency" type="CommonSchema:A3_CURRENCY_CODE" />
+			<xsd:element name="VoucherAmount" type="CommonSchema:F" />
+			<xsd:element name="VoucherEffect" type="CommonSchema:DEBIT_CREDIT_TYPE_E" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<!-- ************************************************************** -->
+	<!-- #### COMMON SIMPLE TYPES #### -->
+	<!-- ************************************************************** -->
+
+	<xsd:simpleType name="DATE">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(19|20)\d\d[\-](0[1-9]|1[012])[\-](0[1-9]|[12][0-9]|3[01])">
+			</xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="TIME">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])">
+			</xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DT">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern
+				value="(19|20)\d\d[\-](0[1-9]|1[012])[\-](0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="GENDER_A1">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[MF]{1}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SORTING_ORDER_A1">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[AD]{1}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="BOOL_YN_A1">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[YN]{1}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="EMAIL">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="([\.a-zA-Z0-9_\-])+@([a-zA-Z0-9_\-])+(([a-zA-Z0-9_\-])*\.([a-zA-Z0-9_\-])+)+"></xsd:pattern>
+			<xsd:maxLength value="50" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN6_VERSION_TYPE_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SW0101" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+
+	<xsd:simpleType name="COURIER_TYPE_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DHL" />
+			<xsd:enumeration value="DHL_UAE" />
+			<xsd:enumeration value="DHL_GBR" />
+			<xsd:enumeration value="DHL_ITA" />
+			<xsd:enumeration value="DHL_PRT" />
+			<xsd:enumeration value="FEDEX" />
+			<xsd:enumeration value="UPS" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DIMENSION_UNIT_TYPE_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="IN" />
+			<xsd:enumeration value="CM" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="WEIGHT_UNIT_TYPE_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="KG" />
+			<xsd:enumeration value="LB" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DEBIT_CREDIT_TYPE_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="D" />
+			<xsd:enumeration value="C" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CARD_TYPE_A1_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="M" />
+			<xsd:enumeration value="V" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="STATEMENT_STATUS_TYPE_E">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="G" />
+			<xsd:enumeration value="P" />
+			<xsd:enumeration value="F" />
+			<xsd:enumeration value="D" />
+			<xsd:enumeration value="R" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="A3_COUNTRY_CODE">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z]{3}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="A2_COUNTRY_CODE">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z]{2}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="A3_CURRENCY_CODE">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z]{3}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="N">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d*"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="N...3">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{0,3}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="N...20">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{0,20}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="F">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\d*\.\d+|\d*)"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AM">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\d*\.\d{1,4}|\d*)"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="A">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z]*"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="A1">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z]{1}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="A2">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z]{2}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Za-z0-9! #$%'()*+,-./:;=>?@\]\[\\^_`{|}~&amp;&lt;&quot;]*"></xsd:pattern>
+			<xsd:minLength value="0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN1">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="1" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN3">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="3" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...10">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="10" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...15">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="15" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...20">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="20" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...30">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="30" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...35">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="35" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...40">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="40" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...60">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="60" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...100">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="100" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...130">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="130" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...255">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="255" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AN...500">
+		<xsd:restriction base="CommonSchema:AN">
+			<xsd:maxLength value="500" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- To Support Multi-Lingual Support -->
+	<xsd:simpleType name="ANS">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ANS...30">
+		<xsd:restriction base="CommonSchema:ANS">
+			<xsd:maxLength value="30" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ANS...35">
+		<xsd:restriction base="CommonSchema:ANS">
+			<xsd:maxLength value="35" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ANS...60">
+		<xsd:restriction base="CommonSchema:ANS">
+			<xsd:maxLength value="60" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ANS...130">
+		<xsd:restriction base="CommonSchema:ANS">
+			<xsd:maxLength value="130" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ANS...500">
+		<xsd:restriction base="CommonSchema:ANS">
+			<xsd:maxLength value="500" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+</xsd:schema>

@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ws.geca.sz.com/wsdl" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+ xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://ws.geca.sz.com/wsdl" xmlns:intf="http://ws.geca.sz.com/wsdl"
+ xmlns:request="http://www.geca.sz.com/ws/schema/request" xmlns:response="http://www.geca.sz.com/ws/schema/response">
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEB SERVICES WSDL TYPES DECLARATIONS #### -->
+ <!-- ************************************************************** -->
+
+ <wsdl:types>
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:import namespace="http://www.geca.sz.com/ws/schema/request" schemaLocation="./schema/request/GecaWsRequestSchema.xsd" />
+   <xsd:import namespace="http://www.geca.sz.com/ws/schema/response" schemaLocation="./schema/response/GecaWsResponseSchema.xsd" />
+  </xsd:schema>
+ </wsdl:types>
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEB SERVICES WSDL MESSAGES DECLARATIONS #### -->
+ <!-- ************************************************************** -->
+
+
+ <wsdl:message name="EchoRequestMsg">
+  <wsdl:part name="request" element="request:Echo" />
+ </wsdl:message>
+ <wsdl:message name="EchoResponseMsg">
+  <wsdl:part name="response" element="response:EchoResponse" />
+ </wsdl:message>
+
+
+
+ <wsdl:message name="OrderListRequsetMsg">
+  <wsdl:part name="request" element="request:OrderList" />
+ </wsdl:message>
+ <wsdl:message name="OrderListResponseMsg">
+  <wsdl:part name="response" element="response:OrderListResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="PickRequsetMsg">
+  <wsdl:part name="request" element="request:Pick" />
+ </wsdl:message>
+ <wsdl:message name="PickResponseMsg">
+  <wsdl:part name="response" element="response:PickResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="PackRequsetMsg">
+  <wsdl:part name="request" element="request:Pack" />
+ </wsdl:message>
+ <wsdl:message name="PackResponseMsg">
+  <wsdl:part name="response" element="response:PackResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="ShipRequsetMsg">
+  <wsdl:part name="request" element="request:Ship" />
+ </wsdl:message>
+ <wsdl:message name="ShipResponseMsg">
+  <wsdl:part name="response" element="response:ShipResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="ShipDocRequsetMsg">
+  <wsdl:part name="request" element="request:ShipDoc" />
+ </wsdl:message>
+ <wsdl:message name="ShipDocResponseMsg">
+  <wsdl:part name="response" element="response:ShipDocResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="TrackRequsetMsg">
+  <wsdl:part name="request" element="request:Track" />
+ </wsdl:message>
+ <wsdl:message name="TrackResponseMsg">
+  <wsdl:part name="response" element="response:TrackResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="EditPackingRequsetMsg">
+  <wsdl:part name="request" element="request:EditPacking" />
+ </wsdl:message>
+ <wsdl:message name="EditPackingResponseMsg">
+  <wsdl:part name="response" element="response:EditPackingResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="RestorePackingRequsetMsg">
+  <wsdl:part name="request" element="request:RestorePacking" />
+ </wsdl:message>
+ <wsdl:message name="RestorePackingResponseMsg">
+  <wsdl:part name="response" element="response:RestorePackingResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="OrderDetailsRequsetMsg">
+  <wsdl:part name="request" element="request:OrderDetails" />
+ </wsdl:message>
+ <wsdl:message name="OrderDetailsResponseMsg">
+  <wsdl:part name="response" element="response:OrderDetailsResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="PartShipReqRequsetMsg">
+  <wsdl:part name="request" element="request:PartShipReq" />
+ </wsdl:message>
+ <wsdl:message name="PartShipReqResponseMsg">
+  <wsdl:part name="response" element="response:PartShipReqResponse" />
+ </wsdl:message>
+ 
+ <wsdl:message name="PartShipConfirmRequsetMsg">
+  <wsdl:part name="request" element="request:PartShipConfirm" />
+ </wsdl:message>
+ <wsdl:message name="PartShipConfirmResponseMsg">
+  <wsdl:part name="response" element="response:PartShipConfirmResponse" />
+ </wsdl:message>
+
+
+
+ <wsdl:message name="ServiceInvoiceRequsetMsg">
+  <wsdl:part name="request" element="request:ServiceInvoice" />
+ </wsdl:message>
+ <wsdl:message name="ServiceInvoiceResponseMsg">
+  <wsdl:part name="response" element="response:ServiceInvoiceResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="DailyStatementRequsetMsg">
+  <wsdl:part name="request" element="request:DailyStatement" />
+ </wsdl:message>
+ <wsdl:message name="DailyStatementResponseMsg">
+  <wsdl:part name="response" element="response:DailyStatementResponse" />
+ </wsdl:message>
+
+
+
+ <wsdl:message name="CancelOrderRequsetMsg">
+  <wsdl:part name="request" element="request:CancelOrder" />
+ </wsdl:message>
+ <wsdl:message name="CancelOrderResponseMsg">
+  <wsdl:part name="response" element="response:CancelOrderResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="RogRefundReqRequsetMsg">
+  <wsdl:part name="request" element="request:RogRefundReq" />
+ </wsdl:message>
+ <wsdl:message name="RogRefundReqResponseMsg">
+  <wsdl:part name="response" element="response:RogRefundReqResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="RogRefundActivateRequsetMsg">
+  <wsdl:part name="request" element="request:RogRefundActivate" />
+ </wsdl:message>
+ <wsdl:message name="RogRefundActivateResponseMsg">
+  <wsdl:part name="response" element="response:RogRefundActivateResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="RogExchangeReqRequsetMsg">
+  <wsdl:part name="request" element="request:RogExchangeReq" />
+ </wsdl:message>
+ <wsdl:message name="RogExchangeReqResponseMsg">
+  <wsdl:part name="response" element="response:RogExchangeReqResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="RogExchangeActivateRequsetMsg">
+  <wsdl:part name="request" element="request:RogExchangeActivate" />
+ </wsdl:message>
+ <wsdl:message name="RogExchangeActivateResponseMsg">
+  <wsdl:part name="response" element="response:RogExchangeActivateResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="ChargebackRequsetMsg">
+  <wsdl:part name="request" element="request:Chargeback" />
+ </wsdl:message>
+ <wsdl:message name="ChargebackResponseMsg">
+  <wsdl:part name="response" element="response:ChargebackResponse" />
+ </wsdl:message>
+
+
+
+ <wsdl:message name="SaleSummRequsetMsg">
+  <wsdl:part name="request" element="request:SaleSumm" />
+ </wsdl:message>
+ <wsdl:message name="SaleSummResponseMsg">
+  <wsdl:part name="response" element="response:SaleSummResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="CustInfoRequsetMsg">
+  <wsdl:part name="request" element="request:CustInfo" />
+ </wsdl:message>
+ <wsdl:message name="CustInfoResponseMsg">
+  <wsdl:part name="response" element="response:CustInfoResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="FailedTransRequsetMsg">
+  <wsdl:part name="request" element="request:FailedTrans" />
+ </wsdl:message>
+ <wsdl:message name="FailedTransResponseMsg">
+  <wsdl:part name="response" element="response:FailedTransResponse" />
+ </wsdl:message>
+
+ <wsdl:message name="RollingReservesRequsetMsg">
+  <wsdl:part name="request" element="request:RollingReserves" />
+ </wsdl:message>
+ <wsdl:message name="RollingReservesResponseMsg">
+  <wsdl:part name="response" element="response:RollingReservesResponse" />
+ </wsdl:message>
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEB SERVICES WSDL PORT TYPE DECLARATION #### -->
+ <!-- ************************************************************** -->
+
+
+ <wsdl:portType name="GecaWsHandlerPort">
+
+
+  <wsdl:operation name="Echo">
+   <wsdl:input message="impl:EchoRequestMsg" name="echoRequest" />
+   <wsdl:output message="impl:EchoResponseMsg" name="echoResponse" />
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="OrderList">
+   <wsdl:input message="impl:OrderListRequsetMsg" name="orderListRequest" />
+   <wsdl:output message="impl:OrderListResponseMsg" name="orderListResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="Pick">
+   <wsdl:input message="impl:PickRequsetMsg" name="pickRequest" />
+   <wsdl:output message="impl:PickResponseMsg" name="pickResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="Pack">
+   <wsdl:input message="impl:PackRequsetMsg" name="packRequest" />
+   <wsdl:output message="impl:PackResponseMsg" name="packResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="Ship">
+   <wsdl:input message="impl:ShipRequsetMsg" name="shipRequest" />
+   <wsdl:output message="impl:ShipResponseMsg" name="shipResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="ShipDoc">
+   <wsdl:input message="impl:ShipDocRequsetMsg" name="shipDocRequest" />
+   <wsdl:output message="impl:ShipDocResponseMsg" name="shipDocResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="Track">
+   <wsdl:input message="impl:TrackRequsetMsg" name="trackRequest" />
+   <wsdl:output message="impl:TrackResponseMsg" name="trackResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="EditPacking">
+   <wsdl:input message="impl:EditPackingRequsetMsg" name="editPackingRequest" />
+   <wsdl:output message="impl:EditPackingResponseMsg" name="editPackingResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="RestorePacking">
+   <wsdl:input message="impl:RestorePackingRequsetMsg" name="restorePackingRequest" />
+   <wsdl:output message="impl:RestorePackingResponseMsg" name="restorePackingResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="OrderDetails">
+   <wsdl:input message="impl:OrderDetailsRequsetMsg" name="orderDetailsRequest" />
+   <wsdl:output message="impl:OrderDetailsResponseMsg" name="orderDetailsResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="PartShipReq">
+   <wsdl:input message="impl:PartShipReqRequsetMsg" name="partShipReqRequest" />
+   <wsdl:output message="impl:PartShipReqResponseMsg" name="partShipReqResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="PartShipConfirm">
+   <wsdl:input message="impl:PartShipConfirmRequsetMsg" name="partShipConfirmRequest" />
+   <wsdl:output message="impl:PartShipConfirmResponseMsg" name="partShipConfirmResponse" />
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="ServiceInvoice">
+   <wsdl:input message="impl:ServiceInvoiceRequsetMsg" name="serviceInvoiceRequest" />
+   <wsdl:output message="impl:ServiceInvoiceResponseMsg" name="serviceInvoiceResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="DailyStatement">
+   <wsdl:input message="impl:DailyStatementRequsetMsg" name="dailyStatementRequest" />
+   <wsdl:output message="impl:DailyStatementResponseMsg" name="dailyStatementResponse" />
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="CancelOrder">
+   <wsdl:input message="impl:CancelOrderRequsetMsg" name="cancelOrderRequest" />
+   <wsdl:output message="impl:CancelOrderResponseMsg" name="cancelOrderResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="RogRefundReq">
+   <wsdl:input message="impl:RogRefundReqRequsetMsg" name="rogRefundReqRequest" />
+   <wsdl:output message="impl:RogRefundReqResponseMsg" name="rogRefundReqResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="RogRefundActivate">
+   <wsdl:input message="impl:RogRefundActivateRequsetMsg" name="rogRefundActivateRequest" />
+   <wsdl:output message="impl:RogRefundActivateResponseMsg" name="rogRefundActivateResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="RogExchangeReq">
+   <wsdl:input message="impl:RogExchangeReqRequsetMsg" name="rogExchangeReqRequest" />
+   <wsdl:output message="impl:RogExchangeReqResponseMsg" name="rogExchangeReqResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="RogExchangeActivate">
+   <wsdl:input message="impl:RogExchangeActivateRequsetMsg" name="rogExchangeActivateRequest" />
+   <wsdl:output message="impl:RogExchangeActivateResponseMsg" name="rogExchangeActivateResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="Chargeback">
+   <wsdl:input message="impl:ChargebackRequsetMsg" name="chargebackRequest" />
+   <wsdl:output message="impl:ChargebackResponseMsg" name="chargebackResponse" />
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="SaleSumm">
+   <wsdl:input message="impl:SaleSummRequsetMsg" name="saleSummRequest" />
+   <wsdl:output message="impl:SaleSummResponseMsg" name="saleSummResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="CustInfo">
+   <wsdl:input message="impl:CustInfoRequsetMsg" name="custInfoRequest" />
+   <wsdl:output message="impl:CustInfoResponseMsg" name="custInfoResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="FailedTrans">
+   <wsdl:input message="impl:FailedTransRequsetMsg" name="failedTransRequest" />
+   <wsdl:output message="impl:FailedTransResponseMsg" name="failedTransResponse" />
+  </wsdl:operation>
+
+  <wsdl:operation name="RollingReserves">
+   <wsdl:input message="impl:RollingReservesRequsetMsg" name="rollingReservesRequest" />
+   <wsdl:output message="impl:RollingReservesResponseMsg" name="rollingReservesResponse" />
+  </wsdl:operation>
+
+
+ </wsdl:portType>
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEB SERVICES WSDL PORT BINDING DECLARATION #### -->
+ <!-- ************************************************************** -->
+
+
+ <wsdl:binding name="GecaWsHandlerSoapBinding" type="impl:GecaWsHandlerPort">
+  <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+
+  <wsdl:operation name="Echo">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="echoRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="echoResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="OrderList">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="orderListRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="orderListResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="Pick">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="pickRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="pickResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="Pack">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="packRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="packResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="Ship">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="shipRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="shipResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="ShipDoc">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="shipDocRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="shipDocResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="Track">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="trackRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="trackResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="EditPacking">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="editPackingRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="editPackingResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="RestorePacking">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="restorePackingRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="restorePackingResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="OrderDetails">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="orderDetailsRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="orderDetailsResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="PartShipReq">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="partShipReqRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="partShipReqResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="PartShipConfirm">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="partShipConfirmRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="partShipConfirmResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="ServiceInvoice">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="serviceInvoiceRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="serviceInvoiceResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="DailyStatement">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="dailyStatementRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="dailyStatementResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="CancelOrder">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="cancelOrderRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="cancelOrderResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="RogRefundReq">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="rogRefundReqRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="rogRefundReqResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="RogRefundActivate">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="rogRefundActivateRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="rogRefundActivateResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="RogExchangeReq">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="rogExchangeReqRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="rogExchangeReqResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="RogExchangeActivate">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="rogExchangeActivateRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="rogExchangeActivateResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="Chargeback">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="chargebackRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="chargebackResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+
+
+  <wsdl:operation name="SaleSumm">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="saleSummRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="saleSummResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="CustInfo">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="custInfoRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="custInfoResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="FailedTrans">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="failedTransRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="failedTransResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+  <wsdl:operation name="RollingReserves">
+   <wsdlsoap:operation soapAction="" />
+   <wsdl:input name="rollingReservesRequest">
+    <wsdlsoap:body use="literal" />
+   </wsdl:input>
+   <wsdl:output name="rollingReservesResponse">
+    <wsdlsoap:body use="literal" />
+   </wsdl:output>
+  </wsdl:operation>
+
+
+ </wsdl:binding>
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEB SERVICES WSDL PORT SERVICE DECLARATION #### -->
+ <!-- ************************************************************** -->
+
+ <wsdl:service name="GecaWs">
+  <wsdl:port binding="impl:GecaWsHandlerSoapBinding" name="GecaWsHandler">
+   <!-- wsdlsoap:address location="http://localhost:8080/GecaWs/services/GecaWsHandler" /-->
+   <!-- wsdlsoap:address location="http://192.168.1.93:8095/GecaWs/services/GecaWsHandler" /-->
+   <!-- wsdlsoap:address location="http://staging.swipezoom.com/GecaWs/services/GecaWsHandler" /-->
+   <wsdlsoap:address location="http://staging.swipezoom.com:8080/GecaWs/services/GecaWsHandler" />
+   
+  </wsdl:port>
+ </wsdl:service>
+</wsdl:definitions>

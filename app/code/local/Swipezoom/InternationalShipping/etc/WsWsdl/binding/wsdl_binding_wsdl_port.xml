@@ -1,0 +1,16 @@
+<bindings
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  wsdlLocation="../GecaWs.wsdl"	
+  xmlns="http://java.sun.com/xml/ns/jaxws">
+  
+ <enableWrapperStyle>false</enableWrapperStyle>
+ <package name="com.sz.geca.ws" />
+
+ <bindings node="wsdl:definitions/wsdl:portType">
+  <class name="GecaWsHandler" />
+ </bindings>
+ <bindings node="wsdl:definitions/wsdl:service">
+  <class name="GecaWs" />
+ </bindings>
+</bindings>

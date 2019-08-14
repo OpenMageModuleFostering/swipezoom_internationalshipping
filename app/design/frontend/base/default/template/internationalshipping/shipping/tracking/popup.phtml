@@ -1,0 +1,320 @@
+
+<div id="loading-mask">
+    <p id="loading_mask_loader" class="loader"><img alt="Loading..." src="<?php echo $this->getSkinUrl('internationalshipping/images/ajax-loader-tr.gif') ?>"><br>Please wait...</p>
+</div>
+<style>
+#loading-mask {
+    color: #D85909;
+    font-size: 1.1em;
+    font-weight: bold;
+    opacity: 0.8;
+    position: absolute;
+    text-align: center;
+    z-index: 999999;
+}
+#loading-mask .loader {
+    background: none repeat scroll 0 0 #FFF4E9;
+    border: 2px solid #F1AF73;
+    color: #D85909;
+    font-weight: bold;
+    left: 50%;
+    margin-left: -105px;
+    padding: 15px 30px;
+    position: fixed;
+    text-align: center;
+    top: 45%;
+    width: 150px;
+    z-index: 1000;
+}
+</style>
+<div id="content" style="display:none;">
+<?php $_results = $this->getTrackingInfo(); ?>
+<?php 
+
+	function getCallerArray(){
+        $merchantRefNo = "123";
+          
+        $callerObj = array("MerchantID" => Mage::getStoreConfig('carriers/swipezoom/merchantid',Mage::app()->getStore()),
+        "MerchantKey" => Mage::getStoreConfig('carriers/swipezoom/merchantkey',Mage::app()->getStore()),
+        "Version"=> "SW0101", 
+        "Datetime"      => date("Y-m-d h:i:s"),
+        "MerchantRefNo"      => $merchantRefNo); 
+        return $callerObj; 
+    }
+		
+		
+	foreach($_results as $shipid => $_result){
+		  $shipment = Mage::getModel('sales/order_shipment')->load($shipid);	
+		   $shipmentorder = Mage::getModel('sales/order_shipment')->getCollection()->addFieldToFilter('increment_id', $shipid)->getFirstItem();
+		  foreach($_result as $trackingdata){
+				  $trackingnumber = $trackingdata['number'];
+				  break;
+		  }
+			  $orderid  = $shipmentorder->getOrderId();
+		  $order = Mage::getModel('sales/order')->load($orderid);
+	 	  $swipwzoomorder = $order->getSwipezoomOrderNumberTemp();
+			if($swipwzoomorder){
+					try {
+							$client = Mage::helper('internationalshipping')->_createSoapClient();
+							$params = array("Caller" => getCallerArray(),"OrderNumber" =>$swipwzoomorder,"TrackingNumber"=>$trackingnumber );
+							Mage::log($params,null,'SW_ShipTracking'.$swipwzoomorder.'.log');
+							$response = $client->Track($params);
+              if($response->ResponseStatusCode != '000') {
+                Mage::helper('internationalshipping')->sendServiceFailureAlert($params,$response,'Track');
+              }
+							Mage::log($response,null,'SW_ShipTracking'.$swipwzoomorder.'.log');
+					} catch (Exception $e) {
+							$debugData['result'] = array('error' => $e->getMessage(), 'code' => $e->getCode());
+							Mage::log($debugData,null,'debug.log');
+							Mage::logException($e);
+					}
+			}
+			break;
+		  
+	 }
+		 
+		 if($response->ResponseStatusCode == '000'){ ?>
+<?php if($shipid): ?>
+<div class="page-title title-buttons">
+  <h1><?php echo $this->__('Tracking Information'); ?></h1>
+  <button class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+</div>
+<h2 class="sub-title"><?php echo $this->__('Shipment #').$shipid; ?></h2>
+<?php endif; ?>
+<table class="tracking-table-popup data-table" id="track-history-table1">
+  <tbody>
+    <?php if($response->Tracking->AirWayBillNumber){ ?>
+    <tr>
+      <td><strong>Airway Bil No.: </strong><?php echo $response->Tracking->AirWayBillNumber;  ?></td>
+    </tr>
+    <?php } ?>
+    <?php if($response->Tracking->OriginServiceArea){ ?>
+    <tr>
+      <td><strong>From : </strong><?php echo $response->Tracking->OriginServiceArea;  ?> <strong> To: </strong><?php echo $response->Tracking->DestinationServiceArea;  ?></td>
+    </tr>
+    <?php } ?>
+    <?php $model = Mage::getModel('internationalshipping/shipmentdetail')->getCollection()->addFieldToFilter('courierwaybillno',$response->Tracking->AirWayBillNumber);
+	 foreach($model as $mine){  ?>
+    <?php if($mine->getPickupdue()){ ?>
+    <tr>
+      <td><strong>Shipped Date: </strong><?php echo date('l,F j', strtotime($mine->getPickupdue()));  ?></td>
+    </tr>
+    <?php } ?>
+    <?php } ?>
+    <?php if($response->Tracking->DeliveryDate){ ?>
+    <tr>
+      <td><strong>Delivery Date: </strong><?php echo $response->Tracking->DeliveryDate;  ?></td>
+    </tr>
+    <?php } ?>
+    <?php if($response->Tracking->LastEvent->Description){ ?>
+    <tr>
+     <td><strong>Current Status: </strong><?php echo $response->Tracking->LastEvent->Description;  ?></td>
+    </tr>
+    <?php } ?>
+  </tbody>
+</table>
+<br />
+<script type="text/javascript">decorateTable('track-history-table1');</script>
+<br />
+<table class="data-table" id="track-history-table">
+  <thead>
+    <tr>
+      <th><?php echo $this->__('Location') ?></th>
+      <th><?php echo $this->__('Date') ?></th>
+      <th><?php echo $this->__('Local Time') ?></th>
+      <th><?php echo $this->__('Description') ?></th>
+    </tr>
+  </thead>
+  <?php if(is_array($response->Tracking->EventDates->EventDate)){
+	  	foreach($response->Tracking->EventDates->EventDate as $tracks){ ?>
+		<tr>
+  <td><?php echo $tracks->TrackingEvents->TrackingEvent->Location ?></td>
+  <td><?php echo $tracks->TrackingEvents->TrackingEvent->TransitionDate ?></td>
+  <td><?php echo $tracks->TrackingEvents->TrackingEvent->TransitionTime ?></td>
+  <td><?php echo $tracks->TrackingEvents->TrackingEvent->Description ?></td>
+  
+  </tr>
+		<?php } 
+	 }else{ ?>
+  <tbody>
+  <tr>
+  <td><?php echo $response->Tracking->EventDates->EventDate->TrackingEvents->TrackingEvent->Location ?></td>
+  <td><?php echo $response->Tracking->EventDates->EventDate->TrackingEvents->TrackingEvent->TransitionDate ?></td>
+  <td><?php echo $response->Tracking->EventDates->EventDate->TrackingEvents->TrackingEvent->TransitionTime ?></td>
+  <td><?php echo $response->Tracking->EventDates->EventDate->TrackingEvents->TrackingEvent->Description ?></td>
+  
+  </tr>
+  </tbody>
+  <?php } ?>
+</table>
+<script type="text/javascript">decorateTable('track-history-table');</script>
+<div class="buttons-set">
+  <button type="button" title="<?php echo $this->__('Close Window') ?>" class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+</div>
+<?php }else{ ?>
+<div class="page-title title-buttons">
+  <h1><?php echo $this->__('Tracking Information'); ?></h1>
+
+</div>
+<div class="content-header">
+<ul class="messages"><li class="error-msg"><ul><li><span><?php echo $this->__('There is no tracking available for this shipment.'); ?></span></li></ul></li></ul>
+</div>
+<div class="buttons-set">
+  <button type="button" title="<?php echo $this->__('Close Window') ?>" class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+</div>
+<?php } 
+		 if(!$swipwzoomorder){
+?>
+<div class="page-title title-buttons">
+  <h1><?php echo $this->__('Tracking Information'); ?></h1>
+  <button class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+</div>
+<?php if(sizeof($_results)>0): ?>
+<?php foreach($_results as $shipid => $_result): ?>
+<?php if($shipid): ?>
+<h2 class="sub-title"><?php echo $this->__('Shipment #').$shipid; ?></h2>
+<?php endif; ?>
+<?php if(sizeof($_result)>0): ?>
+<?php $rowCount = sizeof($_result); $counter = 1; ?>
+<?php $_id = 0; foreach($_result as $track): ?>
+<table class="tracking-table-popup data-table" id="tracking-table-popup-<?php echo $_id ?>">
+  <col width="15%" />
+  <col />
+  <tbody>
+    <?php if(is_object($track)): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Tracking Number:'); ?></th>
+      <td class="value"><?php echo $this->escapeHtml($track->getTracking()); ?></td>
+    </tr>
+    <?php if ($track->getCarrierTitle()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Carrier:'); ?></th>
+      <td class="value"><?php echo $this->escapeHtml($track->getCarrierTitle()); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if($track->getErrorMessage()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Error:'); ?></th>
+      <td class="error"><?php echo $this->__('Tracking information is currently not available. Please '); if ($this->getContactUsEnabled()) : ?><a href="<?php echo $this->getContactUs() ?>" title="<?php echo $this->__('contact us') ?>" onclick="this.target='_blank'"><?php echo $this->__('contact us') ?></a><?php echo $this->__(' for more information or '); endif; echo $this->__('email us at '); ?><a href="mailto:<?php echo $this->getStoreSupportEmail() ?>"><?php echo $this->getStoreSupportEmail() ?></a></td>
+    </tr>
+    <?php elseif($track->getTrackSummary()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Info:'); ?></th>
+      <td class="value"><?php echo $track->getTrackSummary(); ?></td>
+    </tr>
+    <?php elseif($track->getUrl()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Track:'); ?></th>
+      <td class="value"><a href="<?php echo $this->escapeHtml($track->getUrl()); ?>" onclick="this.target='_blank'"><?php echo $this->escapeHtml($track->getUrl()); ?></a></td>
+    </tr>
+    <?php else: ?>
+    <?php if ($track->getStatus()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Status:'); ?></th>
+      <td class="value"><?php echo $track->getStatus(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($track->getDeliverydate()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Delivered on:'); ?></th>
+      <td class="value"><?php echo $this->formatDeliveryDateTime($track->getDeliverydate(),$track->getDeliverytime()); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($track->getSignedby()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Signed by:'); ?></th>
+      <td class="value"><?php echo $track->getSignedby(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($track->getDeliveryLocation()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Delivered to:'); ?></th>
+      <td class="value"><?php echo $track->getDeliveryLocation(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($track->getShippedDate()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Shipped or billed on:'); ?></th>
+      <td class="value"><?php echo $track->getShippedDate(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($track->getService()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Service Type:'); ?></th>
+      <td class="value"><?php echo $track->getService(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($track->getWeight()): ?>
+    <tr>
+      <th class="label"><?php echo $this->__('Weight:'); ?></th>
+      <td class="value"><?php echo $track->getWeight(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php endif; ?>
+    <?php elseif(isset($track['title']) && isset($track['number']) && $track['number']): ?>
+    <!--if the tracking is custom value-->
+    <tr>
+      <th class="label"><?php echo ($track['title'] ? $this->escapeHtml($track['title']) : $this->__('N/A')); ?>:</th>
+      <td class="value"><?php echo (isset($track['number']) ? $this->escapeHtml($track['number']) : ''); ?></td>
+    </tr>
+    <?php endif; ?>
+  </tbody>
+</table>
+<script type="text/javascript">decorateTable('tracking-table-popup-<?php echo $_id++ ?>');</script>
+<?php if (is_object($track) && sizeof($track->getProgressdetail())>0): ?>
+<br />
+<table class="data-table" id="track-history-table-<?php echo $track->getTracking(); ?>">
+  <col />
+  <col width="1" />
+  <col width="1" />
+  <col />
+  <thead>
+    <tr>
+      <th><?php echo $this->__('Location') ?></th>
+      <th><?php echo $this->__('Date') ?></th>
+      <th><?php echo $this->__('Local Time') ?></th>
+      <th><?php echo $this->__('Description') ?></th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach($track->getProgressdetail() as $_detail): ?>
+    <?php $_detailDate = (isset($_detail['deliverydate']) ? $this->formatDeliveryDate($_detail['deliverydate']) : '') ?>
+    <?php $_detailTime = (isset($_detail['deliverytime']) ? $this->formatDeliveryTime($_detail['deliverytime'], $_detail['deliverydate']) : '') ?>
+    <tr>
+      <td><?php echo (isset($_detail['deliverylocation']) ? $_detail['deliverylocation'] : ''); ?></td>
+      <td><span class="nobr"><?php echo $_detailDate ?></span></td>
+      <td><span class="nobr"><?php echo $_detailTime ?></span></td>
+      <td><?php echo (isset($_detail['activity']) ? $_detail['activity'] : '') ?></td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+<script type="text/javascript">decorateTable('track-history-table-<?php echo $track->getTracking(); ?>');</script>
+<?php endif; ?>
+<div class="divider"></div>
+<?php if($counter!=$rowCount): ?>
+<?php endif; ?>
+<?php $counter++; ?>
+<!--end for each tracking information-->
+<?php endforeach; ?>
+<?php else: ?>
+<p><?php echo $this->__('There is no tracking available for this shipment.'); ?></p>
+<?php endif; ?>
+<?php endforeach; ?>
+<?php else: ?>
+<p><?php echo $this->__('There is no tracking available.'); ?></p>
+<?php endif; ?>
+<div class="buttons-set">
+  <button type="button" title="<?php echo $this->__('Close Window') ?>" class="button" onclick="window.close(); window.opener.focus();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+</div>
+<?php } ?>
+
+
+</div>
+<script>
+window.onload = function(){
+ setTimeout(function(){
+ $('loading-mask').hide();	
+ $('content').show();	},4000);
+}
+</script>

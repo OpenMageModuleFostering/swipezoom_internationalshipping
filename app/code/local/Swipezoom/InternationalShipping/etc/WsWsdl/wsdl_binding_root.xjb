@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bindings wsdlLocation="GecaWs.wsdl">
+ 
+ <bindings xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://java.sun.com/xml/ns/jaxws" 
+  node="wsdl:definitions">
+  <package name="com.sz.geca.ws"/>
+
+  <jxb:schemaBindings>
+   <jxb:package name="com.sz.geca.ws" />
+  </jxb:schemaBindings>
+  
+  
+ </bindings>
+
+</bindings>

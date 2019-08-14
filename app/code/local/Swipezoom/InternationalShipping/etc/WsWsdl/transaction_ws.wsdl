@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ws.api.sz.com/wsdl" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://ws.api.sz.com/wsdl" xmlns:intf="http://ws.api.sz.com/wsdl"
+	xmlns:request="http://www.api.sz.com/ws/schema/transaction/request" xmlns:response="http://www.api.sz.com/ws/schema/transaction/response">
+
+	<!-- ************************************************************** -->
+	<!-- #### WEB SERVICES WSDL TYPES DECLARATIONS #### -->
+	<!-- ************************************************************** -->
+
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.api.sz.com/ws/schema/transaction/request" schemaLocation="./schema/request/transaction_request_schema.xsd" />
+			<xsd:import namespace="http://www.api.sz.com/ws/schema/transaction/response" schemaLocation="./schema/response/transaction_response_schema.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEB SERVICES WSDL MESSAGES DECLARATIONS #### -->
+	<!-- ************************************************************** -->
+
+
+	<wsdl:message name="EchoRequestMsg">
+		<wsdl:part name="request" element="request:Echo" />
+	</wsdl:message>
+	<wsdl:message name="EchoResponseMsg">
+		<wsdl:part name="response" element="response:EchoResponse" />
+	</wsdl:message>
+
+	<wsdl:message name="TransAddressLabelingRequestMsg">
+		<wsdl:part name="request" element="request:TransAddressLabeling" />
+	</wsdl:message>
+	<wsdl:message name="TransAddressLabelingResponseMsg">
+		<wsdl:part name="response" element="response:TransAddressLabelingResponse" />
+	</wsdl:message>
+
+	<wsdl:message name="TransAddressValidationRequestMsg">
+		<wsdl:part name="request" element="request:TransAddressValidation" />
+	</wsdl:message>
+	<wsdl:message name="TransAddressValidationResponseMsg">
+		<wsdl:part name="response" element="response:TransAddressValidationResponse" />
+	</wsdl:message>
+
+	<wsdl:message name="TransLogisticsReqRequestMsg">
+		<wsdl:part name="request" element="request:TransLogisticsReq" />
+	</wsdl:message>
+	<wsdl:message name="TransLogisticsReqResponseMsg">
+		<wsdl:part name="response" element="response:TransLogisticsReqResponse" />
+	</wsdl:message>
+
+	<wsdl:message name="TransLogisticsConfirmRequestMsg">
+		<wsdl:part name="request" element="request:TransLogisticsConfirm" />
+	</wsdl:message>
+	<wsdl:message name="TransLogisticsConfirmResponseMsg">
+		<wsdl:part name="response" element="response:TransLogisticsConfirmResponse" />
+	</wsdl:message>
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEB SERVICES WSDL PORT TYPE DECLARATION #### -->
+	<!-- ************************************************************** -->
+
+
+	<wsdl:portType name="TransactionWsHandlerPort">
+
+
+		<wsdl:operation name="Echo">
+			<wsdl:input message="impl:EchoRequestMsg" name="echoRequest" />
+			<wsdl:output message="impl:EchoResponseMsg" name="echoResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="TransAddressLabeling">
+			<wsdl:input message="impl:TransAddressLabelingRequestMsg" name="transAddressLabelingRequest" />
+			<wsdl:output message="impl:TransAddressLabelingResponseMsg" name="transAddressLabelingResponse" />
+		</wsdl:operation>
+
+
+		<wsdl:operation name="TransAddressValidation">
+			<wsdl:input message="impl:TransAddressValidationRequestMsg" name="transAddressValidationRequest" />
+			<wsdl:output message="impl:TransAddressValidationResponseMsg" name="transAddressValidationResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="TransLogisticsReq">
+			<wsdl:input message="impl:TransLogisticsReqRequestMsg" name="transLogisticsReqRequest" />
+			<wsdl:output message="impl:TransLogisticsReqResponseMsg" name="transLogisticsReqResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="TransLogisticsConfirm">
+			<wsdl:input message="impl:TransLogisticsConfirmRequestMsg" name="transLogisticsConfirmRequest" />
+			<wsdl:output message="impl:TransLogisticsConfirmResponseMsg" name="transLogisticsConfirmResponse" />
+		</wsdl:operation>
+
+
+	</wsdl:portType>
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEB SERVICES WSDL PORT BINDING DECLARATION #### -->
+	<!-- ************************************************************** -->
+
+
+	<wsdl:binding name="TransactionWsHandlerSoapBinding" type="impl:TransactionWsHandlerPort">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+
+		<wsdl:operation name="Echo">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="echoRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="echoResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="TransAddressLabeling">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="transAddressLabelingRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="transAddressLabelingResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="TransAddressValidation">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="transAddressValidationRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="transAddressValidationResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="TransLogisticsReq">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="transLogisticsReqRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="transLogisticsReqResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="TransLogisticsConfirm">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="transLogisticsConfirmRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="transLogisticsConfirmResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+
+
+	</wsdl:binding>
+
+
+	<!-- ************************************************************** -->
+	<!-- #### WEB SERVICES WSDL PORT SERVICE DECLARATION #### -->
+	<!-- ************************************************************** -->
+
+	<wsdl:service name="TransactionWs">
+		<wsdl:port binding="impl:TransactionWsHandlerSoapBinding" name="TransactionWsHandler">
+			<wsdlsoap:address location="http://staging.swipezoom.com/transaction/services/transaction" />
+			<!-- wsdlsoap:address location="http://staging.swipezoom.com/transaction/services/transaction" / -->
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

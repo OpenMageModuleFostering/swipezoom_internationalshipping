@@ -1,0 +1,61 @@
+
+<div class="grid np">
+  <div class="hor-scroll">
+    <table cellspacing="0" class="data order-tables">
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+               	<th width="70"><?php echo Mage::helper('sales')->__('Item') ?></th>
+                <th width="120"><?php echo Mage::helper('sales')->__('Box Code') ?></th>
+                <th width="70"><?php echo Mage::helper('sales')->__('Box No.') ?></th>
+                <th width="500"><?php echo Mage::helper('sales')->__('Product Description') ?></th>
+                <th width="150"><?php echo Mage::helper('sales')->__('Product Code') ?></th>
+                <th width="70"><?php echo Mage::helper('sales')->__('Quantity') ?></th>
+            </tr>
+        </thead>
+        <?php 
+		$invoiceid  = Mage::app()->getRequest()->getParam('invoice_id');
+		$invoice= Mage::getModel('sales/order_invoice')->load($invoiceid);
+		$order= Mage::getModel('sales/order')->load($invoice->getOrder()->getId());
+		$swipwzoomorder = $order->getSwipezoomOrderNumberTemp();
+		
+		$_items = Mage::getModel('internationalshipping/packingdetail')->getCollection()->addFieldToFilter('swipezoomorderid',$swipwzoomorder); ?>
+        <tbody class="<?php echo $_i%2?'even':'odd' ?>">
+		<?php $_i=0;foreach ($_items as $_item): ?>
+        <?php $_i++; ?>
+        	<tr class="border">
+            <td><?php echo $_i ?></td>
+		    <td><?php echo $_item->getBoxcode() ?></td>
+            <td><?php echo $_item->getBoxno() ?></td>
+            <td><?php 	echo $products = Mage::getModel('catalog/product')->loadByAttribute('sku', $_item->getProductcode())->getName(); 											//$productname = $_Pdetails->getName();
+//			 $_item->getProductname() ?></td>
+            <td><?php echo $_item->getProductcode() ?></td>
+            <td><?php echo $_item->getProductqty() ?></td>
+			</tr>
+       <?php endforeach; ?>
+        </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+                    Event.observe(document,"dom:loaded",function(){
+						<?php if($order->getSwipezoomOrderCreditmemo()<3 && $order->getSwipezoomOrderNumberTemp()){ ?>
+						 $$('[title="Print"]').each(function(el){
+                         	el.update('<span><span><span></span>Print Packing Instruction</span></span>');
+						 });
+						 <?php }else{  ?>
+						 $$('[title="Print"]').each(function(el){
+                         	el.remove(); 
+						 });
+						 <?php } ?>
+						 
+                    });
+
+                </script>

@@ -1,0 +1,42 @@
+<?php
+
+    $_order = new Mage_Sales_Model_Order();
+    $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+    $_order->loadByIncrementId($orderId);
+	
+	$failureUrl = Mage::getBaseUrl().'/cardpayment/payment/process?status=failure&orderid='.$orderId;
+
+    $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+    $paymentmode = Mage::getStoreConfig('carriers/swipezoom/paymentenabled',Mage::app()->getStore());
+
+    $shippingMethod = $order->getData("shipping_method");
+    // If shipping method is Swipezoom and Payment is enabled
+    if(strpos($shippingMethod,"swipezoom") !== FALSE && $paymentmode == 1):
+
+        $order->getSwipezoomOrderConfirmed();
+        $result = $result = Mage::getModel("Swipezoom_InternationalShipping_Model_Carrier_Swipezoom")->confirmOrderInvoiceRequest($order->getData("shipping_method"),Mage::getSingleton('sales/quote')->load($order->getQuoteId())->getSwipezoomOrderNumber(),$orderId,0);
+        $read= Mage::getSingleton('core/resource')->getConnection('core_write');
+            
+        if(is_array($result) && $result[0][0] == "000"){
+            // TransConfirm Successfully Processed
+            $order->setSwipezoomOrderConfirmed(1);
+            $response = $result[1];
+            $redirect_url = $response->OrderPaymentDetails->RedirectUrl;
+            $value=$read->query("update sales_flat_order SET swipezoom_order_confirmed = '1' where entity_id=".$order->getEntityId());
+        }else{
+            // error returned
+            $order->setSwipezoomOrderConfirmed(0);
+            $order->setSwipezoomOrderConfirmedErrormessage($result[0][1]);
+            $value=$read->query("update sales_flat_order SET swipezoom_order_confirmed = '0' , swipezoom_order_confirmed_errormessage='".$result[0][1]."' where entity_id=".$order->getEntityId());
+        }   
+
+    endif;
+?>
+
+<div style="text-align: center;width:100%;">
+    <span class="please-wait" style="float:none">
+        <img src="<?php echo $this->getSkinUrl('internationalshipping/css/indicator.gif') ?>" style="width:16px !important;margin-top:5px !important" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Loading...')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Loading...')) ?>" class="v-middle" /> <?php echo $this->__('Processing Payment...') ?>
+    </span>
+  <iframe src="<?php if(!empty($redirect_url)) {echo $redirect_url;}else{echo $failureUrl;} ?>" width="420px" height="400px" frameBorder="0" style="margin:0 auto;display:block;text-align:center"/>
+</div>
+

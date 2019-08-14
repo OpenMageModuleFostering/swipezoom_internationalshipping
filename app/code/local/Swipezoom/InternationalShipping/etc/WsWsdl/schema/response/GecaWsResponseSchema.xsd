@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.geca.sz.com/ws/schema/response" xmlns:ResponseSchema="http://www.geca.sz.com/ws/schema/response"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEBSERVICES TYPE DECLARATIONS #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:element name="EchoResponse" type="ResponseSchema:EchoResponseType" />
+
+ <xsd:element name="OrderListResponse" type="ResponseSchema:OrderListResponseType" />
+ <xsd:element name="PickResponse" type="ResponseSchema:PickResponseType" />
+ <xsd:element name="PackResponse" type="ResponseSchema:PackResponseType" />
+ <xsd:element name="ShipResponse" type="ResponseSchema:ShipResponseType" />
+ <xsd:element name="ShipDocResponse" type="ResponseSchema:ShipDocResponseType" />
+ <xsd:element name="TrackResponse" type="ResponseSchema:TrackResponseType" />
+ <xsd:element name="EditPackingResponse" type="ResponseSchema:EditPackingResponseType" />
+ <xsd:element name="RestorePackingResponse" type="ResponseSchema:RestorePackingResponseType" />
+ <xsd:element name="OrderDetailsResponse" type="ResponseSchema:OrderDetailsResponseType" />
+ <xsd:element name="PartShipReqResponse" type="ResponseSchema:PartShipReqResponseType" />
+ <xsd:element name="PartShipConfirmResponse" type="ResponseSchema:PartShipConfirmResponseType" />
+
+ <xsd:element name="ServiceInvoiceResponse" type="ResponseSchema:ServiceInvoiceResponseType" />
+ <xsd:element name="DailyStatementResponse" type="ResponseSchema:DailyStatementResponseType" />
+
+ <xsd:element name="CancelOrderResponse" type="ResponseSchema:CancelOrderResponseType" />
+ <xsd:element name="RogRefundReqResponse" type="ResponseSchema:RogRefundReqResponseType" />
+ <xsd:element name="RogRefundActivateResponse" type="ResponseSchema:RogRefundActivateResponseType" />
+ <xsd:element name="RogExchangeReqResponse" type="ResponseSchema:RogExchangeReqResponseType" />
+ <xsd:element name="RogExchangeActivateResponse" type="ResponseSchema:RogExchangeActivateResponseType" />
+ <xsd:element name="ChargebackResponse" type="ResponseSchema:ChargebackResponseType" />
+
+ <xsd:element name="SaleSummResponse" type="ResponseSchema:SaleSummResponseType" />
+ <xsd:element name="CustInfoResponse" type="ResponseSchema:CustInfoResponseType" />
+ <xsd:element name="FailedTransResponse" type="ResponseSchema:FailedTransResponseType" />
+ <xsd:element name="RollingReservesResponse" type="ResponseSchema:RollingReservesResponseType" />
+
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEBSERVICES TYPE DEFINITIONS #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:complexType name="EchoResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="echoMessage" type="ResponseSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="OrderListResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="SaleOrders" type="ResponseSchema:SaleOrdersType" minOccurs="0" />
+   <xsd:element name="PagingResponse" type="ResponseSchema:PagingResponseType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PickResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="Customer" type="ResponseSchema:CustomerType" minOccurs="0" />
+   <xsd:element name="ProductLineItems" type="ResponseSchema:ProductLineItemsType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PackResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="Customer" type="ResponseSchema:CustomerType" minOccurs="0" />
+   <xsd:element name="PackingBoxes" type="ResponseSchema:PackingBoxesType" minOccurs="0" />
+   <xsd:element name="SpecialInstructions" type="ResponseSchema:SpecialInstructionsType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ShipResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="ShipmentBooking" type="ResponseSchema:ShipmentBookingType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ShipDocResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="ShipDoc" type="ResponseSchema:FileType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="Tracking" type="ResponseSchema:TrackingType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="EditPackingResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="AdjustmentVoucher" type="ResponseSchema:VoucherType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RestorePackingResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="AdjustmentVoucher" type="ResponseSchema:VoucherType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="OrderDetailsResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="Order" type="ResponseSchema:OrderType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PartShipReqResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="Order" type="ResponseSchema:OrderType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PartShipConfirmResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="ServiceInvoiceResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="Stakeholder" type="ResponseSchema:StakeholderType" minOccurs="0" />
+   <xsd:element name="ServiceInvoices" type="ResponseSchema:ServiceInvoicesType" minOccurs="0" />
+   <xsd:element name="File" type="ResponseSchema:FileType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="DailyStatementResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="Stakeholder" type="ResponseSchema:StakeholderType" minOccurs="0" />
+   <xsd:element name="DailyStatements" type="ResponseSchema:DailyStatementsType" minOccurs="0" />
+   <xsd:element name="File" type="ResponseSchema:FileType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="CancelOrderResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="ActivityDetail" type="ResponseSchema:ActivityDetailType" minOccurs="0" />
+   <xsd:element name="Vouchers" type="ResponseSchema:VouchersType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogRefundReqResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="RogActivityDetail" type="ResponseSchema:RogActivityDetailType" minOccurs="0" />
+   <xsd:element name="File" type="ResponseSchema:FileType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogRefundActivateResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="RogActivationDetail" type="ResponseSchema:RogActivationDetailType" minOccurs="0" />
+   <xsd:element name="Vouchers" type="ResponseSchema:VouchersType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogExchangeReqResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="RogActivityDetail" type="ResponseSchema:RogActivityDetailType" minOccurs="0" />
+   <xsd:element name="File" type="ResponseSchema:FileType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogExchangeActivateResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="RogActivationDetail" type="ResponseSchema:RogActivationDetailType" minOccurs="0" />
+   <xsd:element name="Vouchers" type="ResponseSchema:VouchersType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ChargebackResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="ActivityDetail" type="ResponseSchema:ActivityDetailType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+
+ <xsd:complexType name="SaleSummResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="SaleSumms" type="ResponseSchema:SaleSummsType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustInfoResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup" />
+   <xsd:element name="Customers" type="ResponseSchema:CustomersType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="FailedTransResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="SaleOrders" type="ResponseSchema:SaleOrdersType" minOccurs="0" />
+   <xsd:element name="PagingResponse" type="ResponseSchema:PagingResponseType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RollingReservesResponseType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CommonResponseGroup"></xsd:group>
+   <xsd:element name="RollingReserves" type="ResponseSchema:RollingReservesType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <!-- ************************************************************** -->
+ <!-- #### GECA WEBSERVICES GROUP DEFINITIONS #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:group name="CommonResponseGroup">
+  <xsd:sequence>
+   <xsd:element name="ResponseStatusCode" type="ResponseSchema:AN3" />
+   <xsd:element name="ResponseStatusDesc" type="ResponseSchema:S60" />
+   <xsd:element name="SWRefNo" type="ResponseSchema:N20" />
+   <xsd:element name="MerchantRefNo" type="ResponseSchema:AN20" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:group>
+
+ <xsd:group name="CustomerShipAddressGroup">
+  <xsd:sequence>
+   <xsd:element name="CustShipFirstName" type="ResponseSchema:S500" />
+   <xsd:element name="CustShipMidleName" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustShipLastName" type="ResponseSchema:S500" />
+   <xsd:element name="CustShipCountryA3" type="ResponseSchema:COUNTRY_CODE_A3" />
+   <xsd:element name="CustShipAddressLine1" type="ResponseSchema:S500" />
+   <xsd:element name="CustShipAddressLine2" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustShipCityName" type="ResponseSchema:S500" />
+   <xsd:element name="CustShipStateDivision" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustShipPOSTCode" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustShipPrimaryPhone" type="ResponseSchema:S500" />
+   <xsd:element name="CustShipSecondaryPhone" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustShipEmail" type="ResponseSchema:EMAIL" />
+   <xsd:element name="CustShipAddress" type="ResponseSchema:S500" />
+  </xsd:sequence>
+ </xsd:group>
+
+ <xsd:group name="CustomerBillAddressGroup">
+  <xsd:sequence>
+   <xsd:element name="CustBillFirstName" type="ResponseSchema:S500" />
+   <xsd:element name="CustBillMidleName" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustBillLastName" type="ResponseSchema:S500" />
+   <xsd:element name="CustBillCountryA3" type="ResponseSchema:COUNTRY_CODE_A3" />
+   <xsd:element name="CustBillAddressLine1" type="ResponseSchema:S500" />
+   <xsd:element name="CustBillAddressLine2" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustBillCityName" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustBillStateDivision" type="ResponseSchema:S500" />
+   <xsd:element name="CustBillPOSTCode" type="ResponseSchema:S500" />
+   <xsd:element name="CustBillPrimaryPhone" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CustBillSecondaryPhone" type="ResponseSchema:S500" />
+   <xsd:element name="CustBillEmail" type="ResponseSchema:EMAIL" minOccurs="0" />
+   
+   <xsd:element name="CustBillAddress" type="ResponseSchema:S500" />
+  </xsd:sequence>
+ </xsd:group>
+
+
+ <!-- ************************************************************** -->
+ <!-- #### COMMON COMPLEX TYPES #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:complexType name="PagingResponseType">
+  <xsd:sequence>
+   <xsd:element name="CurrentPage" type="ResponseSchema:INT" />
+   <xsd:element name="RecordsPerPage" type="ResponseSchema:INT" />
+   <xsd:element name="TotalRecords" type="ResponseSchema:INT" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SaleOrdersType">
+  <xsd:sequence>
+   <xsd:element name="SaleOrder" type="ResponseSchema:SaleOrderType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SaleOrderType">
+  <xsd:sequence>
+   <xsd:element name="OrderNo" type="ResponseSchema:INT" />
+   <xsd:element name="OrderDetail" type="ResponseSchema:SaleOrderDetailType" />
+   <xsd:element name="Customer" type="ResponseSchema:CustomerType" minOccurs="0" />
+   <xsd:element name="PaymentGateway" type="ResponseSchema:PaymentGatewayType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SaleOrderDetailType">
+  <xsd:sequence>
+   <xsd:element name="MerchantPickupDueDatetime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="MerchantProductAmount" type="ResponseSchema:FLOAT"></xsd:element>
+   <xsd:element name="MerchantCurrency" type="ResponseSchema:CURRENCY_CODE_A" />
+   <xsd:element name="MerchantOrderQty" type="ResponseSchema:INT" />
+   <xsd:element name="MerchantRefNo" type="ResponseSchema:AN" />
+   <xsd:element name="MerchantRMA" type="ResponseSchema:AN25" />
+   <xsd:element name="MerchantTransDateTime" type="ResponseSchema:DATETIME" />
+
+   <xsd:element name="CustTransDateTime" type="ResponseSchema:DATETIME" />
+   <xsd:element name="CustEstimatedDeliveryDateTime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="CustTotalValue" type="ResponseSchema:FLOAT" />
+   <xsd:element name="CustCurrency" type="ResponseSchema:CURRENCY_CODE_A" />
+
+   <xsd:element name="Courier" type="ResponseSchema:COURIER_TYPE_E" />
+   <xsd:element name="CourierWaybillNo" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="IsPackingModified" type="ResponseSchema:YN_A1" />
+   
+   <xsd:element name="OrderNoOrg" type="ResponseSchema:INT" />
+   <xsd:element name="OrderNoRef" type="ResponseSchema:INT" />
+   <xsd:element name="SZMarkup" type="ResponseSchema:FLOAT" />
+   <xsd:element name="IsReturnable" type="ResponseSchema:YN_A1" />
+   <xsd:element name="TransType" type="ResponseSchema:A2" />
+   <xsd:element name="TransStatus" type="ResponseSchema:A" />
+   <xsd:element name="PaymentStatus" type="ResponseSchema:A1" />
+
+   <xsd:element name="PaymentRefNo" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="OrderDescription" type="ResponseSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+ <xsd:complexType name="FailedOrdersType">
+  <xsd:sequence>
+   <xsd:element name="Order" type="ResponseSchema:OrderType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="OrderType">
+  <xsd:sequence>
+   <xsd:element name="OrderNo" type="ResponseSchema:INT" />
+   <xsd:element name="TransDetail" type="ResponseSchema:OrderTransDetailType" />
+   <xsd:element name="Merchant" type="ResponseSchema:MerchantType" />
+   <xsd:element name="Courier" type="ResponseSchema:CourierType" />
+   <xsd:element name="PaymentGateway" type="ResponseSchema:PaymentGatewayType" />
+   <xsd:element name="Customer" type="ResponseSchema:CustomerDetailType" minOccurs="0" />
+   <xsd:element name="ProductLineItems" type="ResponseSchema:ProductLineItemsType" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="OrderTransDetailType">
+  <xsd:sequence>
+   <xsd:element name="OrderNoRef" type="ResponseSchema:INT" />
+   <xsd:element name="OrderNoParent" type="ResponseSchema:INT" />
+   <xsd:element name="TransType" type="ResponseSchema:A" />
+   <xsd:element name="TransDateTime" type="ResponseSchema:DATETIME" />
+   <xsd:element name="PackingModified" type="ResponseSchema:YN_A1" />
+   <xsd:element name="TransStatus" type="ResponseSchema:A" />
+   <xsd:element name="PaymentStatus" type="ResponseSchema:A" />
+   <xsd:element name="LastUpdateDateTime" type="ResponseSchema:DATETIME" />
+   <xsd:element name="CustTotalValue" type="ResponseSchema:FLOAT" />
+   <xsd:element name="CustCurrency" type="ResponseSchema:CURRENCY_CODE_A" />
+   <xsd:element name="CustExcRate" type="ResponseSchema:FLOAT" />
+   <xsd:element name="CourierCharges" type="ResponseSchema:FLOAT" />
+   <xsd:element name="CourierDuties" type="ResponseSchema:FLOAT" />
+   <xsd:element name="InsuranceCharges" type="ResponseSchema:FLOAT" />
+   <xsd:element name="SZMarkup" type="ResponseSchema:FLOAT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="MerchantType">
+  <xsd:sequence>
+   <xsd:element name="MerchantRefNo" type="ResponseSchema:AN" minOccurs="0" />
+   <xsd:element name="TransDateTime" type="ResponseSchema:DATETIME" />
+   <xsd:element name="OrderDescription" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="ItemQuantity" type="ResponseSchema:INT" />
+   <xsd:element name="BoxesQuantity" type="ResponseSchema:INT" minOccurs="0" />
+   <xsd:element name="BackOrder" type="ResponseSchema:YN_A1" />
+   <xsd:element name="MaxBackOrderDate" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="ProductPrice" type="ResponseSchema:FLOAT" />
+   <xsd:element name="ProductPriceCurrency" type="ResponseSchema:CURRENCY_CODE_A" />
+   <xsd:element name="ShipDueDateTime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="PickupDueDateTime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="PickedupDateTime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="ReturnAuthentication" type="ResponseSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CourierType">
+  <xsd:sequence>
+   <xsd:element name="InterfaceName" type="ResponseSchema:COURIER_TYPE_E" />
+   <xsd:element name="ServiceName" type="ResponseSchema:S500" />
+   <xsd:element name="WayBillNo" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="EstimatedDeliveryDay" type="ResponseSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PaymentGatewayType">
+  <xsd:sequence>
+   <xsd:element name="WebConfirmed" type="ResponseSchema:YN_A1" />
+   <xsd:element name="InterfaceName" type="ResponseSchema:S500" />
+   <xsd:element name="PaymentRefNo" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="CardAccountType" type="ResponseSchema:S500" />
+   <xsd:element name="AnonymousPan" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="MaskedPan" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="GatewayRefNo" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="GatewayErrorMessage" type="ResponseSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustomerDetailType">
+  <xsd:sequence>
+   <xsd:element name="TransDateTime" type="ResponseSchema:DATETIME" />
+   <xsd:element name="EstimatedDeliveryDateTime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="CustomerStatement" type="ResponseSchema:S500" minOccurs="0" />
+
+   <xsd:group ref="ResponseSchema:CustomerShipAddressGroup" />
+   <xsd:group ref="ResponseSchema:CustomerBillAddressGroup" />
+
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="StakeholderType">
+  <xsd:sequence>
+   <xsd:element name="StakeholderName" type="ResponseSchema:S500" />
+   <xsd:element name="AddressLine1" type="ResponseSchema:S500" />
+   <xsd:element name="AddressLine2" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="City" type="ResponseSchema:S500" />
+   <xsd:element name="State" type="ResponseSchema:S500" />
+   <xsd:element name="ZipCode" type="ResponseSchema:S500" />
+   <xsd:element name="CountryCode" type="ResponseSchema:COUNTRY_CODE_A3" />
+   <xsd:element name="PcurrencyCode" type="ResponseSchema:CURRENCY_CODE_A" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+ <xsd:complexType name="CustomersType">
+  <xsd:sequence>
+   <xsd:element name="Customer" type="ResponseSchema:CustomerAddressType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustomerType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CustomerShipAddressGroup" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="CustomerAddressType">
+  <xsd:sequence>
+   <xsd:group ref="ResponseSchema:CustomerShipAddressGroup" />
+   <xsd:group ref="ResponseSchema:CustomerBillAddressGroup" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ShipmentBookingType">
+  <xsd:sequence>
+   <xsd:element name="CourierName" type="ResponseSchema:COURIER_TYPE_E" />
+   <xsd:element name="CourierServiceName" type="ResponseSchema:S500" />
+   <xsd:element name="CourierWaybillNo" type="ResponseSchema:S500" />
+   <xsd:element name="CourierWaybillNoRussia" type="ResponseSchema:S500" minOccurs="0"/>
+   <xsd:element name="PickupDue" type="ResponseSchema:DATETIME" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PackingBoxesType">
+  <xsd:sequence>
+   <xsd:element name="PackingBox" type="ResponseSchema:PackingBoxType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="PackingBoxType">
+  <xsd:sequence>
+   <xsd:element name="BoxNo" type="ResponseSchema:INT" />
+   <xsd:element name="BoxCode" type="ResponseSchema:S500" />
+   <xsd:element name="ItemQuantity" type="ResponseSchema:INT" />
+
+   <xsd:element name="DimensionUnit" type="ResponseSchema:DIMENSION_UNIT_TYPE_E" />
+   <xsd:element name="Length" type="ResponseSchema:FLOAT" />
+   <xsd:element name="Width" type="ResponseSchema:FLOAT" />
+   <xsd:element name="Height" type="ResponseSchema:FLOAT" />
+
+   <xsd:element name="WeightUnit" type="ResponseSchema:WEIGHT_UNIT_TYPE_E" />
+   <xsd:element name="Weight" type="ResponseSchema:FLOAT" />
+
+   <xsd:element name="ProductLineItems" type="ResponseSchema:ProductLineItemsType" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ProductLineItemsType">
+  <xsd:sequence>
+   <xsd:element name="ProductLineItem" type="ResponseSchema:ProductLineItemType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ProductLineItemType">
+  <xsd:sequence>
+   <xsd:element name="LineItemNo" type="ResponseSchema:S500" />
+   <xsd:element name="ProductCode" type="ResponseSchema:S500" />
+   <xsd:element name="Description" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="HSCode" type="ResponseSchema:S500" />
+   <xsd:element name="Price" type="ResponseSchema:FLOAT" />
+   <xsd:element name="Quantity" type="ResponseSchema:INT" />
+   <xsd:element name="SaleValue" type="ResponseSchema:FLOAT" />
+   <xsd:element name="Size" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="Color" type="ResponseSchema:A" minOccurs="0" />
+
+   <xsd:element name="DimensionUnit" type="ResponseSchema:DIMENSION_UNIT_TYPE_E" />
+   <xsd:element name="Length" type="ResponseSchema:FLOAT" />
+   <xsd:element name="Width" type="ResponseSchema:FLOAT" />
+   <xsd:element name="Height" type="ResponseSchema:FLOAT" />
+
+   <xsd:element name="WeightUnit" type="ResponseSchema:WEIGHT_UNIT_TYPE_E" />
+   <xsd:element name="Weight" type="ResponseSchema:FLOAT" />
+
+   <xsd:element name="IsReturnable" type="ResponseSchema:YN_A1" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SpecialInstructionsType">
+  <xsd:sequence>
+   <xsd:element name="SpecialInstruction" type="ResponseSchema:SpecialInstructionType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SpecialInstructionType">
+  <xsd:sequence>
+   <xsd:element name="Instruction" type="ResponseSchema:S500" />
+   <xsd:element name="InstructedBy" type="ResponseSchema:S500" />
+   <xsd:element name="DateTime" type="ResponseSchema:S500" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="FilesType">
+  <xsd:sequence>
+   <xsd:element name="File" type="ResponseSchema:FileType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="FileType">
+  <xsd:sequence>
+   <xsd:element name="FileName" type="ResponseSchema:S500" />
+   <xsd:element name="MimeType" type="ResponseSchema:S500" />
+   <xsd:element name="Contents" type="xsd:base64Binary" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="VouchersType">
+  <xsd:sequence>
+   <xsd:element name="Voucher" type="ResponseSchema:VoucherType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="VoucherType">
+  <xsd:sequence>
+   <xsd:element name="VoucherType" type="ResponseSchema:A" />
+   <xsd:element name="VoucherDate" type="ResponseSchema:DATE" />
+   <xsd:element name="VoucherNo" type="ResponseSchema:INT" />
+   <xsd:element name="VoucherComments" type="ResponseSchema:S60" minOccurs="0" />
+   <xsd:element name="VoucherCurrency" type="ResponseSchema:CURRENCY_CODE_A" />
+   <xsd:element name="VoucherAmount" type="ResponseSchema:FLOAT" />
+   <xsd:element name="VoucherEffect" type="ResponseSchema:DEBIT_CREDIT_TYPE_E" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackingType">
+  <xsd:sequence>
+   <xsd:element name="AirWayBillNumber" type="ResponseSchema:INT" />
+   <xsd:element name="ShippedOnDate" type="ResponseSchema:S500" />
+   <xsd:element name="DeliveryDate" type="ResponseSchema:S500" />
+   <xsd:element name="OriginServiceArea" type="ResponseSchema:S500" />
+   <xsd:element name="DestinationServiceArea" type="ResponseSchema:S500" />
+   <xsd:element name="CustomerFirstName" type="ResponseSchema:S500" />
+   <xsd:element name="CustomerLastName" type="ResponseSchema:S500" />
+   <xsd:element name="LastEvent" type="ResponseSchema:TrackingEventType" minOccurs="0" />
+   <xsd:element name="EventDates" type="ResponseSchema:TrackingEventDatesType" minOccurs="0" />
+   <!-- xsd:element name="EventDateMap" type="xsd:" / -->
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackingEventDatesType">
+  <xsd:sequence>
+   <xsd:element name="EventDate" type="ResponseSchema:TrackingEventDateMapType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackingEventDateMapType">
+  <xsd:sequence>
+   <xsd:element name="DateTime" type="ResponseSchema:S500" minOccurs="1" />
+   <xsd:element name="TrackingEvents" type="ResponseSchema:TrackingEventsType" minOccurs="1" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackingEventsType">
+  <xsd:sequence>
+   <xsd:element name="TrackingEvent" type="ResponseSchema:TrackingEventType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="TrackingEventType">
+  <xsd:sequence>
+   <xsd:element name="EventCode" type="ResponseSchema:A" />
+   <xsd:element name="SrNo" type="ResponseSchema:INT" />
+   <xsd:element name="Description" type="ResponseSchema:S500" />
+   <xsd:element name="Location" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="TransitionDate" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="TransitionTime" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="Signatory" type="ResponseSchema:S500" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ActivityDetailType">
+  <xsd:sequence>
+   <xsd:element name="ActivityNo" type="ResponseSchema:INT" />
+   <xsd:element name="DateTime" type="ResponseSchema:DATETIME" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogActivityDetailType">
+  <xsd:sequence>
+   <xsd:element name="RogOrderNo" type="ResponseSchema:INT" />
+   <xsd:element name="OrderNoRef" type="ResponseSchema:INT" />
+   <xsd:element name="RogDateTime" type="ResponseSchema:DATETIME" />
+   <xsd:element name="WayBillNo" type="ResponseSchema:INT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RogActivationDetailType">
+  <xsd:sequence>
+   <xsd:element name="RogOrderNo" type="ResponseSchema:INT" />
+   <xsd:element name="WayBillNo" type="ResponseSchema:INT" />
+   <xsd:element name="CustomerRefund" type="ResponseSchema:FLOAT" />
+   <xsd:element name="CustomerCurrency" type="ResponseSchema:CURRENCY_CODE_A" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SaleSummsType">
+  <xsd:sequence>
+   <xsd:element name="SaleSumm" type="ResponseSchema:SaleSummType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="SaleSummType">
+  <xsd:sequence>
+   <xsd:element name="Date" type="ResponseSchema:DATE" />
+   <xsd:element name="CardType" type="ResponseSchema:CARD_TYPE_A1_E" />
+   <xsd:element name="ProductAmount" type="ResponseSchema:FLOAT" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RollingReservesType">
+  <xsd:sequence>
+   <xsd:element name="RollingReserve" type="ResponseSchema:RollingReserveType" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="RollingReserveType">
+  <xsd:sequence>
+   <xsd:element name="InvoiceNo" type="ResponseSchema:INT" />
+   <xsd:element name="Date" type="ResponseSchema:DATE" />
+   <xsd:element name="Currency" type="ResponseSchema:CURRENCY_CODE_A" />
+   <xsd:element name="Debit" type="ResponseSchema:A" />
+   <xsd:element name="DebitRolingReserveAmount" type="ResponseSchema:FLOAT" />
+   <xsd:element name="DebitRolingReserveCount" type="ResponseSchema:INT" />
+   <xsd:element name="Credit" type="ResponseSchema:A" />
+   <xsd:element name="CreditRolingReserveAmount" type="ResponseSchema:FLOAT" />
+   <xsd:element name="CreditRolingReserveCount" type="ResponseSchema:INT" />
+   <xsd:element name="Status" type="ResponseSchema:A" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ServiceInvoicesType">
+  <xsd:sequence>
+   <xsd:element name="ServiceInvoice" type="ResponseSchema:ServiceInvoiceType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="ServiceInvoiceType">
+  <xsd:sequence>
+   <xsd:element name="IssuedBy" type="ResponseSchema:S500" />
+   <xsd:element name="OrderNo" type="ResponseSchema:S500" />
+   <xsd:element name="WayBillNo" type="ResponseSchema:S500" minOccurs="0" />
+   <xsd:element name="PlatformUsageFee" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="ShippingCharges" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="DutyTaxes" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="InsurancePremium" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="InvoiceTotal" type="ResponseSchema:FLOAT" />
+   <xsd:element name="InvoiceTransDate" type="ResponseSchema:DATE" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="DailyStatementsType">
+  <xsd:sequence>
+   <xsd:element name="DailyStatement" type="ResponseSchema:DailyStatementType" minOccurs="1" maxOccurs="unbounded" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="DailyStatementType">
+  <xsd:sequence>
+   <xsd:element name="StatementNo" type="ResponseSchema:INT" minOccurs="0" />
+   <xsd:element name="DateTime" type="ResponseSchema:DATETIME" minOccurs="0" />
+   <xsd:element name="Currency" type="ResponseSchema:CURRENCY_CODE_A" minOccurs="0" />
+   <xsd:element name="SaleValue" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="SZMarkup" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="ReservesWithholdValue" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="ReservesWithholdCount" type="ResponseSchema:INT" minOccurs="0" />
+   <xsd:element name="ReservesReleasedValue" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="ReservesReleasedCount" type="ResponseSchema:INT" minOccurs="0" />
+   <xsd:element name="AdminVoucherDebitValue" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="AdminVoucherCreditValue" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="AdminVoucherCount" type="ResponseSchema:INT" minOccurs="0" />
+   <xsd:element name="RecieveableValue" type="ResponseSchema:FLOAT" minOccurs="0" />
+   <xsd:element name="RecieveableDate" type="ResponseSchema:INT" minOccurs="0" />
+   <xsd:element name="StatementStatus" type="ResponseSchema:STATEMENT_STATUS_TYPE_E" minOccurs="0" />
+  </xsd:sequence>
+ </xsd:complexType>
+
+
+ <!-- ************************************************************** -->
+ <!-- #### COMMON SIMPLE TYPES #### -->
+ <!-- ************************************************************** -->
+
+ <xsd:simpleType name="DATE">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="(19|20)\d\d[\-](0[1-9]|1[012])[\-](0[1-9]|[12][0-9]|3[01])">
+   </xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="TIME">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])">
+   </xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="DATETIME">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern
+    value="(19|20)\d\d[\-](0[1-9]|1[012])[\-](0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="GENDER_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[MF]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="SORTING_ORDER_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[AD]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="YN_A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[YN]{1,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="EMAIL">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="([\.a-zA-Z0-9_\-])+@([a-zA-Z0-9_\-])+(([a-zA-Z0-9_\-])*\.([a-zA-Z0-9_\-])+)+"></xsd:pattern>
+   <xsd:maxLength value="100" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="COURIER_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="DHL" />
+   <xsd:enumeration value="DHL_UAE" />
+   <xsd:enumeration value="DHL_GBR" />
+   <xsd:enumeration value="DHL_ITA" />
+   <xsd:enumeration value="DHL_PRT" />
+   <xsd:enumeration value="FEDEX" />
+   <xsd:enumeration value="UPS" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="DIMENSION_UNIT_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="IN" />
+   <xsd:enumeration value="CM" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="WEIGHT_UNIT_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="KG" />
+   <xsd:enumeration value="LB" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="DEBIT_CREDIT_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="D" />
+   <xsd:enumeration value="C" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="CARD_TYPE_A1_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="M" />
+   <xsd:enumeration value="V" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="STATEMENT_STATUS_TYPE_E">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="G" />
+   <xsd:enumeration value="P" />
+   <xsd:enumeration value="F" />
+   <xsd:enumeration value="D" />
+   <xsd:enumeration value="R" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="COUNTRY_CODE_A3">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Z]{3}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="COUNTRY_CODE_A2">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Z]{2}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="CURRENCY_CODE_A">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Z]{3}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="VERSION_NO_S500">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9 .\-_]{1,10}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="INT">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="\d*"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="N20">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="\d{0,20}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="FLOAT">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="(\d*\.\d+|\d*)"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]*"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A1">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{0,1}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="A2">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z]{0,2}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]*"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN3">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,3}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN20">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,20}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN25">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,25}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="AN60">
+  <xsd:restriction base="xsd:string">
+   <xsd:pattern value="[A-Za-z0-9]{0,60}"></xsd:pattern>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+
+
+ <xsd:simpleType name="S60">
+  <xsd:restriction base="xsd:string">
+   <xsd:minLength value="0" />
+   <xsd:maxLength value="60" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="S500">
+  <xsd:restriction base="xsd:string">
+   <xsd:minLength value="0" />
+   <xsd:maxLength value="500" />
+  </xsd:restriction>
+ </xsd:simpleType>
+
+</xsd:schema>

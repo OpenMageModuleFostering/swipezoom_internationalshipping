@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Swipezoom_cardpayment>
+      <version>1.0.0</version>
+    </Swipezoom_cardpayment>
+  </modules>
+  <global>
+    <models>
+      <cardpayment>
+        <class>Swipezoom_CardPayment_Model</class>
+      </cardpayment>
+    </models>
+    <helpers>
+      <cardpayment>
+        <class>Swipezoom_CardPayment_Helper</class>
+      </cardpayment>
+    </helpers>
+    <blocks>
+      <cardpayment>
+        <class>Swipezoom_CardPayment_Block</class>
+      </cardpayment>
+    </blocks>
+  </global>
+  <default>
+    <payment>
+      <cardpayment>
+        <model>cardpayment/standard</model>
+        <active>1</active>
+        <order_status>pending</order_status>
+        <title>Card Payment</title>
+        <payment_action>sale</payment_action>
+        <allowspecific>0</allowspecific>
+        <sort_order>1</sort_order>
+      </cardpayment>
+    </payment>
+  </default>
+  <frontend>
+    <layout>
+      <updates>
+        <cardpayment>
+          <file>cardpayment.xml</file>
+        </cardpayment>
+      </updates>
+    </layout>
+    <routers>
+      <cardpayment>
+        <use>standard</use>
+        <args>
+          <module>Swipezoom_CardPayment</module>
+          <frontName>cardpayment</frontName>
+        </args>
+      </cardpayment>
+    </routers>
+  </frontend>
+
+  <default>
+    <payment>
+      <cardpayment>
+        <active>1</active>
+        <title>Card Payment</title>
+        <order_status>pending</order_status>
+      </cardpayment>
+    </payment>
+  </default>
+
+</config>

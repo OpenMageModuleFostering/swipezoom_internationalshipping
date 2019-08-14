@@ -1,0 +1,67 @@
+<div class="page-title title-buttons">
+  <h1>Cancel Order</h1>
+ 
+</div>
+
+<div class="content">
+<h3>Reason to Cancel Order</h3>
+<?php $orderid = Mage::app()->getRequest()->getParam('order_id'); ?>
+<div id="order_history_block">
+<form action="<?php echo $this->getUrl('internationalshipping/index/adcomment',array('order_id'=> $orderid)) ?>" method="post">
+<?php /*?><textarea name="comment" style="width: 99%;height:150px;"></textarea><?php */?>
+<select name="comment">
+<option value="">-- Select reson --</option>
+<option value="1">Goods out of stock</option>
+<option value="2">Customer cancelled</option>
+<option value="3">Merchant cancelled</option>
+</select>
+<input type="hidden" name="order_id" value="<?php echo Mage::app()->getRequest()->getParam('order_id') ?>" />
+</form></div></div>
+<div class="buttons-set">
+  <button onclick="submitAndReloadArea($('order_history_block').parentNode, '<?php echo $this->getUrl('internationalshipping/index/adcomment',array('order_id'=> $orderid,'key'=>Mage::getSingleton('core/session')->getFormKey())) ?>');" class="button" title="Cancel Order" type="button"><span><span>Cancel Oder</span></span></button>
+  <button onclick="window.parent.closePopup();" class="button" title="Close Window" type="button"><span><span>Close Window</span></span></button>
+</div>
+<script type="text/javascript">
+function submitAndReloadArea(area, url) {
+    if($(area)) {
+        var fields = $(area).select('input', 'select', 'textarea');
+        var data = Form.serializeElements(fields, true);
+        url = url + (url.match(new RegExp('\\?')) ? '&isAjax=true' : '?isAjax=true');
+        new Ajax.Request(url, {
+            parameters: $H(data),
+            loaderArea: area,
+            onSuccess: function(transport) {
+				 try {
+                   
+					if (transport.responseText.isJSON()) {
+						var response = transport.responseText.evalJSON()
+						if (response.error) {
+							if(response.alertpopup){
+								location.reload();
+							}
+                            if(response.ajaxExpired && response.ajaxRedirect && !response.alertpopup) {
+								location.reload();//setLocation(response.ajaxRedirect);
+							}
+                        }else{
+                      	  window.parent.cancelOrder();
+						}
+						
+					} else {
+						// window.parent.cancelOrder();
+					} 
+                }
+                catch (e) {
+                  
+                }
+            //  
+			 
+            }
+        });
+    }
+}
+</script>
+<script>
+window.onload = function(){
+window.parent.hideloading();
+}
+</script>

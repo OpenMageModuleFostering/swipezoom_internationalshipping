@@ -1,0 +1,159 @@
+
+<?php  $_order = $this->getSource()->getOrder() ?>
+
+<?php if($_order->getSwipezoomOrderCreditmemo() == NULL && $_order->getSwipezoomOrderNumberTemp()) { ?> 
+<?php
+$length = 2;
+
+$randomString = substr(str_shuffle("0123456789"), 0, $length);
+ ?>
+<tr>
+  <td class="label"><?php echo $this->helper('sales')->__('RMA #') ?></td>
+  <td><input type="text" name="returnauthentication" value="<?php echo date('YmdHis').$randomString?>" maxlength="25" class="input-text not-negative-amount" style="width:144px;text-align:right" id="returnauthentication" /></td>
+</tr>
+<tr>
+  <td class="label"><?php echo $this->helper('sales')->__('Reason Code') ?></td>
+  <td>
+  <select name="reasoncode" class="input-select"  style="width:150px;" >
+  	<option value="">-- Select Any --</option>
+    <option value="RI">Wrong Item</option>
+    <option value="RS">Wrong Size</option>
+    <option value="RC">Wrong Color</option>
+    <option value="RD">Damaged</option>
+    <option value="RO">Other Quality</option>
+    <option value="RQ">Customer Discretion</option>
+    
+
+  </select>
+   <style>
+                         .entry-edit-head .tools a{display:none;}
+						.swipezoom-container .price-notice {    float: right;}
+						.swipezoom-container {    width: 50%;}						 
+                         </style>
+  </td>
+</tr>
+<tr>
+<td></td><td>
+<input type="hidden" name="dorefund" id="dorefund" class="dorefund" value="" />
+<input type="hidden" name="swipeorder" id="swipeorder" class="swipeorder" value="<?php echo $_order->getSwipezoomOrderNumberTemp() ?>" />
+<button style="" onclick="sendcreditmemorequest($('creditmemo_item_container'),'<?php echo $this->getUrl('adminhtml/sales_order_creditmemo/updateQtynew', array('order_id'=>$_order->getId())) ?>')" class="scalable" type="button" title="Refund Request"><span><span><span>Refund Request</span></span></span></button>
+</td>
+</tr>
+
+<?php 
+}else{ ?>
+<?php $_source  = $this->getSource() ?>
+<?php if ($_source): ?>
+
+<?php if( $_order->getSwipezoomOrderCreditmemo() > 1  ){ ?>
+<tr>
+  <td class="label"><?php echo $this->helper('sales')->__('Refund Option') ?></td>
+  <td>
+ 				<script type="text/javascript"> 
+                    Event.observe(document,"dom:loaded",function(){
+						 $$('[title="Refund Offline"]').each(function(el){
+                         	el.update('<span><span><span></span>Confirm</span></span>') 
+						 });
+                    });
+                </script>
+  <select name="reasoncode" class="input-select"  style="width:136px;" >
+  	<option value="">-- Select Any --</option>
+  	<option value="PV">Product Value</option>
+    <option value="FR">Product + Shipping</option>
+    <option value="NR">No Refund</option>
+  </select>
+  </td>
+</tr>
+
+
+<?php } ?>
+<?php if(!$_order->getSwipezoomOrderNumberTemp()){ ?>
+<tr>
+  <td class="label"><?php echo $this->getShippingLabel() ?></td>
+  <td><input type="text" name="creditmemo[shipping_amount]" value="<?php echo $this->getShippingAmount()?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="shipping_amount" /></td>
+</tr>
+<tr>
+  <td colspan="2"><div id="shipping_amount_adv"></div></td>
+</tr>
+<tr>
+  <td class="label"><?php echo $this->helper('sales')->__('Adjustment Refund') ?></td>
+  <td><input type="text" name="creditmemo[adjustment_positive]" value="<?php echo $_source->getBaseAdjustmentFeePositive()*1 ?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="adjustment_positive" /></td>
+</tr>
+<tr>
+  <td colspan="2"><div id="adjustment_positive_adv"></div></td>
+</tr>
+<tr>
+  <td class="label"><?php echo $this->helper('sales')->__('Adjustment Fee') ?></td>
+  <td><input type="text" name="creditmemo[adjustment_negative]" value="<?php echo $_source->getBaseAdjustmentFeeNegative()*1 ?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="adjustment_negative"/></td>
+</tr>
+<?php } ?>
+<tr>
+  <td colspan="2"><div id="adjustment_negative_adv"></div></td>
+</tr>
+<script type="text/javascript">
+    //<![CDATA[
+    Validation.addAllThese([
+        ['not-negative-amount', '<?php echo $this->helper('sales')->__('Please enter positive number in this field.') ?>', function(v) {
+            if(v.length)
+                return /^\s*\d+([,.]\d+)*\s*%?\s*$/.test(v);
+            else
+                return true;
+        }]
+    ]);
+
+    if ($('shipping_amount')) {
+        $('shipping_amount').advaiceContainer = $('shipping_amount_adv');
+        unblockSubmit('shipping_amount');
+    }
+    if ($('adjustment_positive')) {
+        $('adjustment_positive').advaiceContainer = $('adjustment_positive_adv');
+        unblockSubmit('adjustment_positive');
+    }
+    if ($('adjustment_negative')) {
+        $('adjustment_negative').advaiceContainer = $('adjustment_negative_adv');
+        unblockSubmit('adjustment_negative');
+    }
+
+    function unblockSubmit(id) {
+        $(id).observe('focus', function(event) {
+            if ($$('button[class="scalable update-button disabled"]').size() > 0) {
+                enableElements('submit-button');
+            }
+        });
+    }
+    //]]>
+    </script>
+<?php endif; ?>
+
+<?php } ?>
+
+<script type="text/javascript">
+function sendcreditmemorequest(area, url) {
+	$('dorefund').value = 1;
+	
+    if($(area)) { 
+        var fields = $(area).select('input', 'select', 'textarea');
+        var data = Form.serializeElements(fields, true);
+        url = url + (url.match(new RegExp('\\?')) ? '&isAjax=true' : '?isAjax=true');
+        new Ajax.Request(url, {
+            parameters: $H(data),
+            loaderArea: area,
+            onSuccess: function(transport) {
+                try {
+                    if (transport.responseText.isJSON()) {
+                        var response = transport.responseText.evalJSON()
+                        if(response.ajaxExpired && response.ajaxRedirect) {
+                            setLocation(response.ajaxRedirect);
+                        }
+                    } else {
+                        $(area).update(transport.responseText);
+                    }
+                }
+                catch (e) {
+                    $(area).update(transport.responseText);
+                }
+            }
+        });
+    }
+}
+</script>

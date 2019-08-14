@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Swipezoom_InternationalShipping",
+    "type": "magento-module",
+    "license": "GNU-General-Public-License-(GPL)",
+    "homepage": "",
+    "description": "Sell and ship to 238 countries with local payment and shipping methods, via a single invisible relationship",
+    "authors": [
+    {
+        "name": "SwipezoomUK",
+        "email": "info@swipezoom.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
