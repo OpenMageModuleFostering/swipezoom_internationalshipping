@@ -21,7 +21,8 @@ class Swipezoom_CardPayment_Block_Info_Ccsave extends Mage_Payment_Block_Info_Cc
             $additionalinfo = unserialize($info->getAdditionalData());
 
             if(!empty($additionalinfo)) {
-                if(!empty($info->getCcOwner()))
+                $getcc_info = $info->getCcOwner();
+                if(!empty($getcc_info))
                     $extra_details = array(Mage::helper('payment')->__('Name on the Card') => $info->getCcOwner(),
                     Mage::helper('payment')->__('Expiration Date') => $this->_formatCardDate($info->getCcExpYear(), $this->getCcExpMonth())
                     );

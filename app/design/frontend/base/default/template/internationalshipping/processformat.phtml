@@ -242,7 +242,7 @@
 		if('<?php echo $type?>' == 'billing') {
 			
 			if(jQuery("input[name='billing[city]']").length) {
-				jQuery("input[name='billing[city]']").autocomplete('<?php echo $this->getUrl('internationalshipping/index/getCitiesForAutoComplete') ?>', {
+				jQuery("input[name='billing[city]']").autocomplete('<?php echo $this->getUrl('internationalshipping/index/getCitiesForAutoComplete',array("_secure"=>true)) ?>', {
 					extraParams: {
 						countrycode: function() { return jQuery('select[name="billing[country_id]"]').val();},
 						city: function() { return jQuery("input[name='billing[city]']").val(); }
@@ -265,7 +265,7 @@
 			
 			if(jQuery("input[name='shipping[city]']").length) {
 				if(jQuery("input[name='shipping[city]']").length) {
-					jQuery("input[name*='shipping[city]']").autocomplete('<?php echo $this->getUrl('internationalshipping/index/getCitiesForAutoComplete') ?>', {
+					jQuery("input[name*='shipping[city]']").autocomplete('<?php echo $this->getUrl('internationalshipping/index/getCitiesForAutoComplete',array("_secure"=>true)) ?>', {
 						extraParams: {
 							countrycode: function() { return jQuery('select[name="shipping[country_id]"]').val();},
 							city: function() { return jQuery("input[name='shipping[city]']").val(); }

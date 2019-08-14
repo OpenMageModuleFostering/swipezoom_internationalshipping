@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Swipezoom_cardpayment>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
     </Swipezoom_cardpayment>
   </modules>
   <global>

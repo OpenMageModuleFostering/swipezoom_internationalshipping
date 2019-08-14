@@ -10,7 +10,7 @@
 <config>
   <modules>
     <Swipezoom_InternationalShipping>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
     </Swipezoom_InternationalShipping>
   </modules>
   <frontend>
@@ -263,15 +263,6 @@
       </shipping>
     </sales>
     <events>
-      <checkout_type_onepage_save_order_after>
-        <observers>
-          <bts_checkout_observer>
-            <type>singleton</type>
-            <class>internationalshipping/observer</class>
-            <method>confirmOrderInvoiceRequest</method>
-          </bts_checkout_observer>
-        </observers>
-      </checkout_type_onepage_save_order_after>
      
 	  <controller_action_predispatch_adminhtml_sales_order_edit_start>
         <observers>
