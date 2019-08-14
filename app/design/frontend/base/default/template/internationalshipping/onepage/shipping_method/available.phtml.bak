@@ -143,7 +143,6 @@
                                                     <?php (!empty($ExtraRates["CustCourierDuties"]))?$dutiesRate = $ExtraRates["CustCourierDuties"]: $dutiesRate = "N/A";?>              
 </label>
                                                         <span class="price-notice"><span class="price"><?php echo ($ExtraRates["CustCourierDuties"] > 0 )? Mage::helper('core')->currency($ExtraRates["CustCourierDuties"],true,false): "N/A";  ?> </span></span>
-                                                        <?php $duties_charges = ($ExtraRates["CustCourierDuties"] > 0 )? Mage::helper('core')->currency($ExtraRates["CustCourierDuties"],true,false): "N/A";  ?> 
 
                                                 <p id="alert-content-duties" class="alert-content-duties" style="display: none;"><?php echo $this->__('You have chosen to NOT prepay duties & taxes for this order and therefore will be responsible to pay these charges at the time of delivery.');  ?>
                                                 </p>
@@ -157,7 +156,6 @@
                                                     <?php (!empty($ExtraRates["CustInsuranceCharges"]))?$insuranceRate = $ExtraRates["CustInsuranceCharges"]: $insuranceRate = "N/A";?>
                                                    </label>
                                                     <span class="price-notice"><span class="price"><?php echo ($ExtraRates["CustInsuranceCharges"] > 0 )? Mage::helper('core')->currency($ExtraRates["CustInsuranceCharges"],true,false): "N/A";  ?> </span></span>
-                                                    <?php $insurance_charges = ($ExtraRates["CustInsuranceCharges"] > 0 )? Mage::helper('core')->currency($ExtraRates["CustInsuranceCharges"],true,false): "N/A";  ?>
 
 
                                             </li>
@@ -217,8 +215,6 @@
         <?php endif; ?>
 
     var datastorageurl = "<?php echo $ExtraRates['DataStorageUrl']; ?>";
-    insurance_charges = "<?php echo $insurance_charges ?>";
-    duties_charges = "<?php echo $duties_charges ?>";
 
     if(datastorageurl) {
         if($(".wirecard-datastorage"))
@@ -257,17 +253,10 @@
     $$('input[type="checkbox"][name="swipezoom"]').each(function(el){
         Event.observe(el, 'click', function(){
             var oldValue = ($("sz-total-title").down().down().innerHTML).replace(/[<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>]*/, '');
-
-            if(el.checked) {
+            if(el.checked)
                 $("sz-total-title").down().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+ (parseFloat(oldValue) + parseFloat(el.value)).toFixed(2)+'';
-                if(el.id == 'insurance')
-                    el.next().next().down().innerHTML = insurance_charges;
-                else
-                    el.next().next().down().innerHTML = duties_charges;
-            } else {    
+            else
                 $("sz-total-title").down().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+ (parseFloat(oldValue) - parseFloat(el.value)).toFixed(2)+'';
-                el.next().next().down().innerHTML = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>'+0;
-            }
 
             var id="swipezoom_custshippingcharges";
             $$('input[type="checkbox"][name="swipezoom"]').each(function(el){

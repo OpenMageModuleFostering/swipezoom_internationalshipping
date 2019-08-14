@@ -487,10 +487,10 @@ extends Mage_Shipping_Model_Carrier_Abstract
           if($paymentmode == 1) {
           $ratesRequest["Payment"] = array(
               "PaymentType" => 'ccard',
-              "SuccessURL" => Mage::getBaseUrl().'cardpayment/payment/process?status=success&orderid='.$localOrderNumber,
-              "CancelURL" => Mage::getBaseUrl().'cardpayment/payment/process?status=cancel&orderid='.$localOrderNumber,
-              "FailureURL" => Mage::getBaseUrl().'cardpayment/payment/process?status=failure&orderid='.$localOrderNumber,
-              "ServiceURL" => Mage::getBaseUrl(),
+              "SuccessURL" => Mage::getBaseUrl($type = 'link', $secure = true).'cardpayment/payment/process?status=success&orderid='.$localOrderNumber,
+              "CancelURL" => Mage::getBaseUrl($type = 'link', $secure = true).'cardpayment/payment/process?status=cancel&orderid='.$localOrderNumber,
+              "FailureURL" => Mage::getBaseUrl($type = 'link', $secure = true).'cardpayment/payment/process?status=failure&orderid='.$localOrderNumber,
+              "ServiceURL" => Mage::getBaseUrl($type = 'link', $secure = true),
               "CustomerUserAgent" => $_SERVER['HTTP_USER_AGENT'],
               "CustomerIpAddress" => $_SERVER['REMOTE_ADDR']
           );

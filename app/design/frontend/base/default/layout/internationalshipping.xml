@@ -16,7 +16,6 @@
     	 <reference name="head">
 			<action method="addCss"><stylesheet>internationalshipping/css/jquery.autocomplete.css</stylesheet></action>
             <action method="addCss"><stylesheet>internationalshipping/css/sz_common.css</stylesheet></action>
-			<action method="addJs"><script>swipezoom/autocomplete/jquery-1.8.2.min.js</script></action>
 			<action method="addJs"><script>swipezoom/autocomplete/jquery.autocomplete.js</script></action>
             <action method="addJs"><script>swipezoom/jquery.creditCardValidator.js</script></action>
             <action method="addJs"><script>swipezoom/sz_common.js</script></action>

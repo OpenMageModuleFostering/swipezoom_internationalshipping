@@ -350,7 +350,7 @@
         $(type+"-new-address-form").setStyle({opacity:"0.5"});
         var countrycode=$(type+':country_id').value;
 
-        new Ajax.Request('<?php echo $this->getUrl('internationalshipping/index/index') ?>',{
+        new Ajax.Request('<?php echo $this->getUrl('internationalshipping/index/index', array("_secure"=>true)) ?>',{
             type: "POST", 
             parameters: {countrycode:countrycode,type:type},
             cache: false,
@@ -460,7 +460,7 @@
                 if($(type+':city'))
                     city=$F(type+':city');  
                 
-                new Ajax.Request('<?php echo $this->getUrl("internationalshipping/index/CheckAddress") ?>',{
+                new Ajax.Request('<?php echo $this->getUrl("internationalshipping/index/CheckAddress", array("_secure"=>true)) ?>',{
                     type: "POST", 
                     parameters: {country:country,region:region,regionname:regionname,postcode:postcode,street1:street1,street2:street2,city:city,type:type,sameasshipping:sameasshipping},
                     cache: false,

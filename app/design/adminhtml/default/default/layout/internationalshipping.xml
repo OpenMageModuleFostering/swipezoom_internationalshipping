@@ -3,7 +3,6 @@
 	
 	<adminhtml_system_config_edit>
         <reference name="head">
-        	<action method="addJs"><script>swipezoom/autocomplete/jquery-1.8.2.min.js</script></action>
             <action method="addJs"><script>swipezoom/sz_admin.js</script></action>
         </reference>
     </adminhtml_system_config_edit>
