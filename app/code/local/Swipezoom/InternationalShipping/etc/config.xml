@@ -10,7 +10,7 @@
 <config>
   <modules>
     <Swipezoom_InternationalShipping>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </Swipezoom_InternationalShipping>
   </modules>
   <frontend>
@@ -335,8 +335,8 @@
         <adminurl></adminurl>
         <url></url>
         <paymentenabled>1</paymentenabled>
-        <merchantid>115</merchantid>
-        <merchantkey>TESTERLHYC100567PKI1001ENCYM12</merchantkey>
+        <merchantid>100</merchantid>
+        <merchantkey>TESTABCERLHYC100567PKI1001ENCYM00</merchantkey>
         <showmethod>1</showmethod>
         <debug>0</debug>
       </swipezoom>
